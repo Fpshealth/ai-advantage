@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
+  "name": "team-ai",
+  "description": "Team-AI — internal Claude skills for your team.",
+  "owner": {
+    "name": "Federico Pacheco",
+    "email": "federico.pacheco@fpshealth.com"
+  },
+  "plugins": [
+    {
+      "name": "cowork-team-ai",
+      "displayName": "Cowork: Team-AI",
+      "source": "./",
+      "description": "Coordinated Cowork skills: sandbox setup, prompt improvement, escalation, SOP creation, process documentation, process exploration, visualizer.",
+      "category": "productivity",
+      "keywords": ["cowork", "sop", "team-ai"]
+    }
+  ]
+}

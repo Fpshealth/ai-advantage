@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "cowork-team-ai",
+  "displayName": "Cowork: Team-AI",
+  "description": "The Team-AI Cowork set: coordinated skills for sandbox setup, prompt improvement, escalation, SOP creation, process documentation, process exploration, and visualization. One skill = one chat = one finished Markdown file.",
+  "author": {
+    "name": "Federico Pacheco",
+    "email": "federico.pacheco@fpshealth.com"
+  },
+  "license": "UNLICENSED",
+  "keywords": [
+    "cowork",
+    "sop",
+    "process-documentation",
+    "prompt-engineering",
+    "team-ai"
+  ]
+}
