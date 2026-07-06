@@ -5,12 +5,9 @@ description: 'Guides a person to escalate a stuck session to their consultant �
 
 # Escalation: Team-AI
 
-When a person wants to hand a stuck session to their consultant, **you do not reconstruct the
-chat.** Cowork's own **`/export`** already produces the complete, verbatim session — every
-message, tool call, the model used, and metadata — far more than any re-typed summary, at zero
-token cost. Your job is to guide the person to export it and email it to the consultant in two
-clicks, and to remind them to also attach the file you created together (the one thing `/export`
-does not include).
+When a person wants to hand a stuck session to their consultant, guide them to export it via Cowork's
+**`/export`** and email it to the consultant in two clicks — and to also attach the file you created
+together, the one thing `/export` does not include.
 
 **Follow `reference/house-style.md`.** Output language follows §1 (mirrors the user; English
 default).

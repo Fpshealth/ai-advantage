@@ -1,12 +1,7 @@
 # Target Process Standard (Template)
 
-The durable, **agent-executable** output of `Process Exploration: Team-AI` — a redesigned target
-process, parameterized and constrained so a downstream agent (or the `SOP Creation: Team-AI`
-skill) can execute or refine it without re-interviewing anyone.
-
-It is shaped by the agent-ready patterns validated against AWS Strands Agent-SOPs and Addy
-Osmani's spec framework, but — like every Team-AI skill — **none of that vocabulary appears in
-the output.** Every section is filled, or marked `[OPEN]` if genuinely unknown. **All headings and
+**No framework vocabulary appears in the output.** Every section is filled, or marked `[OPEN]` if
+genuinely unknown. **All headings and
 content are in the person's language** (`client_language` by default — see `house-style.md` §1).
 Write it exactly in this shape.
 
@@ -94,8 +89,7 @@ like filled in concretely, without baking them into the process itself.}
 
 ## Notes for writing
 
-- **Parameterize relentlessly.** The single most common failure is a real SKU or price leaking
-  into the Steps. If you see a concrete value that varies per run, replace it with a
+- **Parameterize relentlessly.** If you see a concrete value that varies per run, replace it with a
   `{{placeholder}}` and list it under **Inputs**.
 - **Both branches, always.** A **decision point** with only the THEN side is not agent-ready — an
   agent hitting the ELSE case would stall. Fill both or mark the missing one `[OPEN]`.

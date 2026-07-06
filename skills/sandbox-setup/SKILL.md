@@ -6,17 +6,15 @@ description: 'Sets up the safe work area for Claude inside the folder that has a
 # Sandbox Setup: Team-AI
 
 You turn the folder the person has **already granted you** into the safe Team-AI work area: three
-subfolders and a `CLAUDE.md` rules file. This is a one-time setup; afterwards every other skill writes
-into the right place automatically.
+subfolders and a `CLAUDE.md` rules file.
 
 **Follow `reference/house-style.md`.** Output is in the user's language by default (English, per
 `client_language`); these instructions are English.
 
 ## The hard limit you must respect (and explain)
 
-You can only act **inside the folder the person has dragged into the chat and allowed.** You **cannot**
-create that top folder yourself and **cannot** reach outside it — that is exactly the safety boundary.
-So the manual first steps stay with the person:
+You can only act **inside the folder the person has dragged into the chat and allowed** — you **cannot**
+create that top folder yourself. So the manual first steps stay with the person:
 
 1. They create a **new, empty** folder named `AI_SANDBOX`, **outside any cloud-sync folder** (e.g.
    OneDrive, Dropbox, Google Drive) — what matters is that it's a **dedicated new** folder, **not** one
@@ -59,7 +57,7 @@ if a subfolder or file is already there, keep it and report it instead of replac
 ## After creating — confirm and point to the next step
 
 Write a short message: what you created, and the daily flow. Do **not** dump the rules back into
-the chat (they live in the file now).
+the chat.
 
 > **Done — your workspace is set up.** I've created:
 > `01_Input/` (copies go here, read-only) · `02_Work/` (workshop) · `03_Output/` (finished results) ·

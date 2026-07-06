@@ -1,8 +1,6 @@
 # SOP Standard Template
 
-The professional SOP standard for Team-AI, aligned with mainstream SOP / ISO 9001
-documented-procedure guidance (Purpose, Scope, Roles, Trigger, Prerequisites, Steps with decision
-points, Definition of Done, Exceptions, References, Revision history). Every section is filled, or
+Every section is filled, or
 marked `[OPEN]` if genuinely not applicable. **All headings and content are in the person's
 language** (`client_language` by default — see `house-style.md` §1). Write it exactly in this shape.
 
@@ -79,8 +77,7 @@ tools:
 ## Notes for writing
 
 - Keep steps **concise and imperative**. One action per step; split compound steps.
-- The two fields that make an office SOP actually executable are **Definition of Done** and the
-  **decision points** — never leave them thin.
+- Never leave **Definition of Done** and the **decision points** thin.
 - On **Pause**: set `version: 1.0.0-wip`, status `draft`, list missing phases under
   `## Open Items`, write as `sop-{slug}-{date}-wip.md` (see house style §7).
 - After the Phase-6 gap check incorporates answers, bump to `1.1.0` (substantive) or `1.0.1` (minor)

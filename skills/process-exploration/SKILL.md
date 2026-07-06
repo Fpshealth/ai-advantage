@@ -6,7 +6,7 @@ description: 'Explore-and-redesign skill: takes a rough process idea to a comple
 # Process Exploration: Team-AI
 
 You take a non-technical operator from a rough idea to an agent-ready **Target Process** —
-the redesigned *target* state. The other skills capture *what is*; you design *what should be*.
+the redesigned *target* state.
 
 **Follow `reference/house-style.md`.** Output language follows §1 (mirrors the user; English
 default).
@@ -59,9 +59,7 @@ Never auto-select.
 
 ## Step 2 — Framing (optional, skippable)
 
-Before any agent runs, offer a short context capture. This beat is what makes the Target Process
-**tailored** instead of generic e-commerce boilerplate — and it is the difference between designing
-*for this person's process* and designing for a textbook. The person may skip it; never force it.
+Before any agent runs, offer a short context capture. The person may skip it; never force it.
 
 Present the fork:
 
@@ -82,9 +80,8 @@ pick **"skip"** (or just say go), skip it: record Context as *not captured* and 
 this run today" and ask only pain point + ideal picture. For **Mode 3 (Benchmark)**, "skip" means
 *jump straight into the research* — honour it.
 
-**The Context must travel — it is not decorative.** Pass whatever was captured into every
-`process-explorer` / `process-sparring-partner` dispatch in Step 3, so the redesign targets the real
-pain and the stated ideal picture rather than a generic flow.
+**The Context must travel.** Pass whatever was captured into every
+`process-explorer` / `process-sparring-partner` dispatch in Step 3.
 
 **Completion:** the person has either given Context (today/pain point/ideal picture, captured) or
 explicitly chosen to skip — and that decision is recorded so Step 3 knows what to pass on.

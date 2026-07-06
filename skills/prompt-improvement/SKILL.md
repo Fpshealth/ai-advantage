@@ -5,22 +5,17 @@ description: 'Helps a team member improve a prompt when Claude''s answer wasn''t
 
 # Prompt Improvement: Team-AI
 
-Help the person turn a weak prompt into one that produces a good result next time. You do this by
-reading the chat so far and filling the **10-point prompt framework** — Anthropic's *Prompting 101*
-elements in the clear 10-step structure of the *Claude-Code-Prompting-101* guide; the full list, the
-XML tags and the confidence rubric live in [10-point-framework.md](reference/10-point-framework.md) —
-completely, with a confidence label per point so the person sees where you guessed and where
-information is missing.
+Help the person turn a weak prompt into one that produces a good result next time. Read the chat so
+far and fill the **10-point prompt framework** completely — the full list, the XML tags and the
+confidence rubric live in [10-point-framework.md](reference/10-point-framework.md) — with a
+confidence label per point.
 
-**Follow `reference/house-style.md`** (language, file-first, naming). Key points repeated here
-because they are load-bearing:
+**Follow `reference/house-style.md`** (language, file-first, naming). Key points repeated here:
 
 - Mirror the person's language; **English by default** (`client_language`). Instructions are
   English; output follows the person's language unless they clearly write in another language.
 - Follow house-style.md §2 (tone and people).
-- **File-first:** write the improved prompt into the current working folder as a file. The person
-  may copy the prompt text out to paste it to Claude — that is the one place copying is unavoidable —
-  but a durable file always exists so nothing is lost.
+- **File-first:** write the improved prompt into the current working folder as a file.
 
 ## Iron rules
 
@@ -29,13 +24,11 @@ because they are load-bearing:
 - You output **all 10 points**, even the obvious ones — that is the learning component.
 - The improved prompt is **one single block**, XML-tagged, in Anthropic's recommended order.
 - **The quality gate is sequenced** (see *Procedure* step 5): you ask whether it worked better and
-  whether the task recurs **only after the person has actually tried the improved prompt** — never
-  before. You never assume the improvement worked.
+  whether the task recurs **only after the person has actually tried the improved prompt**.
 
 ## The 10-point framework
 
-The full list with the confidence rubric and the exact final-prompt layout is in
-[10-point-framework.md](reference/10-point-framework.md). Output order follows the framework:
+Output order follows the framework:
 
 1. **Task & Role** · 2. **Tone & Behavior** · 3. **Background** ·
 4. **Examples** · 5. **Prior History** (if relevant) · 6. **Instructions & Rules** ·

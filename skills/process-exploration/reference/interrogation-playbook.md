@@ -1,20 +1,17 @@
 # Interrogation Playbook (the filter engine)
 
-The shared, step-by-step interrogation that **every** mode feeds into. It is what turns a collected
-process into a redesigned one: each step is questioned before it survives. The methodology underneath —
+The shared interrogation that **every** mode feeds into. The methodology underneath —
 ECRS, SIPOC, Theory of Constraints, the Mansar/Reijers redesign heuristics, essential-vs-accidental
 complexity — **shapes the questions but is never named to the person.** Every method is a plain
 question.
 
-**Output follows the person's language (English by default, per house-style.md §1).** This file is
-read by the orchestrator and by mode sub-agents; the structural prose is English, every question and
-label the person sees follows that same rule.
+**Output follows the person's language (English by default, per house-style.md §1).** The structural
+prose is English; every question and label the person sees follows that same rule.
 
 ## The one ordering rule: eliminate before you automate
 
 Walk each step through the gates **in this order** — and never jump ahead to automation before a step
-has cleared the elimination gate. A step that should be deleted must not be made faster, merged, or
-handed to an AI; that only cements work that should not exist. (This is ESIA — *Eliminate → Simplify →
+has cleared the elimination gate. (This is ESIA — *Eliminate → Simplify →
 Integrate → Automate* — but the person only ever experiences it as the question order.)
 
 1. **Cut?** Could the step disappear entirely without the customer or the result suffering?
@@ -26,9 +23,8 @@ Integrate → Automate* — but the person only ever experiences it as the quest
 
 ## The eight diagnostic questions
 
-Ask these per step (or per cluster of steps) to drive the gates above. They are phrased so the person
-answers from experience, never from theory. **Never show the method name in brackets** — it is here
-only so the engine knows what each question is doing.
+Ask these per step (or per cluster of steps) to drive the gates above. **Never show the method name in
+brackets** — it is here only so the engine knows what each question is doing.
 
 1. *"If you joined the team fresh today, with none of the history — which of these steps would you
    never have invented in the first place?"*

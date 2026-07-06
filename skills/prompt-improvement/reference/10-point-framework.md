@@ -1,13 +1,5 @@
 # The 10-Point Prompt Framework
 
-Every good prompt breaks down into **ten building blocks**. We go through them in order — so you
-can see exactly which building block is missing from your prompt.
-
-> **Source:** The ten building blocks come from Anthropic's *Prompting 101* (Moran & Ryan, *Code w/
-> Claude*, May 2025). The clear 10-step structure follows the open guide *Claude-Code-Prompting-101*
-> (<https://github.com/StamKavid/claude-code-prompting-101>) — well written and identical in
-> substance.
->
 > **Not every prompt needs all ten.** Optional building blocks are simply marked *"not relevant."*
 
 ## The ten building blocks at a glance
@@ -25,9 +17,7 @@ can see exactly which building block is missing from your prompt.
 | 9 | **Important Rules (Reminder)** | `<important>` | The most critical rule, restated at the end — *optional* |
 | 10 | **Start the Task** | *(no tag)* | The clear instruction to begin: *"Go ahead now."* |
 
-**Order logic:** context first (1–5), then the concrete material (6–7), then form and reminder
-(8–9), and finally the starting signal (10). **Context before content, instruction before
-execution.**
+**Order logic:** **Context before content, instruction before execution.**
 
 ## What each building block means
 

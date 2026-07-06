@@ -1,6 +1,6 @@
 # Process Documentation Standard (Template)
 
-The professional bird's-eye standard for a **Process Documentation**. Every section is filled, or
+The bird's-eye standard for a **Process Documentation**. Every section is filled, or
 marked `[OPEN]` if genuinely unknown. Write it exactly in this shape.
 
 ````markdown

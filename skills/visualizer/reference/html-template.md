@@ -551,24 +551,9 @@ regenerate Markdown. Between consecutive steps insert `<div class="arrow" aria-h
 
 ## Notes for filling the template
 
-- **Keep it literal.** Render only what the source says; if a card has no content, write **— still open —**.
-- **Steps drive the page.** For an SOP the `.step` boxes come from `## Steps`; for a Process Documentation
-  they come from the process stages, each with a `role-tag` and `data-role`. Set `data-field` on every value span,
-  set `data-doctype` on `<body>` — the script needs both to regenerate Markdown correctly. Always put an `.arrow`
-  between two boxes, never after the last (the script re-flows arrows after a reorder).
-- **`Why` and the screenshot field are optional.** Emit the `.field.why` row only when the source step has a
-  `Why:` value; emit `<img class="step-shot">` only when the source supplies a base64 data-URI image field. Never
-  emit an empty row or a broken/remote `<img>`.
-- **Markers stay visible.** Render `[OPEN]` as `<span class="marker">`.
-- **Annotations card** is only emitted when the source actually has that section — otherwise drop the heading and
-  the card entirely. (The interactive verify flow *appends* to `## Annotations`; it never silently overwrites an
-  existing one — the employee pastes the new block under the source's existing notes.)
 - **Writeback shape.** The script regenerates `## Steps` as `### N. Title` headings with `- **Field:**
   value` bullets (and a `- **Role:** …` bullet for Process Documentation stages), and assembles `## Annotations` as
   `- Step N (Title) incorrect: …` lines. Re-running `visualize` on that regenerated body MUST reproduce
   the new arrangement — this is the one and only place the writeback shape is defined; keep the parser in
   SKILL.md pointed here, never restate it there.
-- **No JavaScript framework, no fonts loaded over the network, no images fetched from URLs, no `fetch`/XHR.** The
-  one inline `<script>` is vanilla DOM only and degrades to a clean read-only render when disabled. The page must
-  open offline by double-click and look identical everywhere. Export reads `textContent`/`value` (never
-  `innerHTML`), so editable content cannot inject markup.
+- **Export safety.** Export reads `textContent`/`value` (never `innerHTML`), so editable content cannot inject markup.

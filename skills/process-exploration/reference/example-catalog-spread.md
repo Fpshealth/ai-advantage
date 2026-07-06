@@ -1,11 +1,8 @@
 # Example: Catalog Spread (Target-Process Exploration, Worked)
 
-The canonical worked example baked into this skill — the ~$75,000-per-year catalog process, run
-through the full funnel in **Mode 1 (From Docs)**. It is the highest-ROI Summit Gear case, so a real
-Mode-1 run on the As-Is document should land **materially close to this**.
-
-Source As-Is document: `As-Is Process — Catalog Spread` (from a recent operations review). Output is
-English.
+The canonical worked example — the ~$75,000-per-year catalog process, run
+through the full funnel in **Mode 1 (From Docs)**. A real Mode-1 run on the As-Is document should land
+**materially close to this**.
 
 ---
 
@@ -42,7 +39,7 @@ image files · **5** Send data package to layout studio · **6** Create layout �
 | 1 Catalog plan · 2 Table | — | **stays** | Planning and structural decisions stay with a human. |
 | 8 Approval & print | — | **stays** | Final approval is a deliberate human decision. |
 
-**Key insight (covers exactly the problem a recent operations review surfaced):** "Preparing all items
+**Key insight:** "Preparing all items
 upfront when only a fraction make it into the catalog" is **unnecessary, historically grown complexity —
 nothing the process actually needs.**
 

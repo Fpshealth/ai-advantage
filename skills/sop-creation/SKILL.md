@@ -70,11 +70,10 @@ actions in one → split them.
 folder, using the full standard in [sop-template.md](reference/sop-template.md). Then a short message:
 filename, and a one-line summary (*"{N} Steps, {M} Decisions, {K} Screenshots"*). Then go to Phase 6.
 
-**Phase 6 — Fresh-Eyes Review (the quality pass that replaces self-rating).** For genuine *fresh
-eyes*, **delegate the review to the `fresh-eyes-review` agent** — give it the **full path** to the
+**Phase 6 — Fresh-Eyes Review (the quality pass that replaces self-rating).**
+**Delegate the review to the `fresh-eyes-review` agent** — give it the **full path** to the
 SOP file you just wrote (include its folder, e.g. `03_Output/…`) and tell it the document type is
-**`SOP`** (judge click-level executability). It reads the file in a fresh, isolated context with zero
-memory of the interview and returns the blocking gaps, ranked. **Integrity guard:** if the agent does
+**`SOP`** (judge click-level executability). It returns the blocking gaps, ranked. **Integrity guard:** if the agent does
 not run or returns nothing usable, do the fresh-eyes read yourself — deliberately discarding everything
 the interview told you that is not written in the document — before closing; **never emit the all-clear
 without an actual review.** Ask the user **all** the returned gaps at once, **ordered most-blocking

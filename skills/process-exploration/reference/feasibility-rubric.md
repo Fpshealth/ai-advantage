@@ -1,8 +1,7 @@
 # Feasibility Rubric (the feasibility / AI-opportunity gate)
 
 The explorer's **final phase**: it takes the redesigned process and asks, per surviving step, *who or
-what should do this* and *is it actually ready to be handed to an AI agent?* It is a phase of this skill,
-not a separate Feasibility skill.
+what should do this* and *is it actually ready to be handed to an AI agent?*
 
 **Runs only after the interrogation playbook.** A step that was already labelled **cut** is gone — you
 do not tag deleted work. Only **stays**, **merge** and **automation-candidate** steps reach this rubric.
@@ -40,15 +39,10 @@ pretend it is ready.** Mark it **`[OPEN]`** with the one thing missing, e.g.:
 > *Step 4 (🤖) — `[OPEN]`: the "matching product photo" input isn't parameterized yet. Needs clarifying
 > before automation: how does the agent know which photo belongs to which item?*
 
-Over-claiming agent-readiness is the main risk of this whole skill — the `[OPEN]` flag is the discipline
-that contains it.
-
 ## Step 4 — Facilitation note (don't force AI)
 
-Eliminate before you automate still applies here as a gentle reminder, not a gate: if a step is best
-served by **plain automation** (a rule, a template, a macro) rather than an AI agent, say so. The goal
-is the right tool for the step, not the maximum amount of AI. A good plain-language way to put it to the
-person:
+If a step is best served by **plain automation** (a rule, a template, a macro) rather than an AI agent,
+say so. A good plain-language way to put it to the person:
 
 > *"A simple rule could handle this step too — it doesn't need AI. Is the extra effort really worth it
 > here, or should we solve it more simply?"*

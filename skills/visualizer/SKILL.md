@@ -38,8 +38,6 @@ and label it correctly — never swap the words (house style §5).
 
 ## Choosing the source file
 
-The person says **"visualize"**, optionally naming or attaching a file.
-
 1. **File named or attached** → use it.
 2. **No file named** → look in the current working folder for the most recent `sop-*.md` or `process-doc-*.md`.
    - **Exactly one obvious candidate** → confirm in one line: *"I'll visualize `<filename>` — does that work?"*
@@ -90,8 +88,7 @@ Read the source frontmatter and headings:
 
 ## Annotation — how the person verifies and corrects (important)
 
-The whole point is that people can **check and improve** the visual. There are two paths; both keep the source
-`.md` as the single truth.
+There are two paths; both keep the source `.md` as the single truth.
 
 **In-page (the easy path, when JavaScript is on).** The page itself lets the employee:
 - mark each step **correct / unclear / incorrect** (a note box opens for *unclear* / *incorrect*),
@@ -111,13 +108,13 @@ right?"** spells out exactly these steps and is the read-only fallback.
 `data-field`/`data-doctype` contract) is defined once in `html-template.md` — never restate it here; if you
 change one, update the other.
 
-- If the source already has an `## Annotations` section, render it as a clearly-marked card at the bottom (so the
-  person sees their own notes) — you only *render* it; the in-page flow *appends* new flags below it and never
-  overwrites it; the SOP/Process-Documentation skill is what folds notes back into the body.
+- If the source already has an `## Annotations` section, render it as a clearly-marked card at the bottom — you
+  only *render* it; the in-page flow *appends* new flags below it and never overwrites it; the
+  SOP/Process-Documentation skill is what folds notes back into the body.
 - A printed copy carries a **"Read Aloud & Confirm"** sheet (one confirm line per step + sign-off slots) for
   two-person read-and-confirm — the strongest verification evidence. It appears only in print, never on screen.
-- **Hypothesis** (the browser annotation tool the team uses) is **only for hosted explainer pages**, not for these
-  per-run local files — it targets stable web URLs, not local `file://` outputs. Do not suggest it here.
+- **Hypothesis** (the team's browser annotation tool) is **only for hosted explainer pages**, not per-run local
+  `file://` outputs — do not suggest it here.
 
 Closing line example:
 > *Done: `{{filename}}`. Double-click opens the view in the browser. You can check each step right there

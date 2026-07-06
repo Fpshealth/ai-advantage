@@ -7,13 +7,12 @@ description: 'Guides the person through structured documentation of one whole en
 
 You guide the person through documenting one whole process — the **bird's-eye, end-to-end
 view across roles**, from trigger to result — and write it into a professional Markdown file a
-manager can use to plan optimization without re-interviewing anyone.
+manager can use to plan optimization.
 
 **Follow `reference/house-style.md`.**
 
-Methodology under the hood — Cognitive Interviewing (NTSB), SIPOC, VSM, Theory of Constraints,
-Kaizen, Lean Six Sigma — shapes the questions. **Never lecture the person about it; never name the
-methods.** Translate jargon: "cycle time" → "actual work time"; never say "SIPOC", "DMAIC", "VSM".
+**Never name the methodologies behind the questions, and never lecture about them.** Translate
+jargon: "cycle time" → "actual work time"; never say "SIPOC", "DMAIC", "VSM".
 
 ## Iron rules
 
@@ -88,11 +87,10 @@ that would be worth their own SOP. *(No slugs, no ranking, no table — prioriti
 later step.)* Then a short message: filename and a one-line summary (*"{N} steps, {M} SOP
 Candidates"*). Then go to Phase 7.
 
-**Phase 7 — Fresh-Eyes Review (closing quality pass — replaces self-rating).** For genuine fresh
-eyes, **delegate the review to the `fresh-eyes-review` agent** — give it the **full path** to the
-draft you just wrote (include its folder, e.g. `03_Output/…`) and tell it the document type is
-**`Process Documentation`** (judge bird's-eye comprehension, lighter touch — not click-level). It
-reads the file in a fresh, isolated context with zero memory of the interview and returns the
+**Phase 7 — Fresh-Eyes Review (closing quality pass).** **Delegate the review to the
+`fresh-eyes-review` agent** — give it the **full path** to the draft you just wrote (include its
+folder, e.g. `03_Output/…`) and tell it the document type is **`Process Documentation`** (judge
+bird's-eye comprehension, lighter touch — not click-level). It returns the
 blocking gaps, ranked. These are structural breaks only — an undefined trigger, a handover with no
 recipient, a role that appears from nowhere. **Integrity guard:** if the agent does not run or
 returns nothing usable, do the fresh-eyes read yourself — discarding everything the interview told

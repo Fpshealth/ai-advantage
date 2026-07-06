@@ -1,11 +1,7 @@
 # House Style — Cowork: Team-AI
 
-> Shared **runtime** conventions every Team-AI skill follows. **This is the one canonical copy.**
-> Each skill's `reference/house-style.md` is a *symlink* to this file — edit only here and every
-> skill updates automatically (no copying, no sync step).
->
-> This file holds only the rules Claude applies **at runtime**. Distribution, versioning, and the
-> full re-skin checklist live in the Consultant Guide, not here.
+> Shared **runtime** conventions every Team-AI skill follows. Written in English; the user sees
+> `client_language` (§0, §1).
 
 ---
 
