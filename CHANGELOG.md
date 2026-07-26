@@ -8,6 +8,14 @@ version control, if any.
 > non-git distribution), so there is no manual bump. The version headings below are human
 > release notes / milestones, not the installed version string.
 
+## [1.1.0] — Add pruning-skills and skill-discovery
+
+### Added
+- `skills/pruning-skills` — concision pass for tightening an existing skill to purely
+  operational content.
+- `skills/skill-discovery` — searches GitHub and the SkillsMP index for candidate skills;
+  user-invocable only (`disable-model-invocation: true`), never auto-triggered by the model.
+
 ## [1.0.0] — Initial release
 
 ### Added
