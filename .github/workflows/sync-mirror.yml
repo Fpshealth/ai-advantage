@@ -11,7 +11,7 @@ permissions:
   contents: write
 jobs:
   sync:
-    if: github.repository == 'Fpshealth/ai-advantage-enterprise'
+    if: github.repository != 'Fpshealth/ai-advantage'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
