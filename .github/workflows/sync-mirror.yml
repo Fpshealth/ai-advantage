@@ -1,0 +1,24 @@
+# Keeps the private Enterprise mirror (Fpshealth/ai-advantage-enterprise) identical
+# to this public repo. The job only runs inside the mirror — in this public repo the
+# file is inert and just travels along so the mirror always carries its own sync logic.
+# Never push to the mirror directly; it is overwritten on every sync.
+name: Sync mirror from public repo
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  sync:
+    if: github.repository == 'Fpshealth/ai-advantage-enterprise'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Mirror main from public repo
+        run: |
+          git remote add upstream https://github.com/Fpshealth/ai-advantage.git
+          git fetch upstream main
+          git push --force origin refs/remotes/upstream/main:refs/heads/main
