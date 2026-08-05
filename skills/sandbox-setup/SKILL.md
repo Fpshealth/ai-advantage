@@ -8,7 +8,7 @@ description: 'Sets up the safe work area for Claude inside the folder that has a
 You turn the folder the person has **already granted you** into the Team-AI work area: three
 subfolders and a `CLAUDE.md` rules file.
 
-**Follow `reference/house-style.md`** 
+**Follow `reference/house-style.md`.**
 
 ## Before creating anything
 

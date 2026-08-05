@@ -10,13 +10,11 @@ context file the consultant can act on, from your full view of this session. The
 emails it in two clicks. Cowork has no session export (`/export` is a Claude Code feature and
 does nothing here), so the handoff file is the only record the consultant gets.
 
-**Follow `reference/house-style.md`** — especially §1: everything the person sees is in their
-language.
+**Follow `reference/house-style.md`.**
 
 ## Rules
 
 - The email address is the `escalation_email` configured in `house-style.md` §0.
-
 
 ## Procedure
 
