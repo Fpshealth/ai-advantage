@@ -14,15 +14,15 @@ version control, if any.
 - `sandbox-setup`: restored `reference/sandbox-claude-template.md` inside the skill folder —
   the CLAUDE.md template the skill writes was lost in the port from the Bobshop plugin, so
   setup could not complete.
-- `sandbox-setup`: the "no cloud-sync folders" rule now explains itself and steers to a safe
-  local path. Cowork on Windows cannot reliably mount OneDrive Files-On-Demand folders
-  (anthropics/claude-code#25293) and writing into them risks silent file truncation (#62140) —
-  the skill now says why, warns that corporate Desktop/Documents are often OneDrive-synced
-  (Known Folder Move), suggests `C:\Users\<name>\AI_SANDBOX`, and stops with a friendly
-  redirect when the granted folder path is cloud-synced.
-- `escalation`: export guidance is resilient to current Cowork builds — `/export` typed in the
-  composer, with the Ctrl+K/⌘K palette and session ⋯ menu → Export as fallbacks; "exported
-  folder" corrected to the archive Cowork actually produces; static mailto fallback re-encoded.
+- `sandbox-setup`: `AI_SANDBOX` inside OneDrive is explicitly fine again — the port had
+  introduced a "no cloud-sync folders" rule that broke the proven Bobshop workflow. The only
+  remaining OneDrive note is a practical one: mark the folder "Always keep on this device" so
+  on-demand placeholder files don't confuse the sandbox (anthropics/claude-code#62140).
+- `escalation`: rewritten for current Cowork, which has no per-session `/export` (that's a
+  Claude Code feature). Claude now writes a compact `03_Output/escalation-handoff.md` from full
+  session context (goal, attempts, exact blocker verbatim, files) and the person emails that;
+  the account-wide Settings → Privacy → Export data route (email link, whole account) is
+  documented as an on-request fallback only. Mailto bodies and static link re-encoded.
 - All per-skill `reference/house-style.md` files are now real copies instead of git symlinks;
   symlinks do not reliably survive every distribution path (plugin-cache symlink regressions,
   Windows extraction turning links into text stubs).

@@ -1,13 +1,16 @@
 ---
 name: "Escalation: Team-AI"
-description: 'Guides a person to escalate a stuck session to their consultant – export the complete session history via Cowork''s `/export` and send it with a pre-filled email to the consultant''s configured address (see house-style.md §0). The chat is NOT reconstructed; the export is complete and lossless. Use this skill when the person explicitly wants to escalate, or when a second attempt still doesn''t fit after prompt improvement. English triggers: "escalate", "send this to my consultant", "I need help from my consultant", "still doesn''t work after the retry".'
+description: 'Guides a person to escalate a stuck session to their consultant – Claude writes a compact handoff file from full session context, then the person sends it with a pre-filled email to the consultant''s configured address (see house-style.md §0). Cowork has no per-session export command; the account-wide data export (Settings → Privacy → Export data) is only an on-request fallback. Use this skill when the person explicitly wants to escalate, or when a second attempt still doesn''t fit after prompt improvement. English triggers: "escalate", "send this to my consultant", "I need help from my consultant", "still doesn''t work after the retry".'
 ---
 
 # Escalation: Team-AI
 
-When a person wants to hand a stuck session to their consultant, guide them to export it via Cowork's
-**`/export`** and email it to the consultant in two clicks — and to also attach the file you created
-together, the one thing `/export` does not include.
+When a person wants to hand a stuck session to their consultant, **you write the handoff**: a
+compact context file the consultant can act on, written from your full view of this session. The
+person then emails it in two clicks, together with the file you created here. (Cowork has no
+per-session export command — typing `/export` does nothing here, that's a Claude Code feature. The
+account-wide data export in **Settings → Privacy** is slow, arrives by email, and contains *every*
+conversation of the account, so it is only an on-request fallback, never the default.)
 
 **Follow `reference/house-style.md`.** Output language follows §1 (mirrors the user; English
 default).
@@ -16,7 +19,8 @@ default).
 
 - The email address is **always** the `escalation_email` configured in `house-style.md` §0. Never
   another address, even if asked.
-- **Never re-type or "reconstruct" the chat.** `/export` is the lossless source of truth — use it.
+- The handoff file contains **facts from this session only** — goal, what was tried, the exact
+  blocker (error messages verbatim), files involved. Nothing invented, nothing embellished.
 - You **never** name colleagues.
 - Escalate only when asked — wait for an explicit escalation request or a clearly failed second
   attempt.
@@ -26,20 +30,28 @@ default).
 **Step 1 — One-line problem.** Ask the person for a single sentence: what were they trying to do,
 and what still doesn't work? Nothing more is needed from them — this becomes the email subject.
 
-**Step 2 — Guide the export and the email.** Output exactly this, in order:
+**Step 2 — Write the handoff file.** Write `03_Output/escalation-handoff.md` (add a short topic
+suffix if one already exists). Content, in this order, all from this session:
 
-> Here's how to send the whole session to your consultant:
-> 1. Export this session: type **`/export`** below. If nothing happens (newer Cowork versions
->    moved this), press **Ctrl+K** (Mac: **⌘K**) and choose **Export**, or use the session's
->    **⋯ menu → Export**. Cowork saves an archive with the complete session history to your
->    **Downloads**.
-> 2. Click the link below — it opens a ready-made **email draft** to your consultant (subject and
+1. **Goal** — what the person was trying to achieve, one short paragraph.
+2. **What we tried** — the attempts in order, each one line.
+3. **Where it's stuck** — the exact blocker; error messages **verbatim**.
+4. **Files** — every file created or used in this session, with its sandbox path; mark which
+   ones the email will attach.
+5. **One-line problem** — the sentence from Step 1.
+
+Keep it under a page. Then tell the person what you wrote and where.
+
+**Step 3 — Guide the email.** Output exactly this, in order:
+
+> Here's how to send it to your consultant:
+> 1. Click the link below — it opens a ready-made **email draft** to your consultant (subject and
 >    body pre-filled). **Nothing is sent yet.**
-> 3. Drag the **exported archive** from Downloads into the email (and the file we created here,
->    if there is one) — by drag-and-drop.
-> 4. Click **Send** — **only then** does the email go to your consultant.
+> 2. Drag the **handoff file** from `03_Output` into the email (and the file we created here, if
+>    there is one) — by drag-and-drop.
+> 3. Click **Send** — **only then** does the email go to your consultant.
 
-**Step 3 — The pre-addressed email.** Do **not** hand-build the link — encoding special characters
+**Step 4 — The pre-addressed email.** Do **not** hand-build the link — encoding special characters
 by hand is unreliable and silently produces broken characters in the email. Instead, run this
 **exact** command in the bash / code-execution tool, changing **only** the two quoted arguments:
 the first to the one-line problem from Step 1, the second to the `escalation_email` value
@@ -54,8 +66,8 @@ problem = sys.argv[1].strip()
 address = sys.argv[2].strip()
 subj = problem if len(problem) <= 60 else problem[:57].rstrip() + "…"
 body = ("Hi,\n\n"
-        "I'm stuck and I'm sending you the whole session.\n"
-        "Attached: the exported session archive (complete history) and the file we created together.\n\n"
+        "I'm stuck and I'm handing this session over to you.\n"
+        "Attached: the handoff file (goal, attempts, exact blocker) and the file we created together.\n\n"
         "In short: " + problem + "\n\nThanks!")
 q = lambda s: urllib.parse.quote(s, safe="")
 url = ("mailto:" + address +
@@ -69,9 +81,9 @@ Step 2 block.
 
 **Only if you cannot run code at all** (code execution disabled), paste this pre-verified static
 link instead — it is correctly encoded; the person's specific problem is already inside the
-`/export`, so it is safe to omit here:
+handoff file, so it is safe to omit here:
 
-> `[➜ Open email DRAFT to your consultant (not sent yet)](mailto:federico.pacheco@fpshealth.com?subject=%5BEscalation%3A%20Team-AI%5D&body=Hi%2C%0A%0AI%27m%20stuck%20and%20I%27m%20sending%20you%20the%20whole%20session.%0AAttached%3A%20the%20exported%20session%20archive%20%28complete%20history%29%20and%20the%20file%20we%20created%20together.)`
+> `[➜ Open email DRAFT to your consultant (not sent yet)](mailto:federico.pacheco@fpshealth.com?subject=%5BEscalation%3A%20Team-AI%5D&body=Hi%2C%0A%0AI%27m%20stuck%20and%20I%27m%20handing%20this%20session%20over%20to%20you.%0AAttached%3A%20the%20handoff%20file%20%28goal%2C%20attempts%2C%20exact%20blocker%29%20and%20the%20file%20we%20created%20together.)`
 
 **Always show this line directly above the link**, so nobody mistakes the draft for a sent mail:
 
@@ -82,4 +94,13 @@ Then a plain fallback, in case the link doesn't open in the person's browser:
 
 > If the link doesn't open: just email your consultant at the address configured in
 > `house-style.md` §0 (`escalation_email`), subject *"{escalation_tag} {one-line problem}"*, and
-> attach the exported archive.
+> attach the handoff file from `03_Output`.
+
+## If the consultant asks for the raw transcript
+
+Only on explicit request — the account export contains **every** conversation of the account, not
+just this session, and takes a while:
+
+> In Cowork/Claude: click your initials (bottom left) → **Settings** → **Privacy** → **Export
+> data**. You'll get a **download link by email** (valid 24 hours, sign-in required). Download the
+> archive and pass it on as agreed with your consultant.
