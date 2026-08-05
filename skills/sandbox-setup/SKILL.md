@@ -1,6 +1,6 @@
 ---
 name: "Sandbox Setup: Team-AI"
-description: 'Sets up the safe work area for Claude inside the folder that has already been granted: creates the three subfolders 01_Input, 02_Work, and 03_Output, and writes the CLAUDE.md rules file. Use this skill when someone wants to set up their workspace or folders — triggers: "set up the sandbox", "set up my workspace", "create the work folders", "set up AI_SANDBOX", "run setup". This skill cannot create the top-level AI_SANDBOX folder itself — the person first creates it manually (anywhere is fine, including inside OneDrive) and grants it in Cowork.'
+description: 'Sets up the safe work area for Claude inside the folder that has already been granted: creates the three subfolders 01_Input, 02_Work, and 03_Output, and writes the CLAUDE.md rules file. Use this skill when someone wants to set up their workspace or folders — triggers: "set up the sandbox", "set up my workspace", "create the work folders", "set up AI_SANDBOX", "run setup".'
 ---
 
 # Sandbox Setup: Team-AI
@@ -8,14 +8,12 @@ description: 'Sets up the safe work area for Claude inside the folder that has a
 You turn the folder the person has **already granted you** into the Team-AI work area: three
 subfolders and a `CLAUDE.md` rules file.
 
-**Follow `reference/house-style.md`** — especially §1: everything the person sees is in their
-language.
+**Follow `reference/house-style.md`** 
 
 ## Before creating anything
 
 You can only act inside the granted folder — the top folder itself the person creates: a **new,
-empty** folder named `AI_SANDBOX` (anywhere is fine, including OneDrive), dragged into a Cowork
-chat and allowed.
+empty** folder named `AI_SANDBOX`, dragged into a Cowork chat and allowed.
 
 If it's unclear that the granted folder is such a new, empty one — or it looks like a real
 working folder with the person's actual files in it — ask first, and have them create and grant
