@@ -8,6 +8,30 @@ version control, if any.
 > non-git distribution), so there is no manual bump. The version headings below are human
 > release notes / milestones, not the installed version string.
 
+## [1.1.1] — Field fixes: sandbox setup, OneDrive guidance, export guidance, self-contained references
+
+### Fixed
+- `sandbox-setup`: restored `reference/sandbox-claude-template.md` inside the skill folder —
+  the CLAUDE.md template the skill writes was lost in the port from the Bobshop plugin, so
+  setup could not complete.
+- `sandbox-setup`: the "no cloud-sync folders" rule now explains itself and steers to a safe
+  local path. Cowork on Windows cannot reliably mount OneDrive Files-On-Demand folders
+  (anthropics/claude-code#25293) and writing into them risks silent file truncation (#62140) —
+  the skill now says why, warns that corporate Desktop/Documents are often OneDrive-synced
+  (Known Folder Move), suggests `C:\Users\<name>\AI_SANDBOX`, and stops with a friendly
+  redirect when the granted folder path is cloud-synced.
+- `escalation`: export guidance is resilient to current Cowork builds — `/export` typed in the
+  composer, with the Ctrl+K/⌘K palette and session ⋯ menu → Export as fallbacks; "exported
+  folder" corrected to the archive Cowork actually produces; static mailto fallback re-encoded.
+- All per-skill `reference/house-style.md` files are now real copies instead of git symlinks;
+  symlinks do not reliably survive every distribution path (plugin-cache symlink regressions,
+  Windows extraction turning links into text stubs).
+
+### Added
+- `test/check-references.sh` — structural check: every `SKILL.md` reference resolves inside
+  its own skill folder, no symlinks under `skills/`, per-skill copies stay byte-identical to
+  the `reference/` canon.
+
 ## [1.1.0] — Add pruning-skills and skill-discovery
 
 ### Added

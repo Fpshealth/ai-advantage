@@ -1,6 +1,6 @@
 ---
 name: "Sandbox Setup: Team-AI"
-description: 'Sets up the safe work area for Claude inside the folder that has already been granted: creates the three subfolders 01_Input, 02_Work, and 03_Output, and writes the CLAUDE.md rules file with safety and filing rules. Use this skill when someone wants to set up their workspace or folders — triggers: "set up the sandbox", "set up my workspace", "create the work folders", "set up AI_SANDBOX", "run setup". IMPORTANT: this skill cannot create the top-level AI_SANDBOX folder itself — the person must first manually create it outside any cloud-sync folder (e.g. OneDrive) and grant it in Cowork.'
+description: 'Sets up the safe work area for Claude inside the folder that has already been granted: creates the three subfolders 01_Input, 02_Work, and 03_Output, and writes the CLAUDE.md rules file with safety and filing rules. Use this skill when someone wants to set up their workspace or folders — triggers: "set up the sandbox", "set up my workspace", "create the work folders", "set up AI_SANDBOX", "run setup". IMPORTANT: this skill cannot create the top-level AI_SANDBOX folder itself — the person must first manually create it in a plain local, non-cloud-synced location (not OneDrive/Dropbox — Cowork cannot reliably mount cloud-synced folders and writing into them risks file corruption) and grant it in Cowork.'
 ---
 
 # Sandbox Setup: Team-AI
@@ -16,11 +16,21 @@ subfolders and a `CLAUDE.md` rules file.
 You can only act **inside the folder the person has dragged into the chat and allowed** — you **cannot**
 create that top folder yourself. So the manual first steps stay with the person:
 
-1. They create a **new, empty** folder named `AI_SANDBOX`, **outside any cloud-sync folder** (e.g.
-   OneDrive, Dropbox, Google Drive) — what matters is that it's a **dedicated new** folder, **not** one
-   of their real working folders.
+1. They create a **new, empty** folder named `AI_SANDBOX`, in a **plain local** location that is
+   **not synced by OneDrive, Dropbox, or Google Drive** — e.g. directly in their user folder
+   (`C:\Users\<name>\AI_SANDBOX`) or at `C:\AI_SANDBOX`. Careful: on many company Windows setups,
+   **Desktop and Documents are OneDrive-synced too** — those don't qualify. This is a hard
+   platform limit, not a preference: Cowork often **cannot mount** cloud-synced folders
+   (files exist only as placeholders), and writing into one risks **silently corrupted files**.
+   Working *copies* of OneDrive files is fine — the person copies them into `01_Input/`
+   themselves via Explorer. What matters besides the location: it's a **dedicated new** folder,
+   **not** one of their real working folders.
 2. They drag it into a Cowork chat and click **"Always allow."**
 3. *Then* they run this skill.
+
+If the granted folder's path shows it lives inside a cloud-synced folder (e.g. contains `OneDrive`),
+**stop** — explain the platform limit above in one friendly sentence and ask them to create a plain
+local folder instead (suggest `C:\Users\<name>\AI_SANDBOX`) and drag that into the chat.
 
 If it is **not clear that you have write access to a suitable folder** — or the folder looks like a real
 working folder with the person's actual files in it — **stop and ask** before creating anything:

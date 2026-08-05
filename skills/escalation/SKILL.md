@@ -29,12 +29,14 @@ and what still doesn't work? Nothing more is needed from them — this becomes t
 **Step 2 — Guide the export and the email.** Output exactly this, in order:
 
 > Here's how to send the whole session to your consultant:
-> 1. Type **`/export`** below — Cowork puts a folder with the complete session history in your
+> 1. Export this session: type **`/export`** below. If nothing happens (newer Cowork versions
+>    moved this), press **Ctrl+K** (Mac: **⌘K**) and choose **Export**, or use the session's
+>    **⋯ menu → Export**. Cowork saves an archive with the complete session history to your
 >    **Downloads**.
 > 2. Click the link below — it opens a ready-made **email draft** to your consultant (subject and
 >    body pre-filled). **Nothing is sent yet.**
-> 3. Drag the **exported folder** into the email (and the file we created here, if there is one) —
->    by drag-and-drop.
+> 3. Drag the **exported archive** from Downloads into the email (and the file we created here,
+>    if there is one) — by drag-and-drop.
 > 4. Click **Send** — **only then** does the email go to your consultant.
 
 **Step 3 — The pre-addressed email.** Do **not** hand-build the link — encoding special characters
@@ -53,7 +55,7 @@ address = sys.argv[2].strip()
 subj = problem if len(problem) <= 60 else problem[:57].rstrip() + "…"
 body = ("Hi,\n\n"
         "I'm stuck and I'm sending you the whole session.\n"
-        "Attached: the /export folder (complete history) and the file we created together.\n\n"
+        "Attached: the exported session archive (complete history) and the file we created together.\n\n"
         "In short: " + problem + "\n\nThanks!")
 q = lambda s: urllib.parse.quote(s, safe="")
 url = ("mailto:" + address +
@@ -69,7 +71,7 @@ Step 2 block.
 link instead — it is correctly encoded; the person's specific problem is already inside the
 `/export`, so it is safe to omit here:
 
-> `[➜ Open email DRAFT to your consultant (not sent yet)](mailto:federico.pacheco@fpshealth.com?subject=%5BEscalation%3A%20Team-AI%5D&body=Hi%2C%0A%0AI%27m%20stuck%20and%20I%27m%20sending%20you%20the%20whole%20session.%0AAttached%3A%20the%20%2Fexport%20folder%20%28complete%20history%29%20and%20the%20file%20we%20created%20together.)`
+> `[➜ Open email DRAFT to your consultant (not sent yet)](mailto:federico.pacheco@fpshealth.com?subject=%5BEscalation%3A%20Team-AI%5D&body=Hi%2C%0A%0AI%27m%20stuck%20and%20I%27m%20sending%20you%20the%20whole%20session.%0AAttached%3A%20the%20exported%20session%20archive%20%28complete%20history%29%20and%20the%20file%20we%20created%20together.)`
 
 **Always show this line directly above the link**, so nobody mistakes the draft for a sent mail:
 
@@ -80,4 +82,4 @@ Then a plain fallback, in case the link doesn't open in the person's browser:
 
 > If the link doesn't open: just email your consultant at the address configured in
 > `house-style.md` §0 (`escalation_email`), subject *"{escalation_tag} {one-line problem}"*, and
-> attach the exported folder.
+> attach the exported archive.

@@ -71,8 +71,9 @@ Synthetic is preferable for tests (no licensing, no real PII). Good sources:
 
 ## Step 0 — Setup
 
-1. Create a **new, empty** folder named `AI_SANDBOX`, **outside any cloud-sync folder** (e.g.
-   OneDrive, Dropbox, Google Drive) — just not a real working folder.
+1. Create a **new, empty** folder named `AI_SANDBOX` in a plain local, **non-cloud-synced**
+   location (not OneDrive/Dropbox; on company Windows machines Desktop/Documents are often
+   OneDrive-synced too — use e.g. `C:\Users\<name>\AI_SANDBOX`). Not a real working folder.
 2. Open Cowork → new chat → drag `AI_SANDBOX` in → **"Always allow."**
 3. Keep the `fixtures/` files handy to copy in when a step asks for them.
 
