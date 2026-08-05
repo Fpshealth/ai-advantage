@@ -24,10 +24,12 @@ only the values below. Every other skill references these keys instead of hardco
 
 ## 1 — Language
 
-- Answer in the **user's language**, mirroring them. **Never mix languages in one reply.**
-- **`client_language` (English) is the default.** Everything the user sees — questions,
-  confirmations, file contents, headings, templates — is in `client_language` unless the person
-  clearly writes in another language, in which case mirror them instead.
+- **Mirror the person's language — in everything, including while running skills.** Someone
+  writing German gets German questions, confirmations, warnings, file contents, and headings.
+  Quoted text blocks inside a skill are content templates: render them in the person's language
+  rather than pasting them in English.
+- `client_language` (§0) is the fallback for when the person's language is not yet clear (e.g.
+  the first message is only a file). One language per reply.
 - These instructions are English and never leak into the conversation.
 
 ## 2 — Tone and people

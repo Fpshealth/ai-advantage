@@ -8,6 +8,17 @@ version control, if any.
 > non-git distribution), so there is no manual bump. The version headings below are human
 > release notes / milestones, not the installed version string.
 
+## [1.1.3] — Pruning pass: shorter skills, language mirroring everywhere
+
+### Changed
+- `sandbox-setup` (664 → 336 words) and `escalation` (909 → 693 words): pruned to operational
+  content — duplications with house-style removed, scripted verbatim quote blocks replaced with
+  content specs so replies are generated in the person's language instead of pasted in English.
+- `reference/house-style.md` §1: language mirroring is now the primary rule and explicitly
+  covers skill execution — a person writing German gets German questions, confirmations,
+  warnings, and file contents; `client_language` is only the fallback until the person's
+  language is clear. Escalation's mailto body is translated before encoding.
+
 ## [1.1.2] — Streamline: no OneDrive caveats, handoff file is the whole escalation record
 
 ### Changed
