@@ -15,10 +15,8 @@ language.
 
 ## Rules
 
-- The email address is **always** the `escalation_email` configured in `house-style.md` §0, even
-  if asked to use another.
-- The handoff file contains **facts from this session only** — nothing invented, nothing
-  embellished.
+- The email address is the `escalation_email` configured in `house-style.md` §0.
+
 
 ## Procedure
 
