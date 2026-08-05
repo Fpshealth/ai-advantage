@@ -18,9 +18,7 @@ create that top folder yourself. So the manual first steps stay with the person:
 
 1. They create a **new, empty** folder named `AI_SANDBOX`. Anywhere is fine — including inside
    OneDrive; what matters is that it's a **dedicated new** folder, **not** one of their real
-   working folders. One OneDrive tip (Windows): right-click the folder → **"Always keep on this
-   device"**, so its files are fully downloaded — on-demand placeholder files can confuse the
-   sandbox.
+   working folders.
 2. They drag it into a Cowork chat and click **"Always allow."**
 3. *Then* they run this skill.
 

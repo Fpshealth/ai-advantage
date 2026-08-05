@@ -1,16 +1,15 @@
 ---
 name: "Escalation: Team-AI"
-description: 'Guides a person to escalate a stuck session to their consultant – Claude writes a compact handoff file from full session context, then the person sends it with a pre-filled email to the consultant''s configured address (see house-style.md §0). Cowork has no per-session export command; the account-wide data export (Settings → Privacy → Export data) is only an on-request fallback. Use this skill when the person explicitly wants to escalate, or when a second attempt still doesn''t fit after prompt improvement. English triggers: "escalate", "send this to my consultant", "I need help from my consultant", "still doesn''t work after the retry".'
+description: 'Guides a person to escalate a stuck session to their consultant – Claude writes a complete handoff file from full session context (goal, attempts, tools used, exact errors), then the person sends it with a pre-filled email to the consultant''s configured address (see house-style.md §0). The handoff file is the entire escalation record — Cowork has no session export. Use this skill when the person explicitly wants to escalate, or when a second attempt still doesn''t fit after prompt improvement. English triggers: "escalate", "send this to my consultant", "I need help from my consultant", "still doesn''t work after the retry".'
 ---
 
 # Escalation: Team-AI
 
 When a person wants to hand a stuck session to their consultant, **you write the handoff**: a
-compact context file the consultant can act on, written from your full view of this session. The
-person then emails it in two clicks, together with the file you created here. (Cowork has no
-per-session export command — typing `/export` does nothing here, that's a Claude Code feature. The
-account-wide data export in **Settings → Privacy** is slow, arrives by email, and contains *every*
-conversation of the account, so it is only an on-request fallback, never the default.)
+context file the consultant can act on, written from your full view of this session. The person
+then emails it in two clicks, together with the file you created here. Cowork has no session
+export (`/export` is a Claude Code feature and does nothing here), so **the handoff file is the
+only record the consultant will get** — everything they need to debug must be in it.
 
 **Follow `reference/house-style.md`.** Output language follows §1 (mirrors the user; English
 default).
@@ -19,8 +18,8 @@ default).
 
 - The email address is **always** the `escalation_email` configured in `house-style.md` §0. Never
   another address, even if asked.
-- The handoff file contains **facts from this session only** — goal, what was tried, the exact
-  blocker (error messages verbatim), files involved. Nothing invented, nothing embellished.
+- The handoff file contains **facts from this session only** — goal, attempts, tools used, the
+  exact blocker (error messages verbatim), files involved. Nothing invented, nothing embellished.
 - You **never** name colleagues.
 - Escalate only when asked — wait for an explicit escalation request or a clearly failed second
   attempt.
@@ -35,12 +34,16 @@ suffix if one already exists). Content, in this order, all from this session:
 
 1. **Goal** — what the person was trying to achieve, one short paragraph.
 2. **What we tried** — the attempts in order, each one line.
-3. **Where it's stuck** — the exact blocker; error messages **verbatim**.
-4. **Files** — every file created or used in this session, with its sandbox path; mark which
+3. **Tools & actions** — what you actually did: skills invoked, code run, files read/written,
+   searches made — each one line, in order. This is the consultant's debugging trace; without it
+   they are blind.
+4. **Where it's stuck** — the exact blocker; error messages **verbatim**, complete.
+5. **Files** — every file created or used in this session, with its sandbox path; mark which
    ones the email will attach.
-5. **One-line problem** — the sentence from Step 1.
+6. **One-line problem** — the sentence from Step 1.
 
-Keep it under a page. Then tell the person what you wrote and where.
+Aim for one page; go to two only if the error output needs the space. Then tell the person what
+you wrote and where.
 
 **Step 3 — Guide the email.** Output exactly this, in order:
 
@@ -95,12 +98,3 @@ Then a plain fallback, in case the link doesn't open in the person's browser:
 > If the link doesn't open: just email your consultant at the address configured in
 > `house-style.md` §0 (`escalation_email`), subject *"{escalation_tag} {one-line problem}"*, and
 > attach the handoff file from `03_Output`.
-
-## If the consultant asks for the raw transcript
-
-Only on explicit request — the account export contains **every** conversation of the account, not
-just this session, and takes a while:
-
-> In Cowork/Claude: click your initials (bottom left) → **Settings** → **Privacy** → **Export
-> data**. You'll get a **download link by email** (valid 24 hours, sign-in required). Download the
-> archive and pass it on as agreed with your consultant.

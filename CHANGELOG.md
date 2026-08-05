@@ -8,6 +8,17 @@ version control, if any.
 > non-git distribution), so there is no manual bump. The version headings below are human
 > release notes / milestones, not the installed version string.
 
+## [1.1.2] — Streamline: no OneDrive caveats, handoff file is the whole escalation record
+
+### Changed
+- `sandbox-setup`: removed the "Always keep on this device" OneDrive tip — OneDrive guidance is
+  now simply "anywhere is fine"; sync conflicts get handled if and when one actually occurs.
+- `escalation`: removed the Settings → Privacy → Export data fallback entirely — on Enterprise
+  plans only the org's Primary Owner can run data exports (support article 9450526), so members
+  cannot use that path at all. The Claude-written handoff file is now the complete escalation
+  record, extended with a "Tools & actions" section (skills invoked, code run, files
+  read/written, searches) so the consultant gets a full debugging trace.
+
 ## [1.1.1] — Field fixes: sandbox setup, OneDrive guidance, export guidance, self-contained references
 
 ### Fixed
