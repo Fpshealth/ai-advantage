@@ -11,7 +11,7 @@
       "name": "cowork-team-ai",
       "displayName": "Cowork: Team-AI",
       "source": "./",
-      "description": "Coordinated Cowork skills: sandbox setup, prompt improvement, escalation, SOP creation, process documentation, process exploration, visualizer.",
+      "description": "Coordinated Cowork skills: sandbox setup, prompt improvement, escalation, SOP creation, process documentation, process exploration, visualizer, eli5 explainer.",
       "category": "productivity",
       "keywords": ["cowork", "sop", "team-ai"]
     }

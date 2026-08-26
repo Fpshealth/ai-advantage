@@ -8,6 +8,14 @@ version control, if any.
 > non-git distribution), so there is no manual bump. The version headings below are human
 > release notes / milestones, not the installed version string.
 
+## [1.2.0] — New skill: eli5
+
+### Added
+- `eli5`: explain any topic like I'm 5 — a dead-simple HTML picture explainer with big visuals
+  and few words (`/eli5 <topic>`). Bundled here because Enterprise-managed Cowork can't install
+  the community plugin directly. Sourced verbatim from `anthropics/claude-plugins-community`,
+  author Thariq Shihipar, MIT license.
+
 ## [1.1.3] — Pruning pass: shorter skills, language mirroring everywhere
 
 ### Changed
