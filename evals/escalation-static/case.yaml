@@ -1,10 +1,11 @@
 schema_version: "1.1"
 name: escalation-static
 description: >
-  Same German price-update blocker as escalation-de, but Bash is not in the case's tool list —
-  the no-code rung. Tests that the skill still produces a usable draft link without running its
+  Same German price-update blocker as escalation-de, run without Bash — the no-code rung. The
+  case's own tool lists restrict nothing; the `no-bash` tag makes evals/run.sh withhold Bash from
+  the operator grant. Tests that the skill still produces a usable draft link without running its
   encoder: either the pre-encoded static link from SKILL.md verbatim, or a hand-encoded link
-  whose umlaut survives. Also proves Bash really was unavailable to the run.
+  whose umlaut survives. `no-bash-called` proves Bash really was unavailable to the run.
 tags: [escalation, de, no-bash]
 
 context:
