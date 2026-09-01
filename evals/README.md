@@ -10,7 +10,16 @@ the skills expect), `graders/*.md` (one check per file). Results land in `result
 
 ## Running
 
-Cheap pilot while editing a skill (one case, one run, no baseline arm, ~1–2 min):
+Shortest path — `evals/run.sh` sets the early-access switch for its own run and prints a PASS/FAIL summary:
+
+```bash
+evals/run.sh list                 # cases
+evals/run.sh pilot escalation-de  # one case, one run, no baseline (after a skill edit)
+evals/run.sh full                 # all cases, 3 runs, with/without → Δ (before a version bump)
+evals/run.sh open                 # newest report.html
+```
+
+The underlying commands, for when you want the flags yourself. Cheap pilot (one case, one run, no baseline arm, ~1–2 min):
 
 ```bash
 claude plugin eval . --case escalation-de --runs 1 --ablation none --scaffold \
