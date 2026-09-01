@@ -1,0 +1,25 @@
+schema_version: "1.1"
+name: escalation-static
+description: >
+  Same German price-update blocker as escalation-de, but Bash is not in the case's tool list —
+  the no-code rung. Tests that the skill still produces a usable draft link without running its
+  encoder: either the pre-encoded static link from SKILL.md verbatim, or a hand-encoded link
+  whose umlaut survives. Also proves Bash really was unavailable to the run.
+tags: [escalation, de, no-bash]
+
+context:
+  scaffold_script: scaffold.sh
+
+execution:
+  prompt: |
+    Ich wollte die Lieferantenpreise aus 01_Input/supplier-price-list-spring-2026.csv in 01_Input/current-shop-export.csv übernehmen, aber die Preisliste enthält Fehler (SG-2012: UVP 39,90 unter Einkaufspreis 44,00; SG-2013 doppelt; SG-2004 und SG-2009 ohne EAN). Ich komme nicht weiter, bitte an meinen Berater eskalieren. Nicht-interaktiver Lauf: verwende genau diesen Einzeiler als bestätigt: Die Preisliste enthält Fehler bei SG-2012, die ich nicht selbst entscheiden kann.
+  max_turns: 40
+  timeout_seconds: 600
+  allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]
+
+runs: 3
+
+expected_outcome: >
+  A handoff file in 03_Output; a mailto link that is either the static SKILL.md link unchanged or a
+  hand-encoded link containing enth%C3%A4lt; reply in German; no Bash call anywhere in the trace;
+  no claim that the mail was sent.

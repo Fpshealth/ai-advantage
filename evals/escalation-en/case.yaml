@@ -1,0 +1,26 @@
+schema_version: "1.1"
+name: escalation-en
+description: >
+  English user stuck on the supplier price update (MSRP $39.90 below wholesale $44.00 on SG-2012)
+  asks to escalate. Single-turn port of the former two-turn `en` harness case: the dollar sign must
+  survive URL encoding, the handoff must carry a tools/actions trace, and a cold read of the
+  handoff file alone must let a consultant resume without asking the user anything.
+tags: [escalation, en]
+
+context:
+  scaffold_script: scaffold.sh
+
+execution:
+  prompt: |
+    I tried to apply the new supplier prices from 01_Input/supplier-price-list-spring-2026.csv to 01_Input/current-shop-export.csv, but the price list has errors (SG-2012: MSRP $39.90 below the $44.00 wholesale; SG-2013 duplicated; SG-2004 and SG-2009 without EAN). I'm stuck, escalate this to my consultant. Non-interactive run: use exactly this one-line problem and treat it as confirmed: The $39.90 MSRP is below the $44.00 wholesale on SG-2012 - which price wins?
+  max_turns: 40
+  timeout_seconds: 600
+  allowed_tools: [Read, Glob, Grep, Skill, Bash, Write, Edit]
+
+runs: 3
+
+expected_outcome: >
+  One escalation-handoff*.md in 03_Output with a tools/actions section, quoting SG-2012 and both
+  input files; a mailto link to the consultant address with the [Escalation: Team-AI] subject tag
+  and %2439.90 in the URL; the guide says a draft opens and only Send sends; everything in English;
+  a consultant reading only the file could take over.

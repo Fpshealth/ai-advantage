@@ -44,8 +44,12 @@ claude plugin eval . --scaffold --allow-tools Bash Write Edit --judge-model sonn
 | Case | Skill | What it proves | Gate check |
 |---|---|---|---|
 | `escalation-de` | escalation | German user stuck on a price update: handoff file written, mailto with correct subject tag, umlaut URL-encoded, never claims "sent", skill actually invoked, German draft guidance | `mailto-subject-tag` — only the skill supplies the tag |
+| `escalation-en` | escalation | Same blocker in English, `$` prices: `%2439.90` survives encoding; the handoff file has a Tools/Actions section and quotes SKU + both prices, both input files and the one-line problem (the old "cold read" as mechanical checks); English draft guidance | `mailto-subject-tag` |
+| `escalation-static` | escalation | German, **no Bash granted** (tag `no-bash` → `run.sh` withholds it): the no-code rung must still yield the static SKILL.md link verbatim or a hand-encoded link with `enth%C3%A4lt`; `no-bash-called` proves Bash was really unavailable | `no-code-rung` — the static link exists only in the skill |
 
-First run 2026-09-01: 6/6 graders, 76 s, single arm.
+First runs 2026-09-01, single arm, one run each: `de` 6/6 in 76 s · `en` 10/10 in 68 s · `static` 6/6 in 83 s.
+These three replace `test/claude-code/run.sh` (`de`, `en`, `static`); the old two-turn `en` is a single turn that states the
+earlier turn's outcome as confirmed — `context.history_file` needs a real Claude Code session transcript, a written JSONL fails.
 
 ## Conventions
 
@@ -55,3 +59,10 @@ First run 2026-09-01: 6/6 graders, 76 s, single arm.
 - Checks that need a person mid-run (interactive slash commands, clicking the mail link) live in
   `../test/cowork/` as paste-prompt self-audits, not here.
 - Case names stay stable so stored results line up; a case with Δ ≈ 0 over 3 runs is removed and noted here.
+- A case's `allowed_tools` / `disallowed_tools` restrict nothing — whatever `--allow-tools` grants is callable. `run.sh` grants
+  `Bash Write Edit` per case and withholds Bash for cases tagged `no-bash`; that is the only way to test the no-code rung.
+- `target:` is accepted on `regex` graders only (`last_message` default, `trace`, `files`, `{source: file, path: <exact path>}` — no globs);
+  an `llm` grader always judges the final reply. "Tool never called" = `tool_used` with `min: 0, max: 0`, never a regex over `trace`
+  (the trace lists every available tool).
+- Run cases one at a time (`run.sh` does): two runs started in the same second collide on `results/<timestamp>/`.
+- `run.sh pilot|full` first runs the free structural checks `../test/check-references.sh` and `../test/check-mailto.sh`.
