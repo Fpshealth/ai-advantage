@@ -1,76 +1,59 @@
 ---
 name: "Escalation: Team-AI"
-description: 'Guides a person to escalate a stuck session to their consultant – Claude writes a complete handoff file from full session context (goal, attempts, tools used, exact errors), then the person sends it with a pre-filled email to the consultant''s configured address (see house-style.md §0). The handoff file is the entire escalation record — Cowork has no session export. Use this skill when the person explicitly wants to escalate, or when a second attempt still doesn''t fit after prompt improvement. English triggers: "escalate", "send this to my consultant", "I need help from my consultant", "still doesn''t work after the retry".'
+description: 'Hands a stuck session to the consultant: Claude writes a handoff file, the person sends it via a pre-addressed email draft. Use when the person wants to escalate, or when a retry after prompt improvement still fails. Triggers: "escalate", "send this to my consultant", "I need help from my consultant", "still doesn''t work after the retry".'
 ---
 
 # Escalation: Team-AI
 
-When a person wants to hand a stuck session to their consultant, **you write the handoff**: a
-context file the consultant can act on, from your full view of this session. The person then
-emails it in two clicks. Cowork has no session export (`/export` is a Claude Code feature and
-does nothing here), so the handoff file is the only record the consultant gets.
+You write the handoff; the person emails it. The handoff file is the consultant's record of this
+session, whatever else the host lets the person attach.
 
-**Follow `reference/house-style.md`.**
+**Follow `reference/house-style.md`.** `escalation_email` and `escalation_tag` are in its §0.
 
-## Rules
+## Capabilities — confirm before you offer
 
-- The email address is the `escalation_email` configured in `house-style.md` §0.
+Two things differ by host. Decide each from evidence — what your system prompt says about where
+you run, your tool list, a command you can see documented, a call that succeeded — and offer only
+what you confirmed:
+
+- **Session export** — a host command that saves the whole chat. Claude Code has `/export`;
+  on any other host, offer one only when you see it documented in this session. Confirmed →
+  Step 4 adds it as an attachment. Unconfirmed → the handoff file alone is the record.
+- **Script by path** — the shell opens `scripts/mailto_link.py`. If it can't, read the file and
+  pipe its content: `python3 - "<address>" "<subject>" "<body>" <<'PY' … PY`.
 
 ## Procedure
 
-**Step 1 — One-line problem.** Ask the person for a single sentence: what were they trying to
-do, and what still doesn't work? That sentence becomes the email subject.
+**Step 1 — One-line problem.** Propose one sentence from the session — what they were trying to
+do and what still fails — and let the person confirm or correct it. It becomes the email subject.
 
-**Step 2 — Write the handoff file.** Write `03_Output/escalation-handoff.md` (add a short topic
-suffix if one already exists), in the person's language:
+**Step 2 — Handoff file.** Write `escalation-handoff.md` (topic suffix if the name is taken) as
+a finished deliverable: the output area if the folder's `CLAUDE.md` defines one, else the folder
+root. Sections, in the order a consultant reads them:
 
-1. **Goal** — one short paragraph.
-2. **What we tried** — the attempts in order, one line each.
-3. **Tools & actions** — what you actually did: skills invoked, code run, files read/written,
-   searches made — one line each. This is the consultant's debugging trace.
-4. **Where it's stuck** — the exact blocker; error messages **verbatim**, complete.
-5. **Files** — every file created or used in this session, with its sandbox path; mark which
-   ones the email will attach.
-6. **One-line problem** — the sentence from Step 1.
+1. **Goal**
+2. **What we tried** — attempts in order
+3. **Tools & actions** — skills invoked, code run, files read/written, searches made: the
+   consultant's debugging trace
+4. **Where it's stuck** — error messages verbatim and complete
+5. **Files** — every file this session created or used, with path; mark which the email attaches
+6. **One-line problem**
 
-Aim for one page; two only if the error output needs the space. Tell the person what you wrote
-and where.
+Done when the consultant could resume from the file alone. Tell the person the path.
 
-**Step 3 — Guide the email.** In the person's language, walk them through three steps: (1) the
-link below opens a ready-made email **draft** to their consultant — nothing is sent yet; (2)
-drag the **handoff file** from `03_Output` (and any file created here) into the email; (3) only
-clicking **Send** sends it.
+**Step 3 — Draft link.** `scripts/mailto_link.py` prints the URL; arguments: `escalation_email`,
+`{escalation_tag} {one-line problem}`, and `assets/email-body.md` rendered in the person's
+language. Inside the quoted arguments, backslash-escape `$`, `` ` `` and `"`.
 
-**Step 4 — The pre-addressed link.** Build it with this exact command — hand-encoding mailto
-links silently breaks umlauts. Change only the quoted arguments (the problem sentence, the
-`escalation_email` from §0) and, if the conversation isn't in English, translate the `body` text
-inside the script to the person's language. The Python runs inline via the heredoc; plugin
-script files are not available in the Cowork code-execution sandbox.
-
-```bash
-python3 - "One-line problem from Step 1 goes here" "escalation_email value from house-style.md §0" <<'PY'
-import urllib.parse, sys
-problem = sys.argv[1].strip()
-address = sys.argv[2].strip()
-subj = problem if len(problem) <= 60 else problem[:57].rstrip() + "…"
-body = ("Hi,\n\n"
-        "I'm stuck and I'm handing this session over to you.\n"
-        "Attached: the handoff file (goal, attempts, exact blocker) and the file we created together.\n\n"
-        "In short: " + problem + "\n\nThanks!")
-q = lambda s: urllib.parse.quote(s, safe="")
-url = ("mailto:" + address +
-       "?subject=" + q("[Escalation: Team-AI] " + subj) + "&body=" + q(body))
-print("[➜ Open email DRAFT to your consultant (not sent yet)](" + url + ")")
-PY
-```
-
-Output the printed link verbatim. Directly above it, warn in the person's language: the link
-only opens a **draft** — the consultant receives nothing until the person clicks **Send**.
-
-If code execution is unavailable, use this pre-verified static link instead (the specifics are
-in the handoff file anyway):
+Without code execution, use this pre-encoded link (cached from §0 — re-encode when §0 changes):
 
 > `[➜ Open email DRAFT to your consultant (not sent yet)](mailto:federico.pacheco@fpshealth.com?subject=%5BEscalation%3A%20Team-AI%5D&body=Hi%2C%0A%0AI%27m%20stuck%20and%20I%27m%20handing%20this%20session%20over%20to%20you.%0AAttached%3A%20the%20handoff%20file%20%28goal%2C%20attempts%2C%20exact%20blocker%29%20and%20the%20file%20we%20created%20together.)`
 
-If the link doesn't open at all: a plain email to the `escalation_email` address, subject
-*"{escalation_tag} {one-line problem}"*, handoff file attached.
+**Step 4 — Guide the send.** Numbered points: (1) the link opens a ready-made email **draft** —
+nothing is sent yet; (2) drag the handoff file and any file created here into it; (3) only when
+a session export is confirmed above: run it — name the command — and drag the saved file in too;
+(4) only **Send** sends. Then the link, as
+`[➜ Open email DRAFT to your consultant (not sent yet)](<url>)`.
+
+If the link doesn't open: plain email to `escalation_email`, subject
+`{escalation_tag} {one-line problem}`, handoff file attached.

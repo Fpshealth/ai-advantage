@@ -8,6 +8,29 @@ version control, if any.
 > non-git distribution), so there is no manual bump. The version headings below are human
 > release notes / milestones, not the installed version string.
 
+## [1.2.1] — Escalation: capability routes, script split out, autonomous tests
+
+### Changed
+- `escalation` (660 → 493 words): host differences are now two capability checks the skill
+  confirms from evidence before offering anything — *session export* (attach it when the host
+  has one; the handoff file is always the record) and *script by path* (else pipe the script via
+  stdin; else the pre-encoded static link). No host is named as lacking anything, so a host that
+  gains export is used without a skill edit. The mailto encoder lives in
+  `skills/escalation/scripts/mailto_link.py` (address, subject, body → URL); the email body is
+  `assets/email-body.md`, rendered in the person's language. Claude proposes the one-line
+  problem; the 60-char subject cap and the hardcoded `03_Output/` path are gone.
+- Description trimmed to triggers only.
+
+### Added
+- `test/claude-code/run.sh` + `grade.py`: headless Claude Code suite — English two-turn run
+  (`$` encoding, `/export` route, cold-read grade by a fresh model), German run (umlaut
+  encoding, language mirroring), Bash-disallowed German run (no-code rung: static link or a hand-encoded link whose umlaut survives).
+- `test/cowork/RUN-IN-COWORK.md`: two paste-prompts; Claude self-audits into a report file,
+  including whether an export command was offered with quoted evidence.
+- `test/ESCALATION-TEST.md`: manual checklist (8 cases).
+- `test/check-mailto.sh`: encoder round-trip (umlauts, newlines, `$`) + static-link-matches-§0.
+- `test/check-references.sh` also checks `scripts/` and `assets/` mentions resolve.
+
 ## [1.2.0] — New skill: eli5
 
 ### Added

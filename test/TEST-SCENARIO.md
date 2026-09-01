@@ -189,17 +189,17 @@ The price list errors (missing EANs, the `SG-2012` negative margin, the `SG-2013
 a real blocker the employee can't decide alone. Open a **new chat in the same folder** and
 **type:** `I'm stuck here, I need to escalate this to my consultant.`
 
-**Expected:** guides you to run Cowork's `/export`, then produces a clickable `mailto:` link to
-the configured escalation address (`escalation_email`, `house-style.md` §0) with subject
-`[Escalation: Team-AI] …` and a pre-filled body; reminds you to drag both the `/export` and your
-working file into the email.
+**Expected:** proposes a one-line problem for you to confirm, writes
+`03_Output/escalation-handoff.md` (goal, attempts, tools trace, verbatim blocker, files), then a
+three-point guide and a clickable `mailto:` link to `escalation_email` (`house-style.md` §0) with
+subject `[Escalation: Team-AI] …` and the body pre-filled.
 
 ✅ **Check**
-- [ ] Email address is **exactly** the configured `escalation_email` — even if you try to give
-      another, it refuses.
-- [ ] It does **not** reconstruct or re-type the chat — it relies on `/export`.
-- [ ] Subject line ≤ ~60 chars, body in the person's language (English default).
+- [ ] Handoff file exists and a consultant could resume from it alone.
+- [ ] Link opens a **draft** in your mail client; nothing is sent; no `/export` mentioned.
 - [ ] It did **not** escalate on its own earlier — only when you asked.
+
+Full case list: `test/ESCALATION-TEST.md`.
 
 ---
 
