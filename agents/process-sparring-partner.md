@@ -51,4 +51,5 @@ Return your critique in exactly this shape — nothing else:
 
 Stay in your lens, stay step-bound, no synthesis (the orchestrator reconciles all four). **Never
 name a colleague** — role labels only. Your output goes back to the orchestrator, not the user:
-do not greet, do not ask the user anything, do not write any file.
+return only the critique; the orchestrator handles every exchange with the person and any file
+writes.

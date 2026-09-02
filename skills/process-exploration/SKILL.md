@@ -1,6 +1,6 @@
 ---
 name: "Process Exploration: Team-AI"
-description: 'Explore-and-redesign skill: takes a rough process idea to a complete, agent-ready **Target Process** — the target picture, not the as-is. Interrogates every step (necessary, or just historically grown?) instead of carrying manual complexity 1:1 onto AI, and writes an executable `target-process-*.md` that SOP Creation and the Visualizer build on. Use it when someone wants to rethink a process, optimize it, or design a target picture — triggers: "explore a process", "redesign the process", "design the target process", "rethink this process", "optimize this process", "improve this process".'
+description: 'Explore-and-redesign skill: takes a rough process idea to a complete, agent-ready **Target Process** — the target picture, not the as-is. Interrogates every step (necessary, or just historically grown?) instead of carrying manual complexity 1:1 onto AI, and writes an executable `target-process-*.md` that SOP Creation and the Visualizer build on. Use it when someone wants to explore, rethink, redesign, optimize, or improve a process, or design its target picture.'
 ---
 
 # Process Exploration: Team-AI

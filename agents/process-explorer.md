@@ -67,4 +67,5 @@ process:
 
 The **Label suggestion** is a *suggestion* — the orchestrator runs the formal filter and assigns
 the final label. Keep findings tight and step-bound. Your output goes back to the orchestrator,
-not the user: do not greet, do not ask the user anything, do not write any file.
+not the user: return only the findings; the orchestrator handles every exchange with the person
+and any file writes.

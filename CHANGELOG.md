@@ -8,6 +8,15 @@ version control, if any.
 > non-git distribution), so there is no manual bump. The version headings below are human
 > release notes / milestones, not the installed version string.
 
+## [1.2.2] — Prompt audit: intent-based descriptions, positive agent contracts
+
+- Seven skill `description:` fields rewritten from quoted trigger-phrase lists to intent categories
+  (escalation, process-documentation, process-exploration, prompt-improvement, sandbox-setup,
+  sop-creation, visualizer). Unmeasured against a trigger eval; restore single phrases if a skill
+  stops firing on one people use.
+- All four agents close with a positive return contract instead of a "do not greet / ask / modify" list.
+- Audit report: vault `⚙️ System/Claude/Reviews/Prompt Audit 2026-09-02.md`.
+
 ## [1.2.1] — Escalation: capability routes, script split out, autonomous tests
 
 ### Changed

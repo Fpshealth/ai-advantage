@@ -1,6 +1,6 @@
 ---
 name: "Prompt Improvement: Team-AI"
-description: 'Helps a team member improve a prompt when Claude''s answer wasn''t helpful. Analyzes the chat, fills in the 10-point prompt framework (Anthropic Prompting 101) with a confidence label per point, and writes an improved prompt to a file. Recognizes recurring tasks and — once the person confirms the better result — creates an SOP Starter Pack as a file. Trigger phrases: "the answer doesn''t help me", "that''s not right", "Claude doesn''t understand me", "improve my prompt", "that''s not what I wanted", "bad result", "make this better".'
+description: 'Helps a team member improve a prompt when Claude''s answer wasn''t helpful. Analyzes the chat, fills in the 10-point prompt framework (Anthropic Prompting 101) with a confidence label per point, and writes an improved prompt to a file. Recognizes recurring tasks and — once the person confirms the better result — creates an SOP Starter Pack as a file. Use when the person is unhappy with an answer, feels misunderstood, or asks to improve a prompt or get a better result.'
 ---
 
 # Prompt Improvement: Team-AI

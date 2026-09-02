@@ -1,6 +1,6 @@
 ---
 name: "Visualizer: Team-AI"
-description: 'Turns a finished SOP or Process Documentation into a real, editable process map — a draw.io file a non-technical person opens, checks, and corrects by dragging and typing ("yes, this is how I picture my work"). Use this skill when someone says "visualize this", "process map", "show me that nicely", "make an overview", "as a diagram", "make this clear" — or names/attaches a file. Works for SOPs AND Process Documentations.'
+description: 'Turns a finished SOP or Process Documentation into a real, editable process map — a draw.io file a non-technical person opens, checks, and corrects by dragging and typing ("yes, this is how I picture my work"). Use this skill when someone wants a process visualized, mapped, diagrammed, or shown as an overview, or names/attaches an SOP or Process Documentation.'
 ---
 
 # Visualizer: Team-AI

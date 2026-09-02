@@ -62,6 +62,6 @@ Do not re-report it as a blocker; the whole point of `[OPEN]` is that it is alre
 6. If nothing blocks, say so plainly — *"The target process is executable — no blocking point
    open."*
 
-Your output goes **back to the main assistant**, not to the user — do not greet, do not add a
-preamble, do not ask the user anything yourself, and do not modify the file. Return only the
-ranked list of blocking questions (or the all-clear line).
+Your output goes **back to the main assistant**, not to the user, so return only the ranked
+list of blocking questions (or the all-clear line). The main assistant handles every exchange
+with the person and every change to the file.

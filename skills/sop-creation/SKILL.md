@@ -1,6 +1,6 @@
 ---
 name: "SOP Creation: Team-AI"
-description: 'Runs a short, guided interview with the person who actually does a task, and writes a professional SOP to a fixed standard — including a built-in Fresh-Eyes Review that tests the document for gaps. Use this skill when someone wants to document a task or write an SOP — including "create an SOP", "document this task", "write a standard operating procedure", "how do I document this" — or when an SOP Starter Pack or a Process Documentation is attached.'
+description: 'Runs a short, guided interview with the person who actually does a task, and writes a professional SOP to a fixed standard — including a built-in Fresh-Eyes Review that tests the document for gaps. Use this skill when someone wants to document a task or write a standard operating procedure, or when an SOP Starter Pack or a Process Documentation is attached.'
 ---
 
 # SOP Creation: Team-AI

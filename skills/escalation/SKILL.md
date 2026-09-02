@@ -1,6 +1,6 @@
 ---
 name: "Escalation: Team-AI"
-description: 'Hands a stuck session to the consultant: Claude writes a handoff file, the person sends it via a pre-addressed email draft. Use when the person wants to escalate, or when a retry after prompt improvement still fails. Triggers: "escalate", "send this to my consultant", "I need help from my consultant", "still doesn''t work after the retry".'
+description: 'Hands a stuck session to the consultant: Claude writes a handoff file, the person sends it via a pre-addressed email draft. Use when the person asks to escalate or to involve their consultant, or when a retry after prompt improvement still fails.'
 ---
 
 # Escalation: Team-AI

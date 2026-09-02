@@ -1,6 +1,6 @@
 ---
 name: "Process Documentation: Team-AI"
-description: 'Guides the person through structured documentation of one whole end-to-end business process — the bird''s-eye view across all roles, from trigger to result — and writes it into a professional Markdown document for handoff to a manager. Use this skill when someone wants to document a process, capture how something works, or map an end-to-end workflow — including "document a process", "map the end-to-end process", "capture this workflow", "how does this work end to end".'
+description: 'Guides the person through structured documentation of one whole end-to-end business process — the bird''s-eye view across all roles, from trigger to result — and writes it into a professional Markdown document for handoff to a manager. Use this skill when someone wants to document a process, capture how something works end to end, or map a workflow across roles.'
 ---
 
 # Process Documentation: Team-AI

@@ -1,6 +1,6 @@
 ---
 name: "Sandbox Setup: Team-AI"
-description: 'Sets up the safe work area for Claude inside the folder that has already been granted: creates the three subfolders 01_Input, 02_Work, and 03_Output, and writes the CLAUDE.md rules file. Use this skill when someone wants to set up their workspace or folders — triggers: "set up the sandbox", "set up my workspace", "create the work folders", "set up AI_SANDBOX", "run setup".'
+description: 'Sets up the safe work area for Claude inside the folder that has already been granted: creates the three subfolders 01_Input, 02_Work, and 03_Output, and writes the CLAUDE.md rules file. Use this skill when someone wants to set up their sandbox, workspace, or work folders, or asks to run setup.'
 ---
 
 # Sandbox Setup: Team-AI
