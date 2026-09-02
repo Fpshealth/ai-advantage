@@ -47,7 +47,9 @@ claude plugin eval . --scaffold --allow-tools Bash Write Edit --judge-model sonn
 | `escalation-en` | escalation | Same blocker in English, `$` prices: `%2439.90` survives encoding; the handoff file has a Tools/Actions section and quotes SKU + both prices, both input files and the one-line problem (the old "cold read" as mechanical checks); English draft guidance | `mailto-subject-tag` |
 | `escalation-static` | escalation | German, **no Bash granted** (tag `no-bash` → `run.sh` withholds it): the no-code rung must still yield the static SKILL.md link verbatim or a hand-encoded link with `enth%C3%A4lt`; `no-bash-called` proves Bash was really unavailable | `no-code-rung` — the static link exists only in the skill |
 
+| `pruning-skills-behaviour` | pruning-skills | Planted fixture skill with one instance of each cut-on-sight smell plus three load-bearing lines: date stamp, IMP-005 reference, "hold all findings" line and OneDrive non-issue are cut from the file; EAN rule, purchase-price rule and `check_listing.py` survive; reply labels cuts by failure-mode name with a word-count delta | `report-labels` — the failure-mode vocabulary exists only in the skill |
 First runs 2026-09-01, single arm, one run each: `de` 6/6 in 76 s · `en` 10/10 in 68 s · `static` 6/6 in 83 s.
+Pilot 2026-09-02: `pruning-skills-behaviour` 9/9 in 101 s.
 These three replace `test/claude-code/run.sh` (`de`, `en`, `static`); the old two-turn `en` is a single turn that states the
 earlier turn's outcome as confirmed — `context.history_file` needs a real Claude Code session transcript, a written JSONL fails.
 
