@@ -49,7 +49,9 @@ claude plugin eval . --scaffold --allow-tools Bash Write Edit --judge-model sonn
 
 | `pruning-skills-behaviour` | pruning-skills | Planted fixture skill with one instance of each cut-on-sight smell plus three load-bearing lines: date stamp, IMP-005 reference, "hold all findings" line and OneDrive non-issue are cut from the file; EAN rule, purchase-price rule and `check_listing.py` survive; reply labels cuts by failure-mode name with a word-count delta | `report-labels` — the failure-mode vocabulary exists only in the skill |
 First runs 2026-09-01, single arm, one run each: `de` 6/6 in 76 s · `en` 10/10 in 68 s · `static` 6/6 in 83 s.
-Pilot 2026-09-02: `pruning-skills-behaviour` 9/9 in 101 s.
+| `pruning-skills-vs-wfa` | pruning-skills | Same fixture with Matt Pocock's writing-for-agents text scaffolded in and the prompt saying to follow it; the "without" arm is writing-for-agents alone. Note: the model never invokes pruning-skills on its own here (Skill called 0x), so the "with" arm equals "without" | none; comparison case |
+| `pruning-skills-both` | pruning-skills | writing-for-agents text present AND the prompt names pruning-skills: the "both" arm. With-arm only (`run.sh pilot pruning-skills-both --runs 3`) | none; comparison case |
+Pilot 2026-09-02: `pruning-skills-behaviour` 9/9 in 101 s. Four-way 2026-09-02, behaviour checks over 3 runs: nothing 15/24 · writing-for-agents alone 22/24 · pruning-skills alone 23/24 · both 23/24. Pocock's text alone makes every cut; only the labelled report is skill-specific.
 These three replace `test/claude-code/run.sh` (`de`, `en`, `static`); the old two-turn `en` is a single turn that states the
 earlier turn's outcome as confirmed — `context.history_file` needs a real Claude Code session transcript, a written JSONL fails.
 

@@ -1,0 +1,25 @@
+schema_version: "1.1"
+name: pruning-skills-both
+description: >
+  The "both" arm of the four-way comparison: writing-for-agents text in the working directory AND the
+  prompt names pruning-skills, because with only "follow writing-for-agents" in the prompt the model never
+  invokes the skill (pruning-skills-vs-wfa, 2026-09-02: Skill called 0x in every with-run). Run with-arm only.
+tags: [pruning-skills, behaviour, wfa, both]
+
+context:
+  scaffold_script: scaffold.sh
+
+execution:
+  prompt: |
+    fixture-skill/SKILL.md feels bloated and full of fluff. Use the pruning-skills skill on it; writing-for-agents/SKILL.md is the background it references. Tighten the file in place and tell me what you cut.
+  max_turns: 40
+  timeout_seconds: 600
+  allowed_tools: [Read, Glob, Grep, Skill, Bash, Write, Edit]
+
+runs: 3
+
+expected_outcome: >
+  fixture-skill/SKILL.md is edited in place: the date stamp, the IMP-005 reference, the
+  "hold all findings" line and the OneDrive non-issue are gone; the EAN rule, the purchase-price
+  rule and the check_listing.py command survive. The reply lists each cut with its failure-mode
+  label and gives word count before → after.
