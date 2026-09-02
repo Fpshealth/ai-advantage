@@ -8,6 +8,12 @@ version control, if any.
 > non-git distribution), so there is no manual bump. The version headings below are human
 > release notes / milestones, not the installed version string.
 
+## [1.2.3] — pruning-skills rewritten in the writing-for-agents register
+
+- `pruning-skills`: one-line description (no other skills named), leading-word bullets instead of a
+  three-column table, a completion criterion on every pass, model-fit pass kept as a pointer to
+  the target's migration notes. 997 → 596 words.
+
 ## [1.2.2] — Prompt audit: intent-based descriptions, positive agent contracts
 
 - Seven skill `description:` fields rewritten from quoted trigger-phrase lists to intent categories

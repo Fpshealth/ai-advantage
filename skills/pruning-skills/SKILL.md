@@ -1,58 +1,53 @@
 ---
 name: pruning-skills
-description: Use when tightening, pruning, condensing, or fluff-cutting an EXISTING skill — stripping it down to purely operational content that changes agent behaviour. Invoke whenever a skill feels bloated, wordy, verbose, or "full of fluff"; when asked to make a skill leaner, tighter, or more concise; to strip provenance, war-stories, restatements, or dead references; to audit a skill (new or old) for redundancy against skill-writing doctrine; or to re-fit a skill to a new model after a release. Runs as the concision and model-fit pass after writing-for-agents. Not for authoring a skill from scratch — that's skill-creator.
+description: Prune an existing skill down to the lines that change agent behaviour, and re-fit it to the current model. Use when a skill feels bloated or wordy, or after a model release.
 ---
 
-# Pruning skills — cut a skill down to what changes behaviour
+Read the whole skill, then name the **target model** — the model running this pass, unless told otherwise. Every judgement below is relative to that model's defaults.
 
-A skill's only job is to make the agent take the same operating steps every run. Every sentence that doesn't change what the agent *does* is **fluff**: it spends context load and buries the lines that matter. This skill strips an existing skill to operational bone.
+This skill uses the vocabulary of writing-for-agents — _no-op, sediment, duplication, negation, leading word_ — and adds one word: **fluff** is any sentence that does not change what the agent _does_ versus the target's default. Fluff spends context load and buries the lines that matter.
 
-**REQUIRED BACKGROUND: writing-for-agents** (the mattpocock-skills plugin skill; successor of writing-great-skills). It defines the terms used below — *no-op, sediment, sprawl, duplication, negation, leading word*. That skill says what good looks like; this one assumes the skill is already carrying fluff and goes hunting. Don't restate its doctrine here.
+## Pass 1 — form
 
-## The pass
+Apply the writing-for-agents lenses: every rule states a positive target, every step ends on a checkable completion criterion, each meaning lives in one place, leading words do the anchoring. Done when every rule and step passes all four.
 
-1. **Read the whole skill first, and name the target model** (default: the model running this pass). You can't spot a duplication, a dangling reference, or a re-enumerated list from a fragment.
-2. **Phase 1 — doctrine check.** Run the writing-for-agents lenses: is each rule a positive target (not a negation)? Does every step end on a checkable completion criterion? Is each meaning in one place? Are leading words doing the anchoring? Fix form problems here.
-3. **Phase 2 — the no-op cut.** Go sentence by sentence with the test below. This is the aggressive pass a plain doctrine review skips.
-4. **Phase 3 — model fit.** Read every "Behavioral shifts (prompt-tunable)" section for the target in the `claude-api` skill's `shared/model-migration.md`. For each surviving emphasis marker, prohibition, or step script: which failure, on which model, did it prevent, and do the target's sections still list it? Unowned → cut. Still listed → keep, with the reason beside it. Listed as newly needed for the target → add.
-5. **Verify.** Grep the wider system for each cut string before deleting it; where a trigger or behaviour eval exists, run it before and after.
-6. **Report** each cut by its failure-mode name, with a word-count delta.
+## Pass 2 — the no-op cut
 
-**The no-op test (per sentence, in isolation):** does this change what the agent *does* versus its default behaviour? "Default" means the target model's default. If no → **delete the whole sentence**, don't trim words from it. Be aggressive; most prose that fails should go, not be reworded.
+Sentence by sentence, in isolation: does this change what the agent does? If not, delete the whole sentence — never trim words from it. Cut on sight:
 
-## Cut on sight
+- **Sediment** — provenance, dates, war stories: "Source: X (2026-…)", "the first version had to be rebuilt".
+- **No-op** — a quote from the source the rule already restates; a dangling reference the agent has no context for ("the IMP-005 lesson").
+- **Duplication** — a "why this matters" sentence before the rule that says it; a decorative tail after it; a list re-enumerated from the table above; a referenced doc restated beside its pointer.
+- **Negation without provenance** — "don't generate blindly", "never skip X" tied to no named failure. It makes the unwanted behaviour available; rewrite as the positive target.
+- **Defense without evidence** — an absolute guarding a failure nobody has seen ("even if asked to use another"). A rule earns its place through a field incident.
+- **Raised non-issue** — "anywhere is fine, including OneDrive". Naming a settled question keeps it alive.
+- **Description bloat** — procedure in the `description:` field. It loads every session; it carries trigger conditions only.
 
-| Smell | Why it's fluff | Name |
-|---|---|---|
-| Provenance & dates — "Source: X (2026-…)", "added 2026-07-05" | History, not instruction | sediment |
-| War stories — "the first version had to be rebuilt", "proven when…" | Narrates the past; changes no behaviour | sediment |
-| Appeal-to-source quotes — "the article says '…'" | The rule beside it already states the behaviour | no-op |
-| Dangling references — "the IMP-005 lesson", "the color-grading case" | The agent has no context for it; it cues nothing | no-op |
-| Motivating restatements — a "why this matters" sentence before the rule that already says it | Same meaning twice | duplication |
-| Decorative tails — "— it's how surprises become known knowns" | Ornaments a purpose already stated | duplication |
-| Re-enumeration of a list or table printed just above | Same content, second copy | duplication |
-| Prohibitions with no provenance — "don't generate blindly", "never skip X" tied to no named failure | Names the unwanted behaviour and makes it available | negation |
-| Defensive absolutes for unobserved failures — "even if asked to use another", "nothing invented" | Guards an imagined scenario; a rule earns its place through a field incident | defense-without-evidence |
-| Naming a non-issue — "anywhere is fine, including OneDrive" | Keeps a settled question alive as a topic; unmentioned = no issue | raised-non-issue |
-| Procedure detail in the `description:` field | Descriptions load into every session and carry triggering conditions only; procedure lives in the body | description-bloat |
-| Restating a referenced doc beside its pointer — "follow X — especially §1: …" | The pointer suffices; the content's home is the referenced doc | duplication |
+Where a sentence half-passes, rewrite instead of deleting: two sentences saying one thing become one; a sentence gesturing at an idea becomes its leading word.
 
-## Keep — over-pruning is the opposite failure
+Keep, even when short:
 
-- **Rules, gates, and completion criteria** — the checkable done-conditions.
-- **Tool and command names, file-path conventions, concrete output formats** — the operational specifics.
-- **Context only the author holds** — audience, environment facts, the quality bar.
-- **Prohibitions with provenance** — a business or compliance constraint, or a failure the target model's notes still list — paired with their positive target and reason.
-- **Lines the target's notes ask for.** Re-fitting to a new model adds text too; a word count that rises is a valid result.
-- **Leading-word anchors even when short.** A six-word line that ties a pattern back to the model's priors (`Reacting is cheap; specifying is expensive`) earns its tokens — that's signal, not fluff.
-- **One example** where it makes an abstract rule concrete. Not five.
+- Rules, gates, and completion criteria.
+- Tool and command names, path conventions, output formats.
+- Context only the author holds — audience, environment, quality bar.
+- A leading-word anchor (`Reacting is cheap; specifying is expensive`).
+- One example per abstract rule. Not five.
 
-## Rewrite, don't only delete
+Done when every remaining sentence changes behaviour.
 
-- Negation → the positive target ("don't generate blindly" → "first teach the quality dimensions, then let him direct").
-- Two sentences saying one thing → one.
-- A sentence gesturing at an idea → its leading word.
+## Pass 3 — model fit
 
-## Report
+Read every "Behavioral shifts (prompt-tunable)" section for the target in the `claude-api` skill's `shared/model-migration.md`. For each surviving emphasis marker, prohibition, or step script ask: which failure, on which model, did this fix — and do the target's notes still list it?
 
-List each cut: the trimmed quote → its failure-mode label. List each model-fit keep or add with the failure it owns. Close with **word count before → after (% change)**. Surface the lines you nearly cut but kept, with why — so the user can decide whether to push further.
+- Unowned → cut.
+- Still listed → keep, with the reason beside it.
+- A business or compliance constraint → keep, with the reason beside it.
+- Newly listed for the target → add. Re-fitting adds text; a rising word count is a valid result.
+
+Done when every emphatic line has an owner.
+
+## Verify and report
+
+Grep the wider system for each cut string before deleting it; where a trigger or behaviour eval exists, run it before and after.
+
+Report each cut as _quote → failure-mode name_, each model-fit keep or add with its owner, and word count before → after. List the lines you nearly cut and why you kept them, so the user can push further.
