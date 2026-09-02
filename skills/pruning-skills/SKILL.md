@@ -5,11 +5,11 @@ description: Prune an existing skill down to the lines that change agent behavio
 
 Read the whole skill, then name the **target model** — the model running this pass, unless told otherwise. Every judgement below is relative to that model's defaults.
 
-This skill uses the vocabulary of writing-for-agents — _no-op, sediment, duplication, negation, leading word_ — and adds one word: **fluff** is any sentence that does not change what the agent _does_ versus the target's default. Fluff spends context load and buries the lines that matter.
+This skill uses the vocabulary of `mattpocock-skills:writing-for-agents` (read it and its `SKILL-MECHANICS.md` first) — _no-op, sediment, duplication, negation, leading word_ — and adds one word: **fluff** is any sentence that does not change what the agent _does_ versus the target's default. Fluff spends context load and buries the lines that matter.
 
 ## Pass 1 — form
 
-Apply the writing-for-agents lenses: every rule states a positive target, every step ends on a checkable completion criterion, each meaning lives in one place, leading words do the anchoring. Done when every rule and step passes all four.
+Apply the four writing-for-agents lenses: every rule states a positive target, every step ends on a checkable completion criterion, each meaning lives in one place, leading words do the anchoring. Done when every rule and step passes all four.
 
 ## Pass 2 — the no-op cut
 
@@ -37,14 +37,15 @@ Done when every remaining sentence changes behaviour.
 
 ## Pass 3 — model fit
 
-Read every "Behavioral shifts (prompt-tunable)" section for the target in the `claude-api` skill's `shared/model-migration.md`. For each surviving emphasis marker, prohibition, or step script ask: which failure, on which model, did this fix — and do the target's notes still list it?
+Some lines exist only to correct one model's habit: shouting, forbidding, spelling out steps. Find each one and ask who it was written for. Open the target's "Behavioral shifts" notes (`claude-api` skill, `shared/model-migration.md`) and check:
 
-- Unowned → cut.
-- Still listed → keep, with the reason beside it.
-- A business or compliance constraint → keep, with the reason beside it.
-- Newly listed for the target → add. Re-fitting adds text; a rising word count is a valid result.
+- The habit is not in the notes → cut the line.
+- The habit is in the notes → keep the line and write the reason next to it.
+- The notes ask for a line the skill lacks → add it.
 
-Done when every emphatic line has an owner.
+Lines that protect a business or legal constraint stay regardless. Re-fitting adds text; a rising word count is a valid result.
+
+Done when every such line has a reason next to it or is gone.
 
 ## Verify and report
 
