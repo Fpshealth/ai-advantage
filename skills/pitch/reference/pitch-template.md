@@ -13,7 +13,7 @@ title:
 name: 
 department: 
 date: YYYY-MM-DD
-pitch_status: Submitted          # Submitted | Approved | Rejected — mirrors the project list
+pitch_status: Submitted          # Submitted | Approved | Rejected — mirrors the row's Status in the project list
 sources: []                      # files the draft was pre-filled from
 ---
 
@@ -41,7 +41,7 @@ Before: {time or volume today} → After: {estimate} · KPI: {time saved / quali
 **Sonstiges** (EN: *Anything else?*) — only if needed: open questions, risks, max. 3 bullets.
 
 ---
-Beitragsliste / project-list row: {date} | {name} | {department} | {type} | {title} | Entwurf | {KPI} | {before} | {after} | {link} · Pitch = Eingereicht
+Beitragsliste / project-list row: {date} | {name} | {department} | Projekt-Pitch | {title} | Eingereicht | {KPI} | {before} | {after} | {link}   (Typ = Projekt-Pitch)
 ```
 
 Rules the writer applies:

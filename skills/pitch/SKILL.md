@@ -79,8 +79,9 @@ fold the answers in, rewrite to the cap, re-emit the file.
 One message, in this order:
 1. The final filename and where it went.
 2. The **project-list row** from the template's last line, filled in — the person copies it into
-   the team's project list and sets the list's *Pitch* field to **Submitted** (rendered in their
-   language, e.g. *Eingereicht*); the pitch file goes into the project folder next to the row's link.
+   the team's project list (Type = *Projekt-Pitch*) and sets the row's *Status* to **Submitted**
+   (rendered in their language, e.g. *Eingereicht*); the pitch file goes into the project folder
+   next to the row's link.
 3. The offer: *"Want a picture version for the meeting? Start a new chat in this folder and run
    `/eli5` on the pitch file."*
 

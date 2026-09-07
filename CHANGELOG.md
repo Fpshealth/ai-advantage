@@ -8,6 +8,10 @@ version control, if any.
 > non-git distribution), so there is no manual bump. The version headings below are human
 > release notes / milestones, not the installed version string.
 
+## [1.3.1] — Pitch row uses Typ + Status, no separate Pitch column
+- The project-list row the skill emits now sets Type = `Projekt-Pitch` and Status = `Eingereicht`;
+  the earlier separate "Pitch" column is gone. Close message and template comment updated to match.
+
 ## [1.3.0] — Pitch skill: one-page project pitches for the project list
 
 - New skill `pitch` ("Pitch: Team-AI"): six fixed management questions, two bundled interview rounds,
