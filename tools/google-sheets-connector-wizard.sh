@@ -83,9 +83,9 @@ pause() {
 # confirm "question" — y/N gate; returns success on yes.
 confirm() {
   local reply=""
-  printf '  %s? %s [y/N] ' "$YELLOW" "$1"
+  printf '  %s? %s [j/N] ' "$YELLOW" "$1"
   read -r reply || true
-  [[ "$reply" =~ ^[Yy] ]]
+  [[ "$reply" =~ ^[YyJj] ]]
 }
 
 # _existing KEY — current value of KEY in ENV_FILE, if any.
@@ -262,6 +262,19 @@ write_env SUPPORT_EMAIL "$SUPPORT_EMAIL"
 
 # ── 3 ─────────────────────────────────────────────────────────────────────
 stage "Google-Cloud-Projekt anlegen"
+project_via_browser() {
+  open_url "https://console.cloud.google.com/projectcreate"
+  say "Du siehst die Seite ${BOLD}„Neues Projekt“${RESET} mit dem Feld ${BOLD}„Projektname“${RESET}."
+  note "Ignorieren: gelber Kasten „Kontingent“, blaue Leiste „kostenlosen Testzeitraum“ (→ Ablehnen), Cookie-Leiste (→ Ok)."
+  clip "Claude Sheets"
+  step "Feld „Projektname“: Inhalt löschen, einfügen (Strg+V / ⌘V)."
+  step "Direkt UNTER dem Feld steht: „Projekt-ID: ${BOLD}claude-sheets-123456${RESET}. Diese kann später nicht mehr geändert werden.“"
+  ask PROJECT_ID "Diese Projekt-ID hier abtippen (claude-sheets-…):"
+  step "„Übergeordnete Ressource“ bleibt wie sie ist → blauer Knopf ${BOLD}„Erstellen“${RESET}."
+  step "Rechts oben erscheint „Projekt wird erstellt …“ → dort ${BOLD}„Projekt auswählen“${RESET} klicken."
+  say "Kontrolle: oben links neben „Google Cloud“ steht jetzt ${BOLD}„Claude Sheets“${RESET}."
+  pause "Wenn ja: Enter."
+}
 PROJECT_ID=$(_existing PROJECT_ID || true)
 if [[ -n "$PROJECT_ID" ]]; then
   say "Projekt aus dem letzten Lauf: ${BOLD}${PROJECT_ID}${RESET}"
@@ -272,18 +285,10 @@ elif [[ "$GCLOUD" == 1 ]]; then
     printf '  %s✓ Projekt angelegt%s\n' "$GREEN" "$RESET"
   else
     warn "Anlegen per gcloud hat nicht geklappt (fehlende Rechte?). Weiter über die Website:"
-    open_url "https://console.cloud.google.com/projectcreate"
-    clip "Claude Sheets"
-    step "Feld 'Projektname': einfügen (Strg+V) → 'Erstellen' → Meldung oben rechts abwarten → 'Projekt auswählen'."
-    step "Oben auf der Seite steht jetzt die Projekt-ID (z. B. claude-sheets-123456)."
-    ask PROJECT_ID "Projekt-ID hier eintippen:"
+    project_via_browser
   fi
 else
-  open_url "https://console.cloud.google.com/projectcreate"
-  clip "Claude Sheets"
-  step "Feld 'Projektname': einfügen (Strg+V) → 'Erstellen' → Meldung oben rechts abwarten → 'Projekt auswählen'."
-  step "Oben auf der Seite steht jetzt die Projekt-ID (z. B. claude-sheets-123456)."
-  ask PROJECT_ID "Projekt-ID hier eintippen:"
+  project_via_browser
 fi
 write_env PROJECT_ID "$PROJECT_ID"
 [[ "$GCLOUD" == 1 ]] && gc config set project "$PROJECT_ID" --quiet >/dev/null 2>&1 || true
@@ -291,73 +296,100 @@ pause
 
 # ── 4 ─────────────────────────────────────────────────────────────────────
 stage "Zwei Google-Schnittstellen aktivieren"
+note "Warum zwei? „Google Sheets API“ = Lesen und Schreiben in Tabellen. „Google Sheets MCP API“ = der Google-Dienst, über den Claude spricht. Google verlangt beide."
+enable_via_browser() {
+  open_url "$1"
+  say "Du siehst die Seite ${BOLD}„Produktdetails“${RESET} mit dem Titel ${BOLD}„$2“${RESET} und einem blauen Knopf ${BOLD}„Aktivieren“${RESET}."
+  say "Kontrolle: oben links neben „Google Cloud“ steht ${BOLD}„Claude Sheets“${RESET}."
+  step "„Aktivieren“ klicken. Die Seite wechselt zu „API/Dienstdetails“ mit ${BOLD}„Status: Aktiviert“${RESET} und oben dem Link „API deaktivieren“."
+  note "Steht dort schon „API deaktivieren“? Dann ist sie bereits aktiv — nichts klicken."
+  pause "Wenn „Status: Aktiviert“ steht: Enter."
+}
 if [[ "$GCLOUD" == 1 ]] && gc services enable sheets.googleapis.com sheetsmcp.googleapis.com --project "$PROJECT_ID" --quiet; then
   printf '  %s✓ Google Sheets API + Google Sheets MCP API sind aktiv%s\n' "$GREEN" "$RESET"
   gc services list --enabled --project "$PROJECT_ID" 2>/dev/null | grep -i sheets | sed 's/^/    /' || true
 else
-  say "Bitte auf jeder der zwei Seiten oben prüfen, dass das Projekt '$PROJECT_ID' gewählt ist, dann 'Aktivieren' klicken."
-  open_url "https://console.cloud.google.com/apis/library/sheets.googleapis.com?project=$PROJECT_ID"
-  pause "Wenn der Knopf 'Verwalten' zeigt: Enter."
-  open_url "https://console.cloud.google.com/apis/library/sheetsmcp.googleapis.com?project=$PROJECT_ID"
-  pause "Wenn der Knopf 'Verwalten' zeigt: Enter."
+  enable_via_browser "https://console.cloud.google.com/apis/library/sheets.googleapis.com?project=$PROJECT_ID" "Google Sheets API"
+  enable_via_browser "https://console.cloud.google.com/apis/library/sheetsmcp.googleapis.com?project=$PROJECT_ID" "Google Sheets MCP API"
 fi
 pause
 
 # ── 5 ─────────────────────────────────────────────────────────────────────
 stage "Zustimmungsbildschirm (Google Auth Platform)"
 open_url "https://console.cloud.google.com/auth/overview?project=$PROJECT_ID"
-step "Klick 'Jetzt starten'."
+say "Du siehst ${BOLD}„Übersicht über OAuth“${RESET}: ein Bild mit Wolke, „Google Auth Platform noch nicht konfiguriert“, blauer Knopf ${BOLD}„Erste Schritte“${RESET}."
+step "„Erste Schritte“ klicken. Es folgt ein Formular mit 4 aufklappbaren Abschnitten:"
 clip "$APP_NAME"
-step "Feld 'App-Name': einfügen (Strg+V)."
-step "Feld 'Support-E-Mail für Nutzer': ${BOLD}${SUPPORT_EMAIL}${RESET} auswählen."
-step "'Weiter' → Zielgruppe: ${BOLD}Intern${RESET} wählen (nur falls es 'Intern' nicht gibt: 'Extern')."
-step "'Weiter' → Kontaktdaten: wieder ${SUPPORT_EMAIL} → 'Weiter' → Richtlinie zustimmen → 'Erstellen'."
-say "Du solltest jetzt eine Übersichtsseite mit '$APP_NAME' und 'Zielgruppe: Intern' sehen."
+step "1 App-Informationen: Feld „App-Name“ einfügen (Strg+V / ⌘V) · „Support-E-Mail für Nutzer“: ${BOLD}${SUPPORT_EMAIL}${RESET} aus der Liste wählen → „Weiter“."
+step "2 Zielgruppe: ${BOLD}Intern${RESET} wählen. Ist „Intern“ ausgegraut oder fehlt (kein Google Workspace): ${BOLD}Extern${RESET} → „Weiter“."
+step "3 Kontaktdaten: ${SUPPORT_EMAIL} eintippen → „Weiter“."
+step "4 Fertigstellen: Häkchen bei der Richtlinie → „Weiter“ → blauer Knopf ${BOLD}„Erstellen“${RESET}."
+say "Kontrolle: unten erscheint kurz ${BOLD}„OAuth-Konfiguration erstellt“${RESET}; die Seite zeigt „Messwerte“ mit dem Knopf „OAuth-Client erstellen“."
 pause "Wenn ja: Enter."
+AUDIENCE=intern
+if ! confirm "War „Intern“ wählbar und ist gewählt?"; then
+  AUDIENCE=extern
+  write_env AUDIENCE extern
+  printf '\n'
+  say "Zielgruppe ${BOLD}Extern${RESET} → die App ist im Status „Testen“. Ohne Testnutzer endet jede Anmeldung mit ${BOLD}„Zugriff blockiert … Fehler 403: access_denied“${RESET}."
+  open_url "https://console.cloud.google.com/auth/audience?project=$PROJECT_ID"
+  say "Du siehst die Seite ${BOLD}„Zielgruppe“${RESET} mit „Veröffentlichungsstatus: Testen“ und dem Abschnitt ${BOLD}„Testnutzer“${RESET}."
+  clip "$SUPPORT_EMAIL"
+  step "„+ Add users“ → einfügen (Strg+V / ⌘V) → „Speichern“."
+  step "Dazu jetzt oder später jede Google-Adresse aus dem Team eintragen, die den Connector nutzen soll (max. 100)."
+  say "Kontrolle: deine Adresse steht in der Tabelle „Testnutzer“."
+  pause "Wenn ja: Enter."
+  warn "Im Status „Testen“ läuft jede Verbindung nach 7 Tagen ab — dann „Verbinden“ in Claude wiederholen."
+  note "Dauerhaft: auf derselben Seite „App veröffentlichen“. Dann zeigt Google beim Verbinden einmal die Warnung „Google hat diese App nicht überprüft“ → „Erweitert“ → „Weiter zu …“. Bitte mit Federico klären."
+  SKIPPED+=("Zielgruppe Extern: Team-Adressen als Testnutzer eintragen oder App veröffentlichen — mit Federico klären")
+fi
 
 # ── 6 ─────────────────────────────────────────────────────────────────────
 stage "Berechtigungen (Scopes) eintragen"
 open_url "https://console.cloud.google.com/auth/scopes?project=$PROJECT_ID"
-step "Klick 'Bereiche hinzufügen oder entfernen' (rechts öffnet sich eine Leiste)."
+say "Du siehst die Seite ${BOLD}„Datenzugriff“${RESET} mit dem Knopf ${BOLD}„Bereiche hinzufügen oder entfernen“${RESET}."
+step "Knopf klicken — rechts öffnet sich eine Leiste mit einer langen Tabelle."
 clip "$SCOPES"
-step "In der Leiste ganz nach unten: Feld 'Bereiche manuell hinzufügen' → einfügen (Strg+V) — alle 4 Zeilen auf einmal."
-step "'Zur Tabelle hinzufügen' → 'Aktualisieren' → unten auf der Seite 'Speichern'."
-say "Die Tabelle zeigt danach 4 Bereiche (zwei davon unter 'Sensible Bereiche' — das ist richtig)."
+step "In der Leiste ganz nach unten scrollen: Feld ${BOLD}„Bereiche manuell hinzufügen“${RESET} → einfügen (Strg+V / ⌘V) — alle 4 Zeilen auf einmal."
+step "„Zur Tabelle hinzufügen“ → unten „Aktualisieren“ → die Leiste schließt sich → unten auf der Seite ${BOLD}„Speichern“${RESET}."
+say "Kontrolle: die Seite zeigt 4 Bereiche, verteilt auf „Sensible Bereiche“ und „Eingeschränkte Bereiche“ — das ist richtig."
 pause "Wenn 4 Bereiche gespeichert sind: Enter."
 
 # ── 7 ─────────────────────────────────────────────────────────────────────
 stage "OAuth-Client anlegen (hier entstehen ID + Secret)"
 open_url "https://console.cloud.google.com/auth/clients/create?project=$PROJECT_ID"
-step "Anwendungstyp: ${BOLD}Webanwendung${RESET}."
+say "Du siehst die Seite ${BOLD}„OAuth-Client-ID erstellen“${RESET} mit der Auswahl ${BOLD}„Anwendungstyp“${RESET}."
+step "Anwendungstyp: ${BOLD}Webanwendung${RESET} wählen — darunter erscheinen weitere Felder."
 clip "$CLIENT_NAME"
-step "Feld 'Name': einfügen (Strg+V)."
+step "Feld „Name“: einfügen (Strg+V / ⌘V)."
 pause "Enter, sobald der Name drin ist — dann kommt der nächste Wert in die Zwischenablage."
 clip "$REDIRECT_URI"
-step "Unter 'Autorisierte Weiterleitungs-URIs': '+ URI hinzufügen' → einfügen (Strg+V) → 'Erstellen'."
+step "„Autorisierte JavaScript-Quellen“ leer lassen. Unter ${BOLD}„Autorisierte Weiterleitungs-URIs“${RESET}: „+ URI hinzufügen“ → einfügen (Strg+V / ⌘V) → blauer Knopf „Erstellen“."
 printf '\n'
-warn "Jetzt zeigt Google 'Client-ID' und 'Clientschlüssel' (Secret) — NUR JETZT vollständig."
-step "Beide Werte direkt in deinen Passwort-Manager kopieren (Eintrag z. B. 'Claude Google Sheets')."
+warn "Jetzt zeigt ein Fenster „OAuth-Client erstellt“ mit ${BOLD}Client-ID${RESET} und ${BOLD}Clientschlüssel${RESET} (Secret) — NUR JETZT vollständig."
+step "Beide Werte über das Kopier-Symbol direkt in deinen Passwort-Manager kopieren (Eintrag z. B. „Claude Google Sheets“)."
 step "NICHT hier eingeben, nicht in einen Chat, nicht in eine Datei."
 until confirm "Sind beide Werte im Passwort-Manager gespeichert?"; do
   warn "Bitte erst speichern — das Secret ist später nicht mehr vollständig sichtbar."
 done
 
 # ── 8 ─────────────────────────────────────────────────────────────────────
-stage "Connector in der Claude-Organisation hinterlegen (Owner)"
-open_url "https://claude.ai/settings"
-step "Links im Menü: Bereich ${BOLD}Organisation${RESET} → ${BOLD}Connectors${RESET}."
-say "Siehst du KEINEN Bereich 'Organisation'? Dann fehlt deinem Konto die Owner-Rolle:"
+stage "Connector in Claude hinterlegen"
+open_url "https://claude.ai/settings/connectors"
+say "Du siehst in Claude die Seite ${BOLD}„Connectors“${RESET} mit den Reitern „Discover“ und „Your connectors“."
+say "Firmenkonto (Team/Enterprise): links im Menü Bereich ${BOLD}Organisation${RESET} → Connectors. Fehlt der Bereich „Organisation“? Dann fehlt deinem Konto die Owner-Rolle:"
 note "Dann macht der Primary Owner diesen einen Schritt — gib ihm die Werte unten und ID/Secret über den Passwort-Manager."
 printf '\n'
-step "'Hinzufügen' → 'Custom'."
+step "Rechts oben ${BOLD}„Add“${RESET} (bzw. „Hinzufügen“ → „Custom“). Es öffnet sich ${BOLD}„Add custom connector“${RESET} mit zwei Feldern."
 clip "$CONNECTOR_NAME"
-step "Feld 'Name': einfügen (Strg+V)."
+step "Feld 1 (Name, „Shown in the connectors list“): einfügen (Strg+V / ⌘V)."
 pause "Enter, sobald der Name drin ist — dann kommt die Server-Adresse in die Zwischenablage."
 clip "$SERVER_URL"
-step "Feld 'Remote MCP server URL': einfügen (Strg+V)."
-step "'Erweiterte Einstellungen' aufklappen → 'OAuth Client ID' und 'OAuth Client Secret' aus dem Passwort-Manager einfügen → 'Hinzufügen'."
-say "'$CONNECTOR_NAME' erscheint jetzt in der Connector-Liste der Organisation."
-if ! confirm "Steht '$CONNECTOR_NAME' in der Liste?"; then
+step "Feld 2 (Adresse, „The HTTPS address where the server accepts MCP requests“): einfügen (Strg+V / ⌘V) → ${BOLD}„Continue“${RESET}."
+say "Seite 2 des Fensters: „Authentication: Always required (Detected)“ bleibt. Unter „OAuth client“ ist ${BOLD}„Use your own OAuth client (Detected)“${RESET} gewählt — so lassen."
+step "„OAuth Client ID“ und „OAuth Client Secret“ aus dem Passwort-Manager einfügen → unten ${BOLD}„Add“${RESET}."
+say "Kontrolle: „${CONNECTOR_NAME}“ steht jetzt in der Connector-Liste (Reiter „Your connectors“)."
+if ! confirm "Steht „${CONNECTOR_NAME}“ in der Liste?"; then
   SKIPPED+=("Schritt 8 durch den Primary Owner: Custom Connector '$CONNECTOR_NAME', URL $SERVER_URL, Client-ID/Secret aus dem Passwort-Manager")
   warn "Notiert — der Primary Owner trägt den Connector ein. Danach bitte hier weitermachen."
   pause
@@ -365,10 +397,15 @@ fi
 
 # ── 9 ─────────────────────────────────────────────────────────────────────
 stage "Dich selbst verbinden"
-open_url "https://claude.ai/settings"
-step "Menü ${BOLD}Connectors${RESET} (deine persönliche Liste, nicht 'Organisation') → '$CONNECTOR_NAME' → 'Verbinden'."
-step "Mit dem Arbeits-Google-Konto anmelden → 'Zulassen'."
-say "'$CONNECTOR_NAME' zeigt jetzt 'Verbunden'."
+open_url "https://claude.ai/settings/connectors"
+step "In der Liste: ${BOLD}„${CONNECTOR_NAME}“${RESET} → ${BOLD}„Connect“${RESET} / „Verbinden“."
+step "Google-Fenster: das Arbeits-Google-Konto (${SUPPORT_EMAIL}) wählen."
+if [[ "$AUDIENCE" == extern ]]; then
+  note "Erscheint „Google hat diese App nicht überprüft“: „Erweitert“ → „Weiter zu …“ klicken — das ist erwartet."
+  note "Erscheint „Zugriff blockiert … Fehler 403“: deine Adresse fehlt bei den Testnutzern (Schritt 5) — dort eintragen, dann hier erneut „Connect“."
+fi
+step "Berechtigungen: ${BOLD}„Alle auswählen“${RESET} (4 Häkchen) → ${BOLD}„Weiter“${RESET} / „Zulassen“."
+say "Kontrolle: „${CONNECTOR_NAME}“ zeigt in der Liste ein Häkchen / „Connected“."
 pause "Wenn ja: Enter."
 
 # ── 10 ────────────────────────────────────────────────────────────────────
