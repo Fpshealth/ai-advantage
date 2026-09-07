@@ -183,7 +183,7 @@ finish() {
 # STAGES — Google Sheets Connector für Claude (Team-Einrichtung)
 # ──────────────────────────────────────────────────────────────────────────
 
-TOTAL_STAGES=11
+TOTAL_STAGES=12
 ENV_FILE="${ENV_FILE:-$HOME/claude-sheets-connector.env}"   # merkt sich nur Projekt-ID + E-Mail, nie Secrets
 
 SERVER_URL="https://sheetsmcp.googleapis.com/mcp/v1"
@@ -315,6 +315,37 @@ fi
 pause
 
 # ── 5 ─────────────────────────────────────────────────────────────────────
+stage "Developer Preview beantragen (Google-Freigabe, dauert einige Tage)"
+note "Der Google-Sheets-Dienst für Claude ist eine Vorschau (Developer Preview). Google schaltet ihn pro Cloud-Projekt frei — per Formular, nur mit einer Workspace-Firmenadresse. Ohne Freigabe verweigert Claude später jedes Schreiben."
+PROJECT_NUMBER=$(_existing PROJECT_NUMBER || true)
+if [[ -z "$PROJECT_NUMBER" && "$GCLOUD" == 1 ]]; then
+  PROJECT_NUMBER=$(gc projects describe "$PROJECT_ID" --format='value(projectNumber)' 2>/dev/null || true)
+fi
+if [[ -z "$PROJECT_NUMBER" ]]; then
+  open_url "https://console.cloud.google.com/iam-admin/settings?project=$PROJECT_ID"
+  say "Du siehst die Seite ${BOLD}„Einstellungen“${RESET} mit „Projektname“, „Projekt-ID“ und ${BOLD}„Projektnummer“${RESET} (nur Ziffern, z. B. 123456789012)."
+  ask PROJECT_NUMBER "Projektnummer hier abtippen:"
+fi
+write_env PROJECT_NUMBER "$PROJECT_NUMBER"
+if [[ "$SUPPORT_EMAIL" == *@gmail.com || "$SUPPORT_EMAIL" == *@googlemail.com ]]; then
+  warn "${SUPPORT_EMAIL} ist eine Gmail-Adresse — Google nimmt den Antrag nur mit einer Workspace-Firmenadresse an."
+  SKIPPED+=("Developer-Preview-Antrag mit einer Workspace-Firmenadresse stellen (Projektnummer $PROJECT_NUMBER) — ohne Freigabe kein Schreibzugriff")
+  pause
+else
+  open_url "https://docs.google.com/forms/d/e/1FAIpQLSd7BiMXXHDlUDkF7G0TSY5zfJbQwFNH3m6K_ZYFi3vCHLFbng/viewform"
+  say "Du siehst das Google-Formular ${BOLD}„Google Workspace Developer Preview Program“${RESET}."
+  step "Given name / Surname / Company name / Company website: deine Angaben (Website z. B. bobshop.de)."
+  step "Email for Developer Preview access: ${BOLD}${SUPPORT_EMAIL}${RESET}."
+  clip "$PROJECT_NUMBER"
+  step "Google Cloud Project number: einfügen (Strg+V / ⌘V)."
+  step "Products of interest: Häkchen bei ${BOLD}Sheets${RESET} · Program Terms: Häkchen · „Submit“ / „Senden“."
+  say "Kontrolle: „Ihre Antwort wurde gespeichert“."
+  pause "Wenn ja: Enter."
+  warn "Die Freigabe kommt per E-Mail an ${SUPPORT_EMAIL}, meist nach einigen Tagen. Bis dahin meldet Claude beim Schreiben „not enrolled“ — die weiteren Schritte kannst du trotzdem jetzt erledigen."
+  SKIPPED+=("Auf Googles Freigabe-E-Mail (Developer Preview) warten, dann Schritt 11 (Test) wiederholen")
+fi
+
+# ── 6 ─────────────────────────────────────────────────────────────────────
 stage "Zustimmungsbildschirm (Google Auth Platform)"
 open_url "https://console.cloud.google.com/auth/overview?project=$PROJECT_ID"
 say "Du siehst ${BOLD}„Übersicht über OAuth“${RESET}: ein Bild mit Wolke, „Google Auth Platform noch nicht konfiguriert“, blauer Knopf ${BOLD}„Erste Schritte“${RESET}."
@@ -344,7 +375,7 @@ if ! confirm "War „Intern“ wählbar und ist gewählt?"; then
   SKIPPED+=("Zielgruppe Extern: Team-Adressen als Testnutzer eintragen oder App veröffentlichen — mit Federico klären")
 fi
 
-# ── 6 ─────────────────────────────────────────────────────────────────────
+# ── 7 ─────────────────────────────────────────────────────────────────────
 stage "Berechtigungen (Scopes) eintragen"
 open_url "https://console.cloud.google.com/auth/scopes?project=$PROJECT_ID"
 say "Du siehst die Seite ${BOLD}„Datenzugriff“${RESET} mit dem Knopf ${BOLD}„Bereiche hinzufügen oder entfernen“${RESET}."
@@ -355,7 +386,7 @@ step "„Zur Tabelle hinzufügen“ → unten „Aktualisieren“ → die Leiste
 say "Kontrolle: die Seite zeigt 4 Bereiche, verteilt auf „Sensible Bereiche“ und „Eingeschränkte Bereiche“ — das ist richtig."
 pause "Wenn 4 Bereiche gespeichert sind: Enter."
 
-# ── 7 ─────────────────────────────────────────────────────────────────────
+# ── 8 ─────────────────────────────────────────────────────────────────────
 stage "OAuth-Client anlegen (hier entstehen ID + Secret)"
 open_url "https://console.cloud.google.com/auth/clients/create?project=$PROJECT_ID"
 say "Du siehst die Seite ${BOLD}„OAuth-Client-ID erstellen“${RESET} mit der Auswahl ${BOLD}„Anwendungstyp“${RESET}."
@@ -373,7 +404,7 @@ until confirm "Sind beide Werte im Passwort-Manager gespeichert?"; do
   warn "Bitte erst speichern — das Secret ist später nicht mehr vollständig sichtbar."
 done
 
-# ── 8 ─────────────────────────────────────────────────────────────────────
+# ── 9 ─────────────────────────────────────────────────────────────────────
 stage "Connector in Claude hinterlegen"
 open_url "https://claude.ai/settings/connectors"
 say "Du siehst in Claude die Seite ${BOLD}„Connectors“${RESET} mit den Reitern „Discover“ und „Your connectors“."
@@ -390,25 +421,25 @@ say "Seite 2 des Fensters: „Authentication: Always required (Detected)“ blei
 step "„OAuth Client ID“ und „OAuth Client Secret“ aus dem Passwort-Manager einfügen → unten ${BOLD}„Add“${RESET}."
 say "Kontrolle: „${CONNECTOR_NAME}“ steht jetzt in der Connector-Liste (Reiter „Your connectors“)."
 if ! confirm "Steht „${CONNECTOR_NAME}“ in der Liste?"; then
-  SKIPPED+=("Schritt 8 durch den Primary Owner: Custom Connector '$CONNECTOR_NAME', URL $SERVER_URL, Client-ID/Secret aus dem Passwort-Manager")
+  SKIPPED+=("Schritt 9 durch den Primary Owner: Custom Connector '$CONNECTOR_NAME', URL $SERVER_URL, Client-ID/Secret aus dem Passwort-Manager")
   warn "Notiert — der Primary Owner trägt den Connector ein. Danach bitte hier weitermachen."
   pause
 fi
 
-# ── 9 ─────────────────────────────────────────────────────────────────────
+# ── 10 ─────────────────────────────────────────────────────────────────────
 stage "Dich selbst verbinden"
 open_url "https://claude.ai/settings/connectors"
 step "In der Liste: ${BOLD}„${CONNECTOR_NAME}“${RESET} → ${BOLD}„Connect“${RESET} / „Verbinden“."
 step "Google-Fenster: das Arbeits-Google-Konto (${SUPPORT_EMAIL}) wählen."
 if [[ "$AUDIENCE" == extern ]]; then
   note "Erscheint „Google hat diese App nicht überprüft“: „Erweitert“ → „Weiter zu …“ klicken — das ist erwartet."
-  note "Erscheint „Zugriff blockiert … Fehler 403“: deine Adresse fehlt bei den Testnutzern (Schritt 5) — dort eintragen, dann hier erneut „Connect“."
+  note "Erscheint „Zugriff blockiert … Fehler 403“: deine Adresse fehlt bei den Testnutzern (Schritt 6) — dort eintragen, dann hier erneut „Connect“."
 fi
 step "Berechtigungen: ${BOLD}„Alle auswählen“${RESET} (4 Häkchen) → ${BOLD}„Weiter“${RESET} / „Zulassen“."
 say "Kontrolle: „${CONNECTOR_NAME}“ zeigt in der Liste ein Häkchen / „Connected“."
 pause "Wenn ja: Enter."
 
-# ── 10 ────────────────────────────────────────────────────────────────────
+# ── 11 ────────────────────────────────────────────────────────────────────
 stage "Test: lesen und schreiben"
 say "Es öffnet sich ein leeres Test-Sheet (nicht die Hub-Tabelle). Link aus der Adresszeile kopieren."
 open_url "https://sheets.new"
@@ -420,12 +451,13 @@ step "In Cowork einfügen (Strg+V), <LINK> durch deinen Sheet-Link ersetzen, abs
 if confirm "Steht 'Test von Claude' jetzt im Sheet?"; then
   printf '  %s✓ Connector funktioniert — lesen UND schreiben%s\n' "$GREEN" "$RESET"
 else
-  SKIPPED+=("Test fehlgeschlagen — an Federico eskalieren (Schritt 10, was Claude geantwortet hat)")
+  note "Antwortet Claude mit „not enrolled“ / „nicht im erforderlichen Google-Programm“: die Developer-Preview-Freigabe (Schritt 5) fehlt noch — nach Googles E-Mail hier wiederholen."
+  SKIPPED+=("Test fehlgeschlagen — an Federico eskalieren (Schritt 11, was Claude geantwortet hat)")
   warn "Kein Problem — der Abschluss listet das als offen; bitte an Federico melden."
 fi
 pause
 
-# ── 11 ────────────────────────────────────────────────────────────────────
+# ── 12 ────────────────────────────────────────────────────────────────────
 stage "Team-Nachricht"
 TEAM_MSG='Der Connector „Google Sheets" ist für alle freigeschaltet. Einmalig: claude.ai → Einstellungen → Connectors → Google Sheets → „Verbinden" → mit dem Arbeits-Google-Konto anmelden → „Zulassen".
 Danach in Cowork über „+" → Connectors auswählbar. Dauer: unter einer Minute, nichts zu installieren.'
