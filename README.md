@@ -29,6 +29,7 @@ every handoff so nothing quietly drifts.
 | **Process Documentation** | Capture a whole process across roles — the overview for the manager. | *"Document a process"*, *"map the end-to-end process"* |
 | **Process Exploration** | **Rethink** a process instead of just capturing it: from a rough idea to a clear target picture, every step questioned, tagged for AI-readiness at the end. | *"Explore a process"*, *"rethink this process"*, *"design the target process"* |
 | **Visualizer** | Turn an SOP or a Process Documentation into a clean HTML view for checking. | *"Visualize this"* |
+| **Pitch** | Turn an idea into a one-page, management-ready pitch for the project list — six fixed questions, pre-filled from an existing SOP or process doc, only the gaps asked. | *"Pitch this idea"*, *"submit a project"* |
 | **Escalation** | Stuck? Send the whole session to your consultant in two clicks. | *"Escalate"* |
 
 **How handoffs work:** everything is a **file in your workspace** — never copied out of the chat.

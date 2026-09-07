@@ -1,0 +1,28 @@
+schema_version: "1.1"
+name: pitch-de-from-sop
+description: >
+  German user wants to pitch automating the supplier price update; a finished SOP for the manual
+  task already sits in 03_Output. Tests pre-fill from the SOP, the six-question schema in the fixed
+  German wording, the 2–3-sentence cap, the clarity review, the project-list row, and the /eli5 offer.
+tags: [pitch, de]
+
+context:
+  scaffold_script: scaffold.sh
+
+execution:
+  prompt: |
+    Ich möchte ein Projekt einreichen: Die halbjährliche Übernahme der Lieferantenpreise soll Claude
+    übernehmen (Dubletten- und EAN-Prüfung, SVERWEIS, UVP-Check), ich prüfe nur noch das Protokoll.
+    Die SOP dazu liegt schon im Ordner. Nicht-interaktiver Lauf: nimm als bestätigt an — heute
+    kostet mich das 2 Tage pro Halbjahr, danach schätze ich 2 Stunden; KPI Zeitersparnis; Einkauf
+    setzt es um, erster Schritt ist ein Testlauf mit der Frühjahrsliste; keine sensiblen Daten.
+  max_turns: 40
+  timeout_seconds: 600
+  allowed_tools: [Read, Glob, Grep, Skill, Agent, Bash, Write, Edit]
+
+runs: 3
+
+expected_outcome: >
+  One pitch-*.md in 03_Output, in German, with the six fixed questions as headings in order, each
+  answered in at most three sentences, sources listing the SOP, Vorher 2 Tage → Nachher 2 Stunden
+  under Impact, a project-list row at the end, a clarity review run, and a closing /eli5 offer.

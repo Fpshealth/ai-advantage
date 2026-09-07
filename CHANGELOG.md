@@ -8,6 +8,15 @@ version control, if any.
 > non-git distribution), so there is no manual bump. The version headings below are human
 > release notes / milestones, not the installed version string.
 
+## [1.3.0] — Pitch skill: one-page project pitches for the project list
+
+- New skill `pitch` ("Pitch: Team-AI"): six fixed management questions, two bundled interview rounds,
+  pre-fill from `sop-*`, `process-doc-*`, `target-process-*`, `eli5-*` files, compression to 2–3
+  sentences per question, Markdown only, closes with a paste-ready project-list row and an `/eli5` offer.
+- New agent `pitch-clarity-review`: cold-read of the finished pitch as a manager with one minute,
+  ≤3 ranked ask-back questions, verdict `clear`/`revise`.
+- Eval case `pitch-de-from-sop`.
+
 ## [1.2.3] — pruning-skills rewritten in the writing-for-agents register
 
 - `pruning-skills`: one-line description (no other skills named), leading-word bullets instead of a
