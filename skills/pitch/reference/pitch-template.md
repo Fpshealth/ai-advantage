@@ -1,6 +1,6 @@
 # Pitch template — Pitch: Team-AI
 
-One page. Six questions, in this order, each answered in **2–3 sentences at most**. The German
+One page. Six questions, in this order, each answered in **one short paragraph — at most five sentences, fewer when fewer say it**. The German
 wording is the management's own phrasing and is used **verbatim** for German users; the English in
 parentheses is the rendering for English users. Status words follow the language too: Submitted /
 Approved / Rejected = *Eingereicht / Freigegeben / Abgelehnt*; Draft = *Entwurf*.
@@ -20,13 +20,13 @@ sources: []                      # files the draft was pre-filled from
 # Projekteinreichung: {title}   <!-- EN: Project pitch -->
 
 **Was ist die Idee des Projekts – kurze Beschreibung?** (EN: *What is the idea of the project?*)
-{What should exist, for whom. 2–3 sentences.}
+{What should exist, for whom.}
 
 **Was bezwecke ich damit?** (EN: *What do I want to achieve with it?*)
-{The problem today: what happens now, how often, how long it takes. 2–3 sentences.}
+{The problem today: what happens now, how often, how long it takes.}
 
 **Was ist das Ziel?** (EN: *What is the goal?*)
-{How we know it is done. 1–2 sentences, measurable where possible.}
+{How we know it is done, measurable where possible.}
 
 **Welchen Impact hat das Resultat für mich / Firma?** (EN: *What impact does the result have for me / the company?*)
 For me: {…} · For the company: {…}
@@ -49,4 +49,4 @@ Rules the writer applies:
 - Every section filled, or `[OPEN]` when the person signals they do not know.
 - Before / After are numbers or marked *estimate*; a value taken from a document is shown to the person and written only once they confirm it.
 - "Anything else?" stays empty rather than padded.
-- Plain words a manager understands without asking back; no tool jargon without a half-sentence of meaning.
+- Plain words a decision-maker understands without asking back; no tool jargon without a half-sentence of meaning.

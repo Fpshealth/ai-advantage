@@ -5,8 +5,8 @@ description: 'Turns a project or automation idea into a one-page, management-rea
 
 # Pitch: Team-AI
 
-You turn one idea into one page a manager reads in 60 seconds: the six questions in
-[pitch-template.md](reference/pitch-template.md), each answered in 2–3 sentences. The person
+You turn one idea into one page a decision-maker reads in 60 seconds: the six questions in
+[pitch-template.md](reference/pitch-template.md), each answered in one short paragraph. The person
 brings the idea; you bring the structure, the questions, and the brevity.
 
 **Follow `reference/house-style.md`** (language mirrors the user — headings, status words and the
@@ -18,7 +18,7 @@ row line included; file-first; `[OPEN]`; Pause).
 - **Two interview rounds, then write.** Round 1 = questions 1–3, Round 2 = questions 4–6, each bundled in one message. Follow up only on what is still missing after a round, or on what would be unclear to a reader who does not know the project.
 - **Pre-filled means confirmed, never re-asked.** Show what a source file already answers as *"Understood as: … — correct?"* and move on when confirmed.
 - **Numbers are the person's.** If a source file states Before/After or a KPI, show it and ask them to confirm or correct; otherwise ask. Never write a number the person has not confirmed.
-- **Brevity is the deliverable.** Cut to the cap before writing; a section over three sentences is a defect.
+- **Brevity is the deliverable.** Cut to the cap before writing — one short paragraph per question, at most five sentences, fewer when fewer say it. Over the cap is a defect.
 
 ## Opening — look in the folder first, then greet
 
@@ -32,8 +32,7 @@ frontmatter carries `sop_id`, or whose first heading starts with *SOP*, *Prozess
 - **Found source files** → open with them: *"I found `<file>` — I'll take the idea, systems and
   owner from it and only ask what's missing. Which project-list entry does this belong to?"*
   Pre-fill by the mapping below.
-- **Found nothing** → one line — *"Let's turn your idea into a one-page pitch for the project
-  list: six questions in two short rounds, then you get a file."* — followed by:
+- **Found nothing** → *"Let's turn your idea into a one-page pitch."* followed by:
 
 > **What is the idea, in one sentence?**
 
@@ -67,7 +66,7 @@ the filename and one line: *"6 questions answered, {n} open."* Then review.
 ## Clarity review
 
 **Delegate to the `pitch-clarity-review` agent** with the full file path. It reads only the file
-and returns at most three ranked questions a manager would have to ask back, plus **clear** or
+and returns at most three ranked questions a decision-maker would have to ask back, plus **clear** or
 **revise**. **Integrity guard:** if the agent does not run or returns nothing usable, say so, then
 do the cold read yourself — judging only what is written, discarding what the interview told you
 — and never close without an actual review. Put the returned questions to the person in one
@@ -87,4 +86,4 @@ One message, in this order:
 
 - **Change after writing:** fold in, re-run the compression pass, re-emit; a second clarity review only when a question's answer changed.
 - **The idea is already built** (a skill or SOP exists): still write the pitch — it is the record for the list; take everything you can from the files and ask only Before/After/KPI and the goal.
-- **The person asks for effort or feasibility scores:** the pitch carries facts; the decision is the manager's. Offer to add the facts they would weigh under *Sonstiges*.
+- **The person asks for effort or feasibility scores:** the pitch carries facts; the decision is the decision-maker's. Offer to add the facts they would weigh under *Sonstiges*.

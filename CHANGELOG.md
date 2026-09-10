@@ -13,7 +13,9 @@ version control, if any.
   (template rule aligned); a KPI that does not measure the goal gets a better proposal; any document
   describing the project counts as a pre-fill source; follow-ups also cover what a reader who does not
   know the project would find unclear; the integrity guard says so when the review agent did not run;
-  English confirmation phrase replaces the German leftover; shorter greeting.
+  English confirmation phrase replaces the German leftover; greeting cut to one line.
+- `pitch` + `pitch-clarity-review` + template: reader is a *decision-maker* (manager, executive or CEO);
+  cap per question is one short paragraph, at most five sentences (was 2–3); eval grader aligned.
 
 ## [1.3.1] — Pitch row uses Typ + Status, no separate Pitch column
 - The project-list row the skill emits now sets Type = `Projekt-Pitch` and Status = `Eingereicht`;
