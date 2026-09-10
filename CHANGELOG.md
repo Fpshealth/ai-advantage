@@ -8,6 +8,13 @@ version control, if any.
 > non-git distribution), so there is no manual bump. The version headings below are human
 > release notes / milestones, not the installed version string.
 
+## [1.3.2] — Pitch: numbers from documents may be confirmed, KPI challenge, broader sources
+- `pitch`: Before/After/KPI found in a source file are shown for confirmation instead of being re-asked
+  (template rule aligned); a KPI that does not measure the goal gets a better proposal; any document
+  describing the project counts as a pre-fill source; follow-ups also cover what a reader who does not
+  know the project would find unclear; the integrity guard says so when the review agent did not run;
+  English confirmation phrase replaces the German leftover; shorter greeting.
+
 ## [1.3.1] — Pitch row uses Typ + Status, no separate Pitch column
 - The project-list row the skill emits now sets Type = `Projekt-Pitch` and Status = `Eingereicht`;
   the earlier separate "Pitch" column is gone. Close message and template comment updated to match.

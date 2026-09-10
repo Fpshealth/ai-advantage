@@ -47,6 +47,6 @@ Beitragsliste / project-list row: {date} | {name} | {department} | Projekt-Pitch
 Rules the writer applies:
 
 - Every section filled, or `[OPEN]` when the person signals they do not know.
-- Before / After are numbers or marked *estimate*; they come from the person, never from a document.
+- Before / After are numbers or marked *estimate*; a value taken from a document is shown to the person and written only once they confirm it.
 - "Anything else?" stays empty rather than padded.
 - Plain words a manager understands without asking back; no tool jargon without a half-sentence of meaning.
