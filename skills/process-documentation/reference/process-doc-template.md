@@ -1,7 +1,7 @@
 # Process Documentation Standard (Template)
 
-The bird's-eye standard for a **Process Documentation**. Every section is filled, or
-marked `[OPEN]` if genuinely unknown. Write it exactly in this shape.
+The bird's-eye standard for a **Process Documentation**. Use exactly this shape. Fill every
+section, or mark it `[OPEN]` if genuinely unknown.
 
 ````markdown
 ---
@@ -80,14 +80,14 @@ status in a system.}
 
 ## Notes for writing
 
-- Keep the step rows bird's-eye: one row per meaningful handover, not per click. For click-level
-  detail, that task belongs in the **SOP Candidates** list and is documented later with
-  `SOP Creation: Team-AI`.
+- Keep the step rows bird's-eye: one row per meaningful handover, not per click. If a task needs
+  click-level detail, put it in the **SOP Candidates** list; `SOP Creation: Team-AI` documents it
+  later.
 - **Anchor everything to a step.** Tools, handovers, systems and compliance rules live *in the
   relevant row* of the Process Flow table — never as a detached list.
-- The two fields that make this doc useful for later optimization are **Definition of Done** and
-  the short **Bottleneck & Lean Reflection** — never leave them thin.
+- Never leave **Definition of Done** or the short **Bottleneck & Lean Reflection** thin. These two
+  fields make this doc useful for later optimization.
 - On **Pause**: set `version: 1.0.0-wip`, status `draft`, list missing phases under an `## Open`
   block, write as `process-doc-{slug}-{date}-wip.md` (house style §7).
-- After the gap check folds in answers, bump to `1.1.0` (substantive) or `1.0.1` (minor) and add a
-  changelog line.
+- After folding in the Fresh-Eyes Review answers, bump to `1.1.0` (substantive) or `1.0.1` (minor)
+  and add a changelog line.

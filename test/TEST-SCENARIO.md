@@ -125,7 +125,7 @@ greeting), asks only for the gaps, then writes `sop-update-prices-<date>.md` to 
 ✅ **Check**
 - [ ] Opens by referencing the found Starter Pack by name. *(Handoff works.)*
 - [ ] Interview captures Signal/Action/Confirmation/Tool per step; one task only.
-- [ ] **Phase 6 gap check** delegates to the `fresh-eyes-review` agent, passing the full
+- [ ] **Phase 6 Fresh-Eyes Review** delegates to the `fresh-eyes-review` agent, passing the full
       `03_Output/…` path + type `SOP`; the agent reads **only** that draft (not the interview) and
       returns ranked blocking gaps — e.g. "what do you do with rows that have no EAN?" — **no
       fixed number, no style nits**. If delegation doesn't fire, the integrity guard runs the
@@ -155,7 +155,7 @@ table, bottleneck/value reflection, KPIs, Glossary, **SOP Candidates** list).
 - [ ] Step table is **one row per handover, not per click** (bird's-eye, not a worker checklist).
 - [ ] "Update Prices" appears in the **SOP Candidates** list (plain bullets, no ranking/table).
 - [ ] In-house terms you used (e.g. "PIM", "hot list") are captured in the Glossary.
-- [ ] **Phase 7 gap check** delegates to the `fresh-eyes-review` agent with the full `03_Output/…`
+- [ ] **Phase 7 Fresh-Eyes Review** delegates to the `fresh-eyes-review` agent with the full `03_Output/…`
       path + type `Process Documentation`; the review is **bird's-eye** (structural breaks only —
       undefined trigger, handover with no recipient, role from nowhere), **lighter** than the SOP
       review, no fixed number. Integrity guard runs the inline read if delegation doesn't fire.

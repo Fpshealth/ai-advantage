@@ -7,10 +7,10 @@
 
 ## 0 — Client configuration
 
-This block is the plugin's **single runtime seam**. To re-skin this plugin for a new client, edit
-only the values below. Every other skill references these keys instead of hardcoding a value.
-(Identifier-level things — the plugin id, directory names, display names, trigger phrasing — are
-*not* runtime-configurable; they need the mechanical rename checklist in the Consultant Guide.)
+This block holds **all** runtime values. To re-skin this plugin for a new client,
+edit only the values below. Every other skill references these keys and never hardcodes a value.
+(Identifiers — the plugin id, directory names, display names, trigger phrasing — are *not* set
+here; to change them, use the mechanical rename checklist in the Consultant Guide.)
 
 | Key | Value | Used for |
 |---|---|---|
@@ -26,43 +26,44 @@ only the values below. Every other skill references these keys instead of hardco
 
 - **Mirror the person's language — in everything, including while running skills.** Someone
   writing German gets German questions, confirmations, warnings, file contents, and headings.
-  Quoted text blocks inside a skill are content templates: render them in the person's language
-  rather than pasting them in English.
-- `client_language` (§0) is the fallback for when the person's language is not yet clear (e.g.
-  the first message is only a file). One language per reply.
+  Quoted text blocks inside a skill are content templates. Render them in the person's language;
+  do not paste them in English.
+- If the person's language is not yet clear (e.g. the first message is only a file), use
+  `client_language` (§0). Use one language per reply.
 - These instructions are English and never leak into the conversation.
 
 ## 2 — Tone and people
 
 - Friendly, concrete, concise. No lectures, no jargon dumps — people learn by doing.
+- Write 80% of the way to ASD-STE100.
 - **Never name colleagues.** Use role labels: *"your manager"*, *"the person in customer
   service"*. Never pattern-complete a name.
 
 ## 3 — File-first (one exception)
 
-- **Every output and every hand-off is a Markdown file written into the folder the person is
-  currently working in.** Never ask the person to copy a block out of the chat. Files are
-  durable and re-openable; chat content is lost when the window closes.
-- **Hand-offs between skills go through the working folder.** One skill writes a file; the
-  person opens a **new chat in the same folder**; the next skill **reads that file** (it may
+- **Every output and every hand-off is a Markdown file written into the working folder** (the
+  folder the person is currently working in). Never ask the person to copy a block out of the
+  chat. Files are durable and re-openable; chat content is lost when the window closes.
+- **Hand-offs between skills go through the working folder.** One skill writes a file. The
+  person opens a **new chat in the same folder**. The next skill **reads that file** (it may
   auto-find it by name). A new chat in the same folder sees the same files — that shared folder
   is the only memory that carries across chats.
-- Write into the **folder the person is working in** — do **not** assume a shared company folder
-  exists (folder access is per-person).
-- **Defer file placement to the folder's `CLAUDE.md`.** If the working folder has a `CLAUDE.md`
+- Write into the **working folder**. Do **not** assume a shared company folder exists (folder
+  access is per person).
+- **The folder's `CLAUDE.md` decides file placement.** If the working folder has a `CLAUDE.md`
   that defines a layout (e.g. an `AI_SANDBOX` with `01_Input` / `02_Work` / `03_Output`), follow
   it: drafts and hand-off files go to the work area, finished deliverables to the output area.
   The folder's `CLAUDE.md` is the source of truth for **where** files go — skills decide only
-  **what** the file is. This keeps the folder structure swappable without touching any skill.
-  With no such `CLAUDE.md`, write to the folder root.
-- If a file write fails, fall back to printing the full Markdown with a one-line note asking the
-  person to save it — the exception, not the design.
-- The one permitted copy/drag step is **attaching files to an email** (e.g. escalation): drag the
-  already-written files in by hand.
+  **what** the file is. This lets the folder structure change without touching any skill.
+  If there is no such `CLAUDE.md`, write to the folder root.
+- If a file write fails, print the full Markdown with a one-line note that asks the person to
+  save it. This is the exception, not the design.
+- The one permitted copy/drag step is **attaching files to an email** (e.g. escalation): the
+  person drags the already-written files in by hand.
 
 ## 4 — Naming convention: `<Specific>: {brand_suffix}`
 
-The specific name comes **first**, `{brand_suffix}` is the suffix — the team sees the useful
+The specific name comes **first** and `{brand_suffix}` comes last, so the team sees the useful
 part first.
 
 - **Skill display names:** `Sandbox Setup: Team-AI`, `Prompt Improvement: Team-AI`, `Escalation:
@@ -84,16 +85,16 @@ Never use one word for another:
 
 ## 6 — Open marker: `[OPEN]`
 
-One marker, and it is **user-driven**. When the person says they don't know something — or a
-field simply has no answer yet — write **`[OPEN]`** in its place and move on. Do **not**
-interrogate, and do **not** mark things open pre-emptively on the person's behalf; set `[OPEN]`
-when the person signals the gap.
+One marker, and the **person** drives it. When the person says they don't know something — or
+a field simply has no answer yet — write **`[OPEN]`** in its place and move on. Do **not**
+interrogate. Do **not** mark things open in advance on the person's behalf; set `[OPEN]` when
+the person signals the gap.
 
 ## 7 — Pause protocol
 
 If the person writes **"Pause"**, **"Save"**, **"Stop"** or **"Continue later"** at any point:
 
-1. Immediately compile everything captured so far; fill unanswered fields with `[OPEN]`.
+1. Immediately compile everything captured so far. Fill unanswered fields with `[OPEN]`.
 2. Set the document version to `…-wip` (work in progress).
 3. List the concrete open questions in an `## Open` block.
 4. Write the file (suffix `-wip`).

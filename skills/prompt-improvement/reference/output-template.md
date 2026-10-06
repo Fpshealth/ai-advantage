@@ -55,10 +55,9 @@ Clear starting signal at the end of the prompt.
 
 ## Section 3: The improved prompt
 
-A single Markdown code block. The relevant building blocks with XML tags in the order of the
-framework; optional, not-relevant building blocks (5 History) are left out. For ❌ building blocks,
-use the placeholder `[PLEASE ADD: ...]`. Building block 10 is the instruction at the end (no tag).
-Example:
+One Markdown code block. Put the relevant points in it with XML tags, in framework order. If an
+optional point is not relevant (e.g. 5 History), leave it out. For ❌ points, use the placeholder
+`[PLEASE ADD: ...]`. Point 10 is the closing instruction, with no tag. Example:
 
 ````
 ```
@@ -105,9 +104,9 @@ Now write the reply email to the customer.
 
 ## Section 4: Next steps
 
-Exactly these two steps, clearly separated (do not change the wording). After that, **you wait**
-until the person comes back — questions about SOP or escalation only come once they've reported
-whether it worked.
+Use exactly these two steps, clearly separated. Do not change the wording. After that, **wait**
+until the person comes back. Ask about SOP or escalation only after they have reported whether it
+worked.
 
 > **1. Review & correct.** Open the file `prompt-improvement-….md` in your folder. Go through the
 > 10 points — wherever it says `🟡` or `❌`, I guessed or something is missing. Add it directly in

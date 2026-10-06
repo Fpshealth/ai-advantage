@@ -1,8 +1,8 @@
 # Pitch template — Pitch: Team-AI
 
-One page. Six questions, in this order, each answered in **2–3 sentences at most**. The German
-wording is the management's own phrasing and is used **verbatim** for German users; the English in
-parentheses is the rendering for English users. Status words follow the language too: Submitted /
+One page. Six questions, in this order, each answered in **2–3 sentences at most**. For German
+users, use the German wording **verbatim**: it is the management's own phrasing. For English users,
+use the English in parentheses. Status words follow the language too: Submitted /
 Approved / Rejected = *Eingereicht / Freigegeben / Abgelehnt*; Draft = *Entwurf*.
 
 File name: `pitch-{short-slug}-{YYYY-MM-DD}.md` (`-wip` suffix while paused).
@@ -46,7 +46,7 @@ Beitragsliste / project-list row: {date} | {name} | {department} | Projekt-Pitch
 
 Rules the writer applies:
 
-- Every section filled, or `[OPEN]` when the person signals they do not know.
-- Before / After are numbers or marked *estimate*; they come from the person, never from a document.
-- "Anything else?" stays empty rather than padded.
-- Plain words a manager understands without asking back; no tool jargon without a half-sentence of meaning.
+- Fill every section. If the person signals they do not know, write `[OPEN]`.
+- Before / After are numbers or marked *estimate*. They come from the person, never from a document.
+- Leave "Anything else?" empty rather than padded.
+- Use plain words a manager understands without asking back. Give any tool jargon a half-sentence of meaning.

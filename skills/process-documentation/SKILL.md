@@ -16,18 +16,18 @@ jargon: "cycle time" → "actual work time"; never say "SIPOC", "DMAIC", "VSM".
 
 ## Iron rules
 
-- **Anchor every detail to a step.** Tools, handovers, systems, compliance rules belong *in the
+- **Anchor every detail to a step.** Tools, handovers, systems and compliance rules belong *in the
   relevant row* of the process — never as a flat, position-less list. If the person gives a bare
   list ("we use Shopify, Excel, Outlook"), ask: *"Which step do you use that at?"*
 - **Actual, not ideal.** If they describe how it *should* run, redirect: *"Please describe what
   actually happens — not what should happen in theory."*
-- **One question per turn**, except the targeted anchor-probes inside the process-walk phase.
-- **Bird's-eye altitude.** One row per meaningful handover, not per click. Click-level tasks go into
-  the **SOP Candidates** list and are documented later with `SOP Creation: Team-AI`.
-- **File-first:** write the document into the current working folder. Honour the **Pause** protocol
+- **One question per turn.** Exception: the targeted anchor-probes in Phase 2.
+- **Bird's-eye altitude.** One row per meaningful handover, not per click. Click-level tasks go
+  into the **SOP Candidates** list; `SOP Creation: Team-AI` documents them later.
+- **File-first:** write the document into the current working folder. Obey the **Pause** protocol
   (house style §7). Never ask the person to copy a block out of the chat.
-- Use the full standard in [process-doc-template.md](reference/process-doc-template.md) — every
-  section, or `[OPEN]` if truly unknown.
+- Use the full standard in [process-doc-template.md](reference/process-doc-template.md). Fill every
+  section, or mark it `[OPEN]` if truly unknown.
 
 ## Opening (concise — no greeting ritual)
 
@@ -49,23 +49,24 @@ jargon: "cycle time" → "actual work time"; never say "SIPOC", "DMAIC", "VSM".
 > does it, **which tool or system** is used — and as soon as another person takes over, **what you
 > hand off to whom** and what you get back.
 
-Then anchor-probe each step that needs it: *"At what point do you access [system]?"* · *"Who
+If the first answer is under ~3 sentences, ask for a fuller walk-through before probing. Then
+anchor-probe each step that needs it: *"At what point do you access [system]?"* · *"Who
 checks that before it moves on?"* · *"What exactly do you hand off there — file, email, verbally?"*
 · *"Is there a legal requirement at this step you have to follow exactly?"*
-If the first answer is under ~3 sentences, ask for a fuller walk-through before probing. Vague
-after a couple of focused follow-ups → write what you have, mark the row `[OPEN]`, move on.
+Still vague after a couple of focused follow-ups → write what you have, mark the row `[OPEN]`,
+move on.
 
 Close Phase 2 with **Definition of Done:** *"How do you check that the result is correct before
 you hand it off?"*
 
 **Phase 3 — Exceptions & Metrics (one question each).**
 1. **Last exception case:** the last concrete case that didn't go as planned — at which step, how
-   was it resolved? Follow-ups: rough frequency (out of 100 runs) and at what point / to whom it
-   escalates.
+   was it resolved? Follow-ups: rough frequency (out of 100 runs), and at what point / to whom
+   it escalates.
 2. **Time & Volume:** actual work time per run; total elapsed time from trigger to result
-   (including wait times); handled individually or in batches (if so, what size)?
+   (including wait times); handled individually or in batches (if batches, what size)?
 
-**Phase 4 — Reflection (one question each; always *after* the narrative, never mid-walk).**
+**Phase 4 — Reflection (one question each; always *after* Phase 2, never during it).**
 1. **Bottleneck:** Where does waiting or backlog regularly build up? Which step would need to
    improve for the whole process to run more efficiently?
 2. **Value:** Which steps deliver no real value from the customer's point of view — what's
@@ -77,27 +78,30 @@ you hand it off?"*
 2. **KPIs:** How is success currently measured (KPIs, reports)? If unknown: who on the team could
    best answer that?
 
-Throughout: capture team-internal terms and abbreviations the person uses, automatically, into the
-**Glossary** — without asking separately.
+Throughout, capture the person's team-internal terms and abbreviations into the **Glossary**
+automatically — without asking separately.
 
-**Phase 6 — Write the file.** Compile into `process-doc-{short-slug}-{YYYY-MM-DD}.md` in the
-current working folder, using [process-doc-template.md](reference/process-doc-template.md). Fill
+**Phase 6 — Write the file.** Compile into `process-doc-{short-slug}-{YYYY-MM-DD}.md` in
+the current working folder, using [process-doc-template.md](reference/process-doc-template.md). Fill
 the **SOP Candidates** as a short plain bullet list of task names only — tasks within this process
 that would be worth their own SOP. *(No slugs, no ranking, no table — prioritization is a separate
 later step.)* Then a short message: filename and a one-line summary (*"{N} steps, {M} SOP
 Candidates"*). Then go to Phase 7.
 
-**Phase 7 — Fresh-Eyes Review (closing quality pass).** **Delegate the review to the
-`fresh-eyes-review` agent** — give it the **full path** to the draft you just wrote (include its
-folder, e.g. `03_Output/…`) and tell it the document type is **`Process Documentation`** (judge
-bird's-eye comprehension, lighter touch — not click-level). It returns the
+**Phase 7 — Fresh-Eyes Review (closing quality pass).**
+**Delegate the review to the `fresh-eyes-review` agent.** Give it the **full path** to the draft you
+just wrote (include its folder, e.g. `03_Output/…`) and the document type
+**`Process Documentation`** (judge bird's-eye comprehension, lighter touch — not click-level). It returns the
 blocking gaps, ranked. These are structural breaks only — an undefined trigger, a handover with no
-recipient, a role that appears from nowhere. **Integrity guard:** if the agent does not run or
-returns nothing usable, do the fresh-eyes read yourself — discarding everything the interview told
-you that isn't in the document — before closing; **never emit the all-clear without an actual
-review.** Ask the user the returned gaps as a short list **ordered by blocking impact**, **with no
-fixed number** (sometimes zero); the person can write **"Pause"** to continue later (house style
-§7). Fold the answers in, bump the version, mark any minor remaining gaps `[OPEN]`. If nothing
+recipient, a role that appears from nowhere.
+
+**Integrity guard — never emit the all-clear without an actual review.** If the agent does not run
+or returns nothing usable, do the Fresh-Eyes Review yourself before closing: discard everything the
+interview told you that isn't in the document.
+
+Ask the person the returned gaps as a short list, **ordered by blocking impact**, **with no fixed
+number** (sometimes zero). The person can write **"Pause"** to continue later (house style §7).
+Fold the answers in, bump the version, mark any minor remaining gaps `[OPEN]`. If nothing
 blocks, say so plainly. Close:
 
 > Thank you. Please forward the process documentation by email to your manager for approval (just
@@ -107,8 +111,8 @@ blocks, say so plainly. Close:
 ## Special cases
 
 - **Pasted SOP Starter Pack or existing SOP** → that is one task, not a whole process. Take useful
-  context from it, but document the **end-to-end process** around it; list the task under SOP
+  context from it, but document the **end-to-end process** around it. List the task under SOP
   Candidates.
-- **Change after Phase 6:** fold in, bump patch version, re-emit the file.
-- **Frustration mid-walk:** acknowledge it briefly and park it for the reflection phase — *"I'll
-  note that for the reflection at the end — let's finish walking through the process first."*
+- **Change after Phase 6:** fold it in, bump patch version, re-emit the file.
+- **Frustration during Phase 2:** acknowledge it briefly and park it for Phase 4 (Reflection) —
+  *"I'll note that for the reflection at the end — let's finish walking through the process first."*

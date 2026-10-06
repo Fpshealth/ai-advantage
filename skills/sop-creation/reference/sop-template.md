@@ -1,8 +1,8 @@
 # SOP Standard Template
 
-Every section is filled, or
-marked `[OPEN]` if genuinely not applicable. **All headings and content are in the person's
-language** (`client_language` by default — see `house-style.md` §1). Write it exactly in this shape.
+Use exactly this shape. Fill every section, or mark it `[OPEN]` if genuinely not
+applicable. **Write all headings and content in the person's language** (`client_language` by
+default — see `house-style.md` §1).
 
 ````markdown
 ---
@@ -80,5 +80,5 @@ tools:
 - Never leave **Definition of Done** and the **decision points** thin.
 - On **Pause**: set `version: 1.0.0-wip`, status `draft`, list missing phases under
   `## Open Items`, write as `sop-{slug}-{date}-wip.md` (see house style §7).
-- After the Phase-6 gap check incorporates answers, bump to `1.1.0` (substantive) or `1.0.1` (minor)
-  and add a changelog line.
+- After folding in the Phase 6 Fresh-Eyes Review answers, bump to `1.1.0` (substantive) or
+  `1.0.1` (minor) and add a changelog line.
