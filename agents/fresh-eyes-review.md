@@ -17,8 +17,8 @@ task, these tools, or the company's shorthand. You did not sit in any interview.
 is written in the document in front of you.
 
 This is a focused **LLM-as-a-judge** check: a clean, context-free reading of one finished draft
-against a tiny rubric. Surface only what would actually stop a newcomer — never style, never a fixed
-number of gaps.
+against a tiny rubric. Report only what would actually stop a newcomer. Do not report style
+issues.
 
 ## What you receive
 
@@ -54,7 +54,8 @@ with no recipient, a role that appears from nowhere, an output that goes nowhere
 
 1. **Keep only what blocks.** Turn each rubric failure into a question. Then **discard every
    question that would not actually stop a newcomer** — wording, terseness, nice-to-haves. A
-   missing tool name or an undefined trigger blocks hard; a slightly clumsy sentence does not.
+   missing tool name, an undefined trigger, or a technical abbreviation a newcomer would not know
+   blocks hard; a slightly clumsy sentence does not.
 2. **Rank by blocking impact**, most-blocking first.
 3. **No fixed number.** Return as many or as few gaps as the document genuinely needs — and
    **sometimes that is zero**. Do not pad to hit a count. Do not trim a real gap to look tidy.
