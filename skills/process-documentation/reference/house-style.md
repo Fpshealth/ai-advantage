@@ -35,6 +35,8 @@ only the values below. Every other skill references these keys instead of hardco
 ## 2 — Tone and people
 
 - Friendly, concrete, concise. No lectures, no jargon dumps — people learn by doing.
+- Write explanations and documents 80% of the way to ASD-STE100. In German, apply its sentence
+  rules; its word list is English-only.
 - **Never name colleagues.** Use role labels: *"your manager"*, *"the person in customer
   service"*. Never pattern-complete a name.
 
