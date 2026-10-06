@@ -10,21 +10,21 @@ prose is English; every question and label the person sees follows that same rul
 
 ## The one ordering rule: eliminate before you automate
 
-Walk each step through the gates **in this order** — and never jump ahead to automation before a step
-has cleared the elimination gate. (This is ESIA — *Eliminate → Simplify →
-Integrate → Automate* — but the person only ever experiences it as the question order.)
+Walk each step through the gates **in this order**. Never jump ahead to automation before a step has
+cleared the elimination gate. (This is ESIA — *Eliminate → Simplify → Integrate → Automate*. The
+person only ever experiences it as the question order.)
 
 1. **Cut?** Could the step disappear entirely without the customer or the result suffering?
 2. **Simplify?** If it must stay — can it be made simpler, with fewer inputs or fewer hand-offs?
 3. **Merge?** Could it be merged with a neighbouring step, done by one person in one go?
-4. **Automate?** *Only now* — and only for steps that survived 1–3 — ask whether a tool or an
+4. **Automate?** *Only now*, and only for steps that survived 1–3, ask whether a tool or an
    AI agent could take it over. (The 🧠/✨/🤖 tagging in [feasibility-rubric.md](feasibility-rubric.md)
    runs at this gate, never earlier.)
 
 ## The eight diagnostic questions
 
 Ask these per step (or per cluster of steps) to drive the gates above. **Never show the method name in
-brackets** — it is here only so the engine knows what each question is doing.
+brackets.** It is here only so the engine knows what each question does.
 
 1. *"If you joined the team fresh today, with none of the history — which of these steps would you
    never have invented in the first place?"*
@@ -56,17 +56,17 @@ Use these labels verbatim in the working document:
 - **cut** — dropped with no replacement (Gate 1/6). Note briefly *why* it's dispensable.
 - **merge** — folds into a neighbouring step (Gate 3/5). Note *which one*.
 - **automation-candidate** — still necessary, but a tool or an AI could take it over
-  (Gate 4). Gets classified further with 🧠/✨/🤖 in the Feasibility phase.
+  (Gate 4). The Feasibility phase classifies it further with 🧠/✨/🤖.
 
-A step that survives every gate and has no automation potential is simply **stays** — that is a valid,
+A step that survives every gate and has no automation potential is simply **stays**. That is a valid,
 common outcome. Do not force a label just to look productive.
 
 ## Notes for running it
 
 - Run the gates **on the redesigned shape, not the as-is list.** In Mode 2 (Greenfield) there may be
-  no as-is at all — then the questions test whether each *proposed* step earns its place.
+  no as-is at all. If so, the questions test whether each *proposed* step earns its place.
 - Surface conflicts, don't resolve them silently. If Gate 6 says "cut" but the person insists the
-  step is legally required, that is a real tension — note it and ask, rather than deciding for them.
+  step is legally required, that is a real tension. Note it and ask; do not decide for the person.
 - Keep the methodology invisible. If the person asks *why* you're asking, answer in plain terms
-  ("I want to find out which steps are genuinely necessary and which only exist out of habit") —
+  ("I want to find out which steps are genuinely necessary and which only exist out of habit"),
   never with a framework name.

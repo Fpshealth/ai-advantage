@@ -38,13 +38,13 @@ The *static* context Claude needs to know. *"Summit Gear is an online outdoor-ge
 
 **4. Examples** · `<examples>`
 At least one input-output pair showing what "good" looks like. Examples carry more weight than any
-description — that's why they come **before** the instructions.
+description. That is why they come **before** the instructions.
 *Typical gap:* no examples → Claude guesses what you consider good.
 
 **5. Prior History** · `<history>` — *if relevant*
 Relevant points from an earlier exchange. *"Last week the customer wanted a repair; today they'd
 rather have a refund."*
-*Typical gap:* often simply *not relevant* — then mark it ✅ "not relevant."
+*Typical gap:* often simply *not relevant*. If so, mark it ✅ "not relevant."
 
 **6. Instructions & Rules** · `<instructions>`
 The heart of the instruction: the exact approach **step by step** plus fixed boundaries. *"1. Read
@@ -64,9 +64,9 @@ name, three paragraphs (empathy, solution, closing), sign-off."*
 *Typical gap:* no format → Claude produces free-form prose with unwanted headings.
 
 **9. Important Rules (Reminder)** · `<important>` — *optional*
-The one or two most critical rules repeated at the **end** — what comes last carries the most
-weight. *"Important: don't promise delivery dates, don't admit fault."*
-*Typical gap:* often *not necessary* for short prompts — then leave it out.
+The one or two most critical rules repeated at the **end**, because what comes last carries the
+most weight. *"Important: don't promise delivery dates, don't admit fault."*
+*Typical gap:* often *not necessary* for short prompts. If so, leave it out.
 
 **10. Start the Task** · *(no tag)*
 The clear starting signal at the end. *"Now write the reply email to the customer."*
@@ -74,7 +74,7 @@ The clear starting signal at the end. *"Now write the reply email to the custome
 
 ## The confidence rubric
 
-Assign exactly one per building block:
+Give each building block exactly one label:
 
 | Label | Meaning | What you do with it |
 |---------|-----------|----------------------|
@@ -100,5 +100,5 @@ tag):
 ```
 
 - For ❌ building blocks, insert a placeholder in square brackets: `[PLEASE ADD: concrete question]`.
-- **Optional building blocks** (5 History, 9 Important) may be left out when they're not relevant —
-  in that case mark them **not** ❌, but ✅ with the value *"not relevant."*
+- If an **optional building block** (5 History, 9 Important) is not relevant, you may leave it out.
+  Mark it ✅ with the value *"not relevant."*, **not** ❌.

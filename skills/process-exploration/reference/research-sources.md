@@ -3,39 +3,38 @@
 Mode 3 (Benchmark) is **always external research — never model knowledge and never a static
 lookup**.
 
-> **Re-skin seam:** this file is the swappable per-client research-source registry referenced as
-> `industry_pack` in `house-style.md` §0. Everything below is the e-commerce example instance —
-> replace the source registry (not the tier engine above it) when re-skinning for a different
-> industry.
+> **Re-skin seam:** this file is the swappable per-client research-source registry, referenced as
+> `industry_pack` in `house-style.md` §0. Everything below is the e-commerce example instance. To
+> re-skin for a different industry, replace the source registry, not the tier engine above it.
 
 **Output follows the person's language (English by default, per house-style.md §1).** Everything
 returned to the person follows that rule, with sources named.
 
 ## The tiers (use the richest one available)
 
-The Mode 3 sub-agent **detects which tools are present** and runs on the highest tier it can. On a
-bare Cowork run it stays on Tier A **and says so** — never a silent capability gap.
+The Mode 3 agent **detects which tools are present** and runs on the highest tier it can. On a bare
+Cowork run, it stays on Tier A **and says so**. Never leave a capability gap silent.
 
 ### Tier A — Self-serve (always available, the floor)
 Native web search/fetch against the source registry below. Never fall back below this to model
 knowledge.
 
 ### Tier B — Deep / facilitated (the consultant's research environment)
-When the richer tools are detected, enrich Tier A with:
+If the richer tools are detected, enrich Tier A with:
 - **`/last30days`** — live social + market pulse (Reddit, X, YouTube, HN, …) for *what is changing
   right now* in a topic.
 - **`notebooklm-cli`** — deep multi-source notebook research. **Verify success by source-count
   delta, not by exit code or "Imported N" output** (the [[notebooklm-cli]] skill rule). After a
-  multi-query run, `notebooklm source clean -n <id> -y` to collapse duplicates.
+  multi-query run, run `notebooklm source clean -n <id> -y` to collapse duplicates.
 
-These are illustrative examples of what a consultant's research environment might contain, not
-hard requirements — the tier is defined by "richer, facilitated tooling beyond plain web search,"
-whatever form that takes for a given consultant.
+These are examples of what a consultant's research environment might contain, not hard
+requirements. The tier is defined by "richer, facilitated tooling beyond plain web search," in
+whatever form a given consultant has it.
 
-Ingest both as a structured research-input file and fold their findings into the patterns. Tools
-like `notebooklm-cli` are local, auth-bound setups that will **not** exist in a typical client's
-Cowork session — so Tier B is **facilitated by design** (the consultant runs it). Tier B runs only
-on explicit request (default), to control cost and latency.
+Ingest both as a structured research-input file, and fold their findings into the patterns. Tools
+like `notebooklm-cli` are local setups that need a login; they will **not** exist in a typical
+client's Cowork session. So Tier B is **facilitated by design**: the consultant runs it. By default,
+Tier B runs only on explicit request, to control cost and latency.
 
 ### Tier declaration (mandatory)
 Every Mode 3 finding set states the tier it ran on, in plain language, e.g.:
@@ -58,7 +57,7 @@ High-impact sources and which tool researches each.
 
 ## What a good Mode 3 finding looks like
 
-Not "others do it differently," but step-bound and attributed:
+Step-bound and attributed, not "others do it differently":
 > *Pattern: Instead of preparing every item's data manually up front, leading retailers pull
 > catalog data directly from the PIM and only then filter down to the selection that's actually
 > needed. → Would compress the process's early data-preparation steps down to the items that make
@@ -72,5 +71,5 @@ changes**, **source**. Never present a pattern you cannot attribute.
 
 The **first real job** for Mode 3 is to research and validate/expand this registry using the
 consultant's research environment (e.g. `notebooklm-cli` + `/last30days`). Until that pass happens,
-treat the table above as a provisional v1, not a closed list, and say so when it is the only basis
-for a finding.
+treat the table above as a provisional v1, not a closed list. If the table is the only basis for a
+finding, say so.

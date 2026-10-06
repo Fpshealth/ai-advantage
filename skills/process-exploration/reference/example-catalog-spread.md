@@ -1,6 +1,6 @@
 # Example: Catalog Spread (Target-Process Exploration, Worked)
 
-The canonical worked example — the ~$75,000-per-year catalog process, run
+The canonical worked example: the ~$75,000-per-year catalog process, run
 through the full funnel in **Mode 1 (From Docs)**. A real Mode-1 run on the As-Is document should land
 **materially close to this**.
 
@@ -8,8 +8,8 @@ through the full funnel in **Mode 1 (From Docs)**. A real Mode-1 run on the As-I
 
 ## Starting Point (from the As-Is doc)
 
-The catalog is a printed, single-market product. Per brand and spread, today **three separately
-prepared strands** — a spreadsheet, text files, image files — are **fully manually** assembled and sent
+The catalog is a printed, single-market product. Today, per brand and spread, **three separately
+prepared strands** — a spreadsheet, text files, image files — are assembled **fully manually**. They go
 to an external layout studio, which produces the finished spread through several correction rounds.
 Lever: ~$75,000/year in external layout costs.
 
@@ -82,6 +82,6 @@ status: draft
 - AI Tag: 🧠 Human decides
 ```
 
-**Impact:** the external layout strand (steps 5–7 in the as-is) largely disappears — the central lever
-behind the ~$75,000/year. The one honest `[OPEN]` (image-to-item mapping) is exactly the question to
-clarify in the next automation review session — cleanly flagged instead of glossed over.
+**Impact:** the external layout strand (steps 5–7 in the as-is) largely disappears. That is the
+central lever behind the ~$75,000/year. The one honest `[OPEN]` (image-to-item mapping) is exactly the
+question to clarify in the next automation review session. It is flagged cleanly, not glossed over.

@@ -1,11 +1,11 @@
 # Feasibility Rubric (the feasibility / AI-opportunity gate)
 
-The explorer's **final phase**: it takes the redesigned process and asks, per surviving step, *who or
-what should do this* and *is it actually ready to be handed to an AI agent?*
+The explorer's **final phase**. It takes the redesigned process and asks two questions per surviving
+step: *who or what should do this?* and *is it actually ready to be handed to an AI agent?*
 
-**Runs only after the interrogation playbook.** A step that was already labelled **cut** is gone — you
-do not tag deleted work. Only **stays**, **merge** and **automation-candidate** steps reach this rubric.
-Never discuss automation for a step that has not cleared the elimination gate.
+**Runs only after the interrogation playbook.** Never discuss automation for a step that has not
+cleared the elimination gate. A step labelled **cut** is gone; do not tag deleted work. Only **stays**,
+**merge** and **automation-candidate** steps reach this rubric.
 
 **Output follows the person's language (English by default, per house-style.md §1).** The tag emojis and
 their labels are user-facing.
@@ -33,22 +33,22 @@ step is **agent-ready** only when all three are true:
 
 ## Step 3 — Be honest, not optimistic
 
-If a 🤖 or ✨ step fails any of the three criteria, **do not quietly downgrade it and move on, and do not
-pretend it is ready.** Mark it **`[OPEN]`** with the one thing missing, e.g.:
+If a 🤖 or ✨ step fails any of the three criteria, mark it **`[OPEN]`** with the one thing missing.
+**Do not quietly downgrade it and move on. Do not pretend it is ready.** Example:
 
 > *Step 4 (🤖) — `[OPEN]`: the "matching product photo" input isn't parameterized yet. Needs clarifying
 > before automation: how does the agent know which photo belongs to which item?*
 
 ## Step 4 — Facilitation note (don't force AI)
 
-If a step is best served by **plain automation** (a rule, a template, a macro) rather than an AI agent,
-say so. A good plain-language way to put it to the person:
+If **plain automation** (a rule, a template, a macro) serves a step better than an AI agent, say so.
+A good plain-language way to put it to the person:
 
 > *"A simple rule could handle this step too — it doesn't need AI. Is the extra effort really worth it
 > here, or should we solve it more simply?"*
 
 ## What this phase hands on
 
-The tagged, readiness-checked step list flows straight into the **AI-Tags** section of
-[target-process-template.md](target-process-template.md), and any `[OPEN]` step becomes a blocking item
-for the Gap Check with fresh context to surface.
+The tagged, readiness-checked step list flows straight into the **AI Tags** section of
+[target-process-template.md](target-process-template.md). Any `[OPEN]` step becomes a blocking item for
+the fresh-context Gap Check to surface.

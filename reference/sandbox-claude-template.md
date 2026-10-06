@@ -17,8 +17,7 @@
   colleague, checkable for the manager.
 - Language follows house-style §1 (`client_language` default, mirrors the user). **Never** name
   colleagues — use roles (*"your manager"*, *"the person in customer service"*).
-- Write explanations and documents 80% of the way to ASD-STE100. In German, apply its sentence
-  rules; its word list is English-only.
+- Write 80% of the way to ASD-STE100.
 
 ## Folder structure — where files go
 

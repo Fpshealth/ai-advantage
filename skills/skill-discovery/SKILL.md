@@ -8,15 +8,15 @@ disable-model-invocation: true
 
 ## Workflow
 
-1. Clarify the need if vague: domain, task, target harness.
+1. If vague, clarify the need: domain, task, target harness.
 2. Run both search nets below.
-3. Merge and dedupe; treat stars as a trust signal, not a cutoff.
+3. Merge and dedupe. Treat stars as a trust signal, not a cutoff.
 4. Read the SKILL.md frontmatter of the top candidates.
 5. Present a ranked table with a one-line fit reason each. The run ends here; installing starts only on an explicit pick.
 
 ## Net 1 — Live GitHub via gh
 
-Requires authenticated `gh` (`gh auth status`); if unavailable, run Net 2 alone and say so.
+Requires authenticated `gh` (`gh auth status`). If unavailable, run Net 2 alone and say so.
 
 Search repos by topic:
 
@@ -73,9 +73,9 @@ Offer: view a candidate's full SKILL.md · refine the search · install.
 
 ## Install (only on explicit request)
 
-Gate first: read the candidate's entire SKILL.md and any bundled scripts; flag install commands, network calls, and `-y`/global flags; check the repo license. Install only after the gate passes.
+Gate first. Read the candidate's entire SKILL.md and any bundled scripts. Flag install commands, network calls, and `-y`/global flags. Check the repo license. Install only after the gate passes.
 
-With git available (Claude Code): sparse-checkout keeps the skill tracked and updatable:
+With git available (Claude Code), sparse-checkout keeps the skill tracked and updatable:
 
 ```bash
 git clone --no-checkout --depth 1 --filter=blob:none https://github.com/<owner>/<repo> ~/.claude/skill-sources/<repo-name>
@@ -86,4 +86,4 @@ git checkout
 ln -s ~/.claude/skill-sources/<repo-name>/<path>/<skill> ~/.claude/skills/<skill>
 ```
 
-Without git tooling (e.g. Cowork): download the skill folder and place it in that environment's skills directory.
+Without git (e.g. Cowork), download the skill folder and place it in that environment's skills directory.

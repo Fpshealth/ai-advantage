@@ -61,8 +61,8 @@ Same shapes, grid, and edge rules as below.
 
 Common wrapper for event/gateway shapes:
 `outlineConnect=0;html=1;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;fontSize=11;`
-Keep the map monochrome (black on white). Accent `#1A73E8` fills start and normal end events;
-red (`#D90000`) is reserved for blocker/error ends only.
+Keep the map monochrome (black on white). Fill start and normal end events with accent `#1A73E8`.
+Use red (`#D90000`) only for blocker/error ends.
 
 ```
 Start event (40×40):  shape=mxgraph.bpmn.event;outline=standard;symbol=general;perimeter=ellipsePerimeter;
@@ -76,10 +76,10 @@ Amber [OPEN] tag:     text;html=1;fontColor=#B45309;fontStyle=1;   (place beside
 
 - One start event (no incoming edge); end events at the right edge (no outgoing edge).
 - A gateway splits (≥2 outgoing) or merges (≥2 incoming) — never neither. Label outgoing branch
-  edges (`value="Yes — inside window"`), and offset the label from the arrow so it never sits on
-  a node border. Give branch labels room: the box after a gateway starts a full column later, the
-  gateway's own label sits below the shape, branch labels sit above/below their edge — three
-  distinct label positions that never stack.
+  edges (`value="Yes — inside window"`). Offset each label from its arrow so it never sits on a
+  node border. Give branch labels room, with three distinct label positions that never stack:
+  the box after a gateway starts a full column later; the gateway's own label sits below the
+  shape; branch labels sit above/below their edge.
 
 ## D. Layout grid
 
@@ -87,22 +87,22 @@ Amber [OPEN] tag:     text;html=1;fontColor=#B45309;fontStyle=1;   (place beside
 - Columns: steps advance left→right in 170px columns (120px box + 50px gap); one shared column
   grid across all lanes so simultaneous/handed-off steps line up vertically.
 - 40px minimum gap between boxes, 20px lane inner padding, 40px page margin.
-- `orthogonalEdgeStyle` routes edges at right angles; a cross-lane handoff drops straight down or
+- `orthogonalEdgeStyle` routes edges at right angles. A cross-lane handoff drops straight down or
   up in the shared column, then continues.
 
 ## E. Inline validation checklist (run before every save)
 
 1. XML well-formed; `mxGraphModel` uncompressed; `id="0"`/`id="1"` present and first.
-2. All ids unique. Every `parent` resolves; in lane form steps parent to lanes and edges to `"1"`;
-   in plain-flow form everything parents to `"1"`.
+2. All ids unique. Every `parent` resolves. In lane form, steps parent to lanes and edges to `"1"`.
+   In plain-flow form, everything parents to `"1"`.
 3. Every vertex has exactly one `mxGeometry` with sane bounds inside its lane.
 4. Every edge's `source` and `target` resolve to existing vertices.
 5. Exactly one start event; every path reaches an end event; every gateway splits or merges.
 6. `<`, `>`, `&` in `value` attributes are XML-escaped.
 7. Box count equals `.md` step count (+ events, gateways, branch-action boxes, notes) — nothing dropped, nothing invented.
 
-Where a shell is available, `xmllint --noout <file>` (or `python3 -c "import xml.etree.ElementTree as
-ET; ET.parse('<file>')"`) confirms point 1; the rest is read-and-check.
+If a shell is available, `xmllint --noout <file>` (or `python3 -c "import xml.etree.ElementTree as
+ET; ET.parse('<file>')"`) confirms point 1. Check the rest by reading.
 
 ## F. Surgical edit protocol
 

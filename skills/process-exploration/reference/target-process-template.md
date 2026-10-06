@@ -1,15 +1,14 @@
 # Target Process Standard (Template)
 
-**No framework vocabulary appears in the output.** Every section is filled, or marked `[OPEN]` if
-genuinely unknown. **All headings and
-content are in the person's language** (`client_language` by default — see `house-style.md` §1).
-Write it exactly in this shape.
+Write the output exactly in this shape. **Use no framework vocabulary in it.** Fill every section, or
+mark it `[OPEN]` if genuinely unknown. **Write all headings and content in the person's language**
+(`client_language` by default — see `house-style.md` §1).
 
 Two rules make this template agent-ready rather than prose:
 - **No hardcoded values — parameterize.** Write `{{item_number}}`, `{{brand_name}}`, never a
   concrete SKU or price. The values are supplied at run time; the process is the template.
-- **Constraints are MUST / SHOULD / MAY** (the RFC-2119 triple): **MUST** = mandatory, **SHOULD**
-  = strong default, deviate only with reason, **MAY** = optional. An agent reads these as hard vs.
+- **Constraints are MUST / SHOULD / MAY** (the RFC-2119 triple): **MUST** = mandatory; **SHOULD**
+  = strong default, deviate only with reason; **MAY** = optional. An agent reads these as hard vs.
   soft rules.
 
 ````markdown
@@ -91,12 +90,13 @@ like filled in concretely, without baking them into the process itself.}
 
 - **Parameterize relentlessly.** If you see a concrete value that varies per run, replace it with a
   `{{placeholder}}` and list it under **Inputs**.
-- **Both branches, always.** A **decision point** with only the THEN side is not agent-ready — an
-  agent hitting the ELSE case would stall. Fill both or mark the missing one `[OPEN]`.
-- **Testable success only.** "The spread looks right" is not a criterion an agent can check. Push
-  for something checkable; if none exists yet, that is an honest `[OPEN]`.
-- The **AI Tags** come straight from [feasibility-rubric.md](feasibility-rubric.md) — don't
-  re-derive them here, carry them over.
+- **Both branches, always.** Fill both branches of every **decision point**, or mark the missing one
+  `[OPEN]`. A decision point with only the THEN side is not agent-ready: an agent that hits the ELSE
+  case stalls.
+- **Testable success only.** Push for a checkable criterion. "The spread looks right" is not one an
+  agent can check. If none exists yet, mark it `[OPEN]` honestly.
+- Carry the **AI Tags** over from [feasibility-rubric.md](feasibility-rubric.md). Don't re-derive
+  them here.
 - On **Pause**: set `version: 1.0.0-wip`, status `draft`, list open points under an `## Open`
   block, write as `target-process-{slug}-{date}-wip.md` (house style §7).
 - File naming: `target-process-{short-slug}-{YYYY-MM-DD}.md`.

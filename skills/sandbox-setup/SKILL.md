@@ -12,16 +12,16 @@ subfolders and a `CLAUDE.md` rules file.
 
 ## Before creating anything
 
-You can only act inside the granted folder — the top folder itself the person creates: a **new,
-empty** folder named `AI_SANDBOX`, dragged into a Cowork chat and allowed.
+You can act only inside the granted folder. The person creates that top folder: a **new,
+empty** folder named `AI_SANDBOX`, which they drag into a Cowork chat and allow.
 
-If it's unclear that the granted folder is such a new, empty one — or it looks like a real
-working folder with the person's actual files in it — ask first, and have them create and grant
-a fresh folder instead.
+If it's unclear that the granted folder is new and empty, or if it looks like a real working
+folder with the person's actual files in it, ask first. Have them create and grant a fresh
+folder instead.
 
 ## What to create
 
-Anything that already exists stays untouched — report it instead of replacing it.
+Leave anything that already exists untouched. Report it; do not replace it.
 
 1. **Three subfolders:** `01_Input/`, `02_Work/`, `03_Output/`.
 2. **`CLAUDE.md`** in the folder root, with the exact content of
@@ -34,5 +34,5 @@ Anything that already exists stays untouched — report it instead of replacing 
 ## Confirm
 
 Close with a short message in the person's language: what you created, plus the daily flow —
-copy (never move) files into `01_Input`, then start a skill or describe the task, results land
-in `03_Output`. The rules live in `CLAUDE.md`; skip repeating them in chat.
+copy (never move) files into `01_Input`, then start a skill or describe the task, and find the
+results in `03_Output`. The rules live in `CLAUDE.md`; do not repeat them in chat.

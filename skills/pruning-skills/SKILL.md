@@ -3,9 +3,9 @@ name: pruning-skills
 description: Prune an existing skill down to the lines that change agent behaviour, and re-fit it to the current model. Use when a skill feels bloated or wordy, or after a model release.
 ---
 
-Read the whole skill, then name the **target model** — the model running this pass, unless told otherwise. Every judgement below is relative to that model's defaults.
+First read `mattpocock-skills:writing-for-agents` and its `SKILL-MECHANICS.md`. Then read the whole skill and name the **target model**: the model running this pass, unless told otherwise. Judge everything below against that model's defaults.
 
-This skill uses the vocabulary of `mattpocock-skills:writing-for-agents` (read it and its `SKILL-MECHANICS.md` first) — _no-op, sediment, duplication, negation, leading word_ — and adds one word: **fluff** is any sentence that does not change what the agent _does_ versus the target's default. Fluff spends context load and buries the lines that matter.
+This skill uses the vocabulary of `writing-for-agents` — _no-op, sediment, duplication, negation, leading word_ — and adds one word: **fluff** is any sentence that does not change what the agent _does_ versus the target's default. Fluff spends context load and buries the lines that matter.
 
 ## Pass 1 — form
 
@@ -13,7 +13,7 @@ Apply the four writing-for-agents lenses: every rule states a positive target, e
 
 ## Pass 2 — the no-op cut
 
-Sentence by sentence, in isolation: does this change what the agent does? If not, delete the whole sentence — never trim words from it. Cut on sight:
+Test each sentence in isolation: does it change what the agent does? If not, delete the whole sentence. Never trim words from it. Cut on sight:
 
 - **Sediment** — provenance, dates, war stories: "Source: X (2026-…)", "the first version had to be rebuilt".
 - **No-op** — a quote from the source the rule already restates; a dangling reference the agent has no context for ("the IMP-005 lesson").
@@ -23,7 +23,7 @@ Sentence by sentence, in isolation: does this change what the agent does? If not
 - **Raised non-issue** — "anywhere is fine, including OneDrive". Naming a settled question keeps it alive.
 - **Description bloat** — procedure in the `description:` field. It loads every session; it carries trigger conditions only.
 
-Where a sentence half-passes, rewrite instead of deleting: two sentences saying one thing become one; a sentence gesturing at an idea becomes its leading word.
+If a sentence half-passes, rewrite it instead of deleting it: two sentences saying one thing become one; a sentence gesturing at an idea becomes its leading word.
 
 Keep, even when short:
 
@@ -39,16 +39,16 @@ Done when every remaining sentence changes behaviour.
 
 Some lines exist only to correct one model's habit: shouting, forbidding, spelling out steps. Find each one and ask who it was written for. Open the target's "Behavioral shifts" notes (`claude-api` skill, `shared/model-migration.md`) and check:
 
-- The habit is not in the notes → cut the line.
-- The habit is in the notes → keep the line and write the reason next to it.
-- The notes ask for a line the skill lacks → add it.
+- If the habit is not in the notes, cut the line.
+- If the habit is in the notes, keep the line and write the reason next to it.
+- If the notes ask for a line the skill lacks, add it.
 
-Lines that protect a business or legal constraint stay regardless. Re-fitting adds text; a rising word count is a valid result.
+Always keep lines that protect a business or legal constraint. Re-fitting adds text; a rising word count is a valid result.
 
 Done when every such line has a reason next to it or is gone.
 
 ## Verify and report
 
-Grep the wider system for each cut string before deleting it; where a trigger or behaviour eval exists, run it before and after.
+Before you delete a string, grep the wider system for it. If a trigger or behaviour eval exists, run it before and after.
 
 Report each cut as _quote → failure-mode name_, each model-fit keep or add with its owner, and word count before → after. List the lines you nearly cut and why you kept them, so the user can push further.

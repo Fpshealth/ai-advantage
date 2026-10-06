@@ -5,31 +5,31 @@ description: 'Hands a stuck session to the consultant: Claude writes a handoff f
 
 # Escalation: Team-AI
 
-You write the handoff; the person emails it. The handoff file is the consultant's record of this
-session, whatever else the host lets the person attach.
+You write the handoff file; the person emails it. The handoff file is the consultant's record of
+this session, whatever else the host lets the person attach.
 
 **Follow `reference/house-style.md`.** `escalation_email` and `escalation_tag` are in its §0.
 
 ## Capabilities — confirm before you offer
 
-Two things differ by host. Decide each from evidence — what your system prompt says about where
-you run, your tool list, a command you can see documented, a call that succeeded — and offer only
-what you confirmed:
+Two capabilities differ by host. Decide each from evidence: what your system prompt says about
+where you run, your tool list, a command you can see documented, a call that succeeded. Offer
+only what you confirmed.
 
-- **Session export** — a host command that saves the whole chat. Claude Code has `/export`;
-  on any other host, offer one only when you see it documented in this session. Confirmed →
-  Step 4 adds it as an attachment. Unconfirmed → the handoff file alone is the record.
+- **Session export** — a host command that saves the whole chat. Claude Code has `/export`.
+  On any other host, offer one only when you see it documented in this session. If confirmed,
+  Step 4 adds it as an attachment. If not, the handoff file alone is the record.
 - **Script by path** — the shell opens `scripts/mailto_link.py`. If it can't, read the file and
   pipe its content: `python3 - "<address>" "<subject>" "<body>" <<'PY' … PY`.
 
 ## Procedure
 
-**Step 1 — One-line problem.** Propose one sentence from the session — what they were trying to
-do and what still fails — and let the person confirm or correct it. It becomes the email subject.
+**Step 1 — One-line problem.** Propose one sentence from the session: what they were trying to
+do and what still fails. Let the person confirm or correct it. It becomes the email subject.
 
-**Step 2 — Handoff file.** Write `escalation-handoff.md` (topic suffix if the name is taken) as
-a finished deliverable: the output area if the folder's `CLAUDE.md` defines one, else the folder
-root. Sections, in the order a consultant reads them:
+**Step 2 — Handoff file.** Write `escalation-handoff.md` as a finished deliverable. If the name
+is taken, add a topic suffix. Location: the output area if the folder's `CLAUDE.md` defines
+one, else the folder root. Sections, in the order a consultant reads them:
 
 1. **Goal**
 2. **What we tried** — attempts in order
@@ -41,11 +41,11 @@ root. Sections, in the order a consultant reads them:
 
 Done when the consultant could resume from the file alone. Tell the person the path.
 
-**Step 3 — Draft link.** `scripts/mailto_link.py` prints the URL; arguments: `escalation_email`,
-`{escalation_tag} {one-line problem}`, and `assets/email-body.md` rendered in the person's
-language. Inside the quoted arguments, backslash-escape `$`, `` ` `` and `"`.
+**Step 3 — Draft link.** `scripts/mailto_link.py` prints the URL. Arguments:
+`escalation_email`, `{escalation_tag} {one-line problem}`, and `assets/email-body.md` rendered
+in the person's language. Inside the quoted arguments, backslash-escape `$`, `` ` `` and `"`.
 
-Without code execution, use this pre-encoded link (cached from §0 — re-encode when §0 changes):
+If you cannot run code, use this pre-encoded link (cached from §0 — re-encode when §0 changes):
 
 > `[➜ Open email DRAFT to your consultant (not sent yet)](mailto:federico.pacheco@fpshealth.com?subject=%5BEscalation%3A%20Team-AI%5D&body=Hi%2C%0A%0AI%27m%20stuck%20and%20I%27m%20handing%20this%20session%20over%20to%20you.%0AAttached%3A%20the%20handoff%20file%20%28goal%2C%20attempts%2C%20exact%20blocker%29%20and%20the%20file%20we%20created%20together.)`
 
