@@ -35,8 +35,7 @@ what it doesn't need.
 Not a retelling of the chat. Leave out passwords, access data and customer personal data.
 
 **Step 3 — Hand over.** Tell the person, in short points: (1) the file's path; (2) open it, check
-it and correct it if needed; (3) start a new session **in the same folder**, so it finds the file; choose the model there
-first and keep effort at Medium unless the task needs more;
+it and correct it if needed; (3) start a new session **in the same folder**, so it finds the file;
 (4) paste this as the first message:
 
 > Read `<path>` and continue with the open items.
