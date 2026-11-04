@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Nightly Photo Backup</title>
+<style>
+body{font:16px/1.5 system-ui,sans-serif;max-width:760px;margin:0 auto;padding:16px}
+.stage{display:none}.stage.on{display:block}
+@media (prefers-reduced-motion: reduce){.stepper nav{display:none}.stage{display:block}}
+</style>
+</head>
+<body>
+<main>
+<h1>How the nightly photo backup works</h1>
+<p>The shared laptop copies new photos to an external disk every night, so a lost laptop loses at most one day of photos. A <dfn>backup script</dfn> is a small program on the laptop that copies every photo changed since its last run. The <dfn>schedule</dfn> is a line in the laptop's task list that starts the backup script at 02:00 each night. The <dfn>backup disk</dfn> is the external drive that holds the copies, and the <dfn>log file</dfn> is a text file where the backup script writes one line per run.</p>
+
+<h2 id="night">One night</h2>
+<p>What happens on one real night? On 3 November the schedule started the backup script at 02:00, and it copied 14 photos in 9 seconds (log file, line 212).</p>
+<figure>
+<img src="log.png" alt="The log file line for 3 November: 14 photos copied in 9 seconds">
+<figcaption>The log file line for 3 November: 14 photos copied, no errors.</figcaption>
+</figure>
+
+<h2 id="parts">The parts</h2>
+<p>Where does each part live? The backup script and the schedule live on the laptop; the copies live on the backup disk.</p>
+<figure>
+<svg viewBox="0 0 600 160" width="100%" role="img" aria-label="Laptop sends photos to backup disk">
+<rect x="10" y="40" width="220" height="80" fill="none" stroke="currentColor"/>
+<text x="30" y="85" font-size="18">Laptop: script, schedule</text>
+<rect x="370" y="40" width="220" height="80" fill="none" stroke="currentColor"/>
+<text x="400" y="85" font-size="18">Backup disk: copies</text>
+<line x1="230" y1="80" x2="370" y2="80" stroke="currentColor"/>
+</svg>
+<figcaption>Only photos move: the backup script never changes the laptop's own files.</figcaption>
+</figure>
+
+<h2 id="steps">A run, step by step</h2>
+<p>In what order does a run happen? Step through the run of 3 November.</p>
+<figure>
+<div class="stepper">
+<nav><button type="button" id="b">Back</button><button type="button" id="n">Next</button></nav>
+<section class="stage on"><p>Step 1 of 2: the schedule starts the backup script at 02:00.</p></section>
+<section class="stage"><p>Step 2 of 2: the backup script copies 14 photos and writes one line to the log file.</p></section>
+</div>
+<figcaption>Each run has two steps, and only the second one touches the backup disk.</figcaption>
+</figure>
+<script>
+(function(){const st=[...document.querySelectorAll('.stage')];let i=0;
+function go(k){i=Math.max(0,Math.min(st.length-1,k));st.forEach((e,j)=>e.classList.toggle('on',j===i));}
+document.getElementById('b').onclick=()=>go(i-1);document.getElementById('n').onclick=()=>go(i+1);})();
+</script>
+
+<h2 id="check" data-no-picture="one sentence says it as fast">Checking it worked</h2>
+<p>How do I know last night worked? Open the log file and read the last line: it names the date and the number of photos copied.</p>
+</main>
+</body>
+</html>

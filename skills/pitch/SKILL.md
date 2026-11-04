@@ -84,6 +84,8 @@ One message, in this order:
    the row's link.
 3. The offer: *"Want a picture version for the meeting? Start a new chat in this folder and run
    `/eli5` on the pitch file."*
+4. The offer: *"Want a full explainer that colleagues can read before the decision? Start a new
+   chat in this folder, pick Clear Explanation from the / menu and give it the pitch file."*
 
 ## Special cases
 
