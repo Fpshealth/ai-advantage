@@ -8,6 +8,17 @@ version control, if any.
 > non-git distribution), so there is no manual bump. The version headings below are human
 > release notes / milestones, not the installed version string.
 
+## [1.4.0] — Clear Explanation skill
+- New skill `clear-explanation` ("Clear Explanation: Team-AI"), ported from the consultant's own
+  explainer skill: inventory first, one red thread with a real case, pictures, then a format script
+  (`scripts/lint.py`) and a fresh-reader check. Starts only when picked explicitly.
+- Sources are the person's inputs (input area, connected sources), never vault or repo links.
+  Screenshots come only from given images; no one is asked to take one.
+- `lint.py` runs by path or piped via stdin. Without Playwright it skips the diagram size check
+  with a note instead of failing. German "no picture" excuses fail like English ones.
+- Fixture tests in `test/clear-explanation/run.py`, plus a Cowork run in
+  `test/cowork/CLEAR-EXPLANATION-IN-COWORK.md`.
+
 ## [1.3.1] — Pitch row uses Typ + Status, no separate Pitch column
 - The project-list row the skill emits now sets Type = `Projekt-Pitch` and Status = `Eingereicht`;
   the earlier separate "Pitch" column is gone. Close message and template comment updated to match.
