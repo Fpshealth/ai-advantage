@@ -62,8 +62,10 @@ process may take longer, and the person may pause at any time.
 disagree, record it under `conflicts` and ask one targeted question. Do not show the person the
 comparison.
 
-**Lookup tables.** Mappings, lists of codes or categories, and rename rules go into
-`reference`, so the builder gets them as checked data and not only as page text.
+**Lookup tables.** Mappings, lists of codes or categories, sort orders, keyword lists, limits
+and rename rules go into `reference`, so the builder gets them as checked data and not only as
+page text. When a source document or script holds such a table, copy it in full, row by row.
+Never shorten it to examples: a builder needs every row.
 
 **Pause.** On "Pause", "Stopp" or "später": save `document.json` as it is, run `check.py`, write
 the page and publish it as a draft Artifact if you can, and tell the person how many points are
