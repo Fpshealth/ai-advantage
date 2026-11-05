@@ -8,6 +8,16 @@ version control, if any.
 > non-git distribution), so there is no manual bump. The version headings below are human
 > release notes / milestones, not the installed version string.
 
+## [1.6.0] — /fps router: two playbooks, built-in completeness check
+- New skill `fps`: one entry point; playbooks `ablauf-dokumentieren` (SOP and Prozessdokumentation,
+  depth from the first answers) and `pitch` (sharpen first, problem-first brief).
+- `scripts/check.py` checks a capture (`document.json`) or a brief (`brief.json`) and its page: every
+  required part, every core fact on the page, the draw.io file, and with `--final` the gates (no open
+  questions, a real screenshot, real files, evidence). Amber "Entwurf" stamp while questions are open.
+- `sop-creation`, `process-documentation` and `pitch` keep their names and hand over to `fps`.
+  `fresh-eyes-review` and `pitch-clarity-review` are replaced by rubric files in `fps/reference/`.
+- `visualizer` also reads `document.json`.
+
 ## [1.5.0] — Catalogue: Prompt Improvement out, Sharpen and In Your Own Words in
 - Removed `prompt-improvement` (and the SOP Starter Pack it wrote). Escalation now points to sharpen.
 - Added pstack's `sharpen` and `in-your-own-words`, copied unchanged (MIT, see `LICENSE-pstack` in each folder).
