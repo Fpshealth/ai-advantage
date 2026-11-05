@@ -1,0 +1,16 @@
+ts	phase	decision	why	evidence	result
+2026-11-05T20:19:25Z	frame	exit condition: draft PRs, preview, mail draft, morning report; nothing merged	owner asked for previews only	task brief	open
+2026-11-05T20:19:25Z	preflight	claude CLI is logged out, so plugin eval cannot run; use blind agent runs	claude auth status says loggedIn false	pre-flight table	evals emulated
+2026-11-05T20:19:25Z	port	copied the pilot engine as files, not as history	pilot commits hold client examples; public repo	commit b557c2f	history clean
+2026-11-05T20:19:25Z	port	rewrote the check tests on two fictional captures	old tests read client examples from a mirror-only commit	test/fps/run-tests.sh	57 passed
+2026-11-05T20:19:25Z	design	one fps skill folder holds router, playbooks and engine; old names hand over by skill name	adversary showed cross-folder paths fail check-references and some installs	interrogate run, finding 6	applied
+2026-11-05T20:19:25Z	design	SOP and process documentation share one playbook; depth from first answers	both old skills differed only in depth and template	design-note.md	applied
+2026-11-05T20:19:25Z	check	amber Entwurf stamp while questions are open; green only at zero	adversary: 40 open questions still stamped complete	interrogate finding 1; commit 53deea2	tests green
+2026-11-05T20:19:25Z	check	'--final gates: open questions, real screenshot, real files, evidence	placeholders passed the old minimums	interrogate finding 3	tests green
+2026-11-05T20:19:25Z	check	draw.io check: file, a box per step, a lane per role; file in files map	design promised it, code did not do it	interrogate finding 2	tests green
+2026-11-05T20:19:25Z	check	brief schema v1 chosen by the schema field	pitch had no checkable core	interrogate finding 4	82 passed
+2026-11-05T20:19:25Z	check	hidden facts by CSS class, closed details, font-size 0 do not count	adversary probe passed hidden text	interrogate probe 6	tests green
+2026-11-05T20:19:25Z	evals	three cases written before the build; old idea-first pitch case removed	today's skills must fail; old case enforced the order the design reverses	commit 916ed13	open
+2026-11-05T20:19:26Z	pilot	baseline SOP run on main wrote only a paused markdown file, no core data	proves today's skill fails the case	scratchpad run A	baseline fails
+2026-11-05T20:19:26Z	pilot	branch SOP and process runs pass check as Entwurf; --final blocks them for missing screenshot	check behaves as designed on real candidate output	check.py rerun	pass as draft
+2026-11-05T20:19:26Z	parallel	pitch pilot and held-out test moved to side sessions	owner asked to parallelise and keep the orchestrator context small	two side sessions (pitch pilot, held-out test)	running

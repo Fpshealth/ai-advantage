@@ -453,13 +453,14 @@ class Page(HTMLParser):
     def __init__(self):
         HTMLParser.__init__(self, convert_charrefs=True)
         self.stack, self.marks, self.srcs, self.text, self.hidden = [], [], [], [], 0
-        self.sections, self.hidden_classes = [], set()
+        self.sections, self.hidden_classes, self.section_starts = [], set(), []
 
     def handle_starttag(self, tag, attrs):
         a = dict(attrs)
         mark = None
         if a.get("data-section"):
             self.sections.append((a["data-section"].strip(), self.getpos()[0]))
+            self.section_starts.append((a["data-section"].strip(), len(self.text)))
         if a.get("data-core"):
             mark = {"paths": a["data-core"].split(), "start": len(self.text), "end": None,
                     "imgs": [], "line": self.getpos()[0]}
@@ -506,6 +507,10 @@ class Page(HTMLParser):
         for m in self.marks:
             end = len(self.text) if m["end"] is None else m["end"]
             m["text"] = norm("".join(self.text[m["start"]:end]))
+        self.section_text = {}
+        bounds = self.section_starts + [(None, len(self.text))]
+        for (sid, start), (_, end) in zip(bounds, bounds[1:]):
+            self.section_text[sid] = self.section_text.get(sid, "") + norm("".join(self.text[start:end]))
 
 
 def clean_src(src):
@@ -548,6 +553,28 @@ def check_sections(root, doc, page):
         errors.append(("Seite: die Abschnitte stehen nicht in der festen Reihenfolge. Richtig ist: %s."
                        % ", ".join(wanted), None))
     return errors
+
+
+def open_questions(v):
+    if isinstance(v, dict):
+        if isinstance(v.get("open"), str):
+            yield v["open"]
+        for x in v.values():
+            yield from open_questions(x)
+    elif isinstance(v, list):
+        for x in v:
+            yield from open_questions(x)
+
+
+def check_open_list(doc, page):
+    """Every open question also stands in the section "offen", so the reader sees all gaps in one place."""
+    listed = getattr(page, "section_text", {}).get("offen", "")
+    missing = [q for q in dict.fromkeys(open_questions(doc)) if norm(q) not in listed]
+    if not missing:
+        return []
+    shown = "; ".join("„%s“" % q for q in missing[:3]) + (" und %d weitere" % (len(missing) - 3) if len(missing) > 3 else "")
+    return [("Seite: %d offene Frage(n) steht nicht im Abschnitt „Noch offen“ (%s). Liste dort jede offene Frage, "
+             "die den Bau blockierenden zuerst." % (len(missing), shown), None)]
 
 
 def check_inferred(doc, page):
@@ -615,6 +642,7 @@ def check_page(root, doc, page_path):
                                % (m["line"], p), None))
 
     errors += check_inferred(doc, page)
+    errors += check_open_list(doc, page)
 
     local = []
     for src in page.srcs:

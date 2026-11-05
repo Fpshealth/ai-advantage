@@ -18,8 +18,11 @@ are fixed:
    - Every text value counts, also `date`, `source`, `please_confirm`, and each file's `path`
      and `description`.
    - An open question (`{"open": …}`) is a fact. Show its question, `reason` and `ask` (who
-     answers) at the place where the fact belongs, for example in the step. You can also list
-     all open questions again at the end.
+     answers) at the place where the fact belongs, for example in the step. List every open
+     question again in the section `offen` (brief: `offen`), the ones that block the build first.
+     `check.py` fails the page otherwise.
+   - One gap, one open question. If several fields lack the same fact, ask it once and let the
+     other fields point to that question.
    - A number value (`{"value": 12, …}`) needs its number, note and source inside the marker.
    - Text in hidden markup (`hidden`, `aria-hidden="true"`, `display:none`, `<script>`) does
      not count. The reader must see every fact.

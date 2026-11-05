@@ -104,6 +104,16 @@ for key, v in doc.items():
         if any(q == p or q.startswith(p + ".") for q in doc.get("inferred", [])):
             out.append("<em>abgeleitet</em>")
         out.append("</div>")
+def open_qs(v):
+    if isinstance(v, dict):
+        if "open" in v and isinstance(v["open"], str):
+            yield v["open"]
+        for x in v.values():
+            yield from open_qs(x)
+    elif isinstance(v, list):
+        for x in v:
+            yield from open_qs(x)
+bodies.setdefault("offen", []).extend('<p>%s</p>' % html.escape(q) for q in open_qs(doc))
 page = open(sys.argv[2], encoding="utf-8").read()
 if doc.get("depth") == "sop":
     page = re.sub(r'<!--[^>]*-->\s*<section data-section="rollen">.*?</section>\s*', "", page, flags=re.S)
@@ -291,6 +301,12 @@ expect "brief final: no screenshot and no reason blocks" 1 "kein echter Screensh
 expect "brief: page sections out of order fail" 1 "die Abschnitte stehen nicht in der festen Reihenfolge" \
   "$BR/brief.json" "$(cp "$BR/full.html" "$BR/order.html"; perl -CSD -i -pe 's/data-section="idee"/data-section="X"/; s/data-section="problem"/data-section="idee"/; s/data-section="X"/data-section="problem"/' "$BR/order.html"; echo "$BR/order.html")"
 expect "brief: unknown schema fails clearly" 1 "unbekanntes Schema" "$FIX/unknown-schema.json"
+
+"$PY" -c 'import json,sys; d=json.load(open(sys.argv[1])); d["steps"][0]["why"]={"open":"Warum prüfst du zuerst die Dubletten?","ask":"Einkauf"}; json.dump(d,open(sys.argv[2],"w"),ensure_ascii=False)' "$SOP/document.json" "$SOP/inline.json"
+"$PY" "$T/gen.py" "$SOP/inline.json" "$SKILL/template/capture.html" "$SOP/inline.html"
+expect "page: inline open question listed in Noch offen passes" 0 "GEPRÜFT: Entwurf" "$SOP/inline.json" "$SOP/inline.html"
+"$PY" -c 'import sys; s=open(sys.argv[1],encoding="utf-8").read(); open(sys.argv[2],"w",encoding="utf-8").write(s.replace("<p>Warum prüfst du zuerst die Dubletten?</p></section>","</section>"))' "$SOP/inline.html" "$SOP/nooffen.html"
+expect "page: an open question missing from Noch offen fails" 1 "steht nicht im Abschnitt „Noch offen“" "$SOP/inline.json" "$SOP/nooffen.html"
 
 echo "$pass passed, $fail failed"
 [ "$fail" = 0 ]

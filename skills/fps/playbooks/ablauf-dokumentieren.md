@@ -24,7 +24,8 @@ facts, `schema/capture.schema.json`) and `capture.html` (the page around them).
 7. **Fresh review.** Start a fresh subagent with `reference/rubric-capture.md` as its brief and
    only the path of `capture.html`, never this chat. Sort its findings per
    `reference/interview.md` ("After the reader test"), then run step 6 again. At most two rounds.
-   If no subagent can run, review the page yourself against the rubric and tell the person
+   If no subagent can run, review the page yourself against the rubric, write both tables to
+   `reader-test.md` next to the page, give the number of Blocking rows, and tell the person
    "Keine unabhängige Prüfung gelaufen". Never call the page reviewed without a real review.
 8. **Publish.** Publish `capture.html` as one Artifact with the printed `files` map. Put the link
    in the Beitragsliste row of this capture (one row per capture). Share the Artifact with the

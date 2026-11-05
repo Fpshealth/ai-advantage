@@ -31,7 +31,11 @@ process may take longer, and the person may pause at any time.
 4. Files: ask for one real input file and one real output file, and screenshots where a step
    happens in a system. Read the layout (columns, fields, an example row) from the file
    yourself and ask the person only to confirm it. Do not ask the person to describe a layout.
-5. Checks and problems: what is checked against what, right vs wrong, the last concrete
+5. Checks and problems. First derive field checks from each real file yourself (empty values,
+   format such as digits or length, ranges such as price above cost, matches between files such
+   as a key present in both) and list them under `checks`, marked in `inferred`. For each file
+   that goes into a system, ask what else the import changes and whether one record can match
+   several. Then ask: what is checked against what, right vs wrong, the last concrete
    incident and what they did, decisions.
 6. What changes per run, what stays fixed, and the rules a solution must always respect (law,
    data protection, brand), asked once. "keine" with a reason is a valid answer.
