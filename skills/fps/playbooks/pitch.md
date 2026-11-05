@@ -20,10 +20,12 @@ offer a new chat for the other.
    its source ("Team-Angabe", "aus der Ablauf-Doku", "Schätzung"). A number found in a document
    is shown for confirmation, not asked again. If the KPI does not measure the goal, propose a
    better one. Ask "Was würde fehlen, wenn diese Arbeit morgen wegfällt?". The idea is optional
-   and stays a rough sketch.
+   and stays a rough sketch. Every text value goes on the page word for word, so keep each one
+   to one sentence: a file's `description` says what the file is and how many rows, never its
+   column list or sample rows. State each fact in one field only.
 5. **Check the core.** `python3 <skill-folder>/scripts/check.py brief.json`. Ask what it lists,
    one question at a time, and run it again until exit 0.
-6. **Write the page.** Copy `template/capture.html` to `brief.html` and write it per
+6. **Write the page.** Copy `template/brief.html` to `brief.html` and write it per
    `reference/page-contract.md` with the brief sections. Each section is one short paragraph,
    at most five sentences; the whole brief fits about two screens. The `visualizer` skill can
    draw the picture of today's process if the capture has none.

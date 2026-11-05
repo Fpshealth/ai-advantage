@@ -62,3 +62,8 @@ are fixed:
    and edit it. `check.py` checks the file and adds it to the `files` map.
 7. **Brief pages** use the brief sections from `template/brief.html`, problem first. Each section
    is one short paragraph, at most five sentences; the whole brief fits about two screens.
+   - Put a `<header>` before the stamp slot: the title and one sentence that names the problem
+     and the goal with its number. The reader sees the point before the check result.
+   - A fact stands in one section only. Other sections refer to it ("siehe Evidenz").
+   - `offen` is a list, one line per open question: the ones that block the decision first
+     (cost, budget, target), filing questions (Beitragsliste ID, capture) last.

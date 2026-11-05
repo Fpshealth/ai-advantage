@@ -17,6 +17,9 @@ other file. You know the company, not this idea.
 - The summary and the problem come first. No fact repeated in two sections. No empty field.
 - Each section is at most five sentences. The whole brief fits about two screens. A longer
   section is a finding: name the section and what to cut.
+- The section "Sonderfälle und offene Fragen" is a list that must hold every open question, one
+  line each. Judge its order (decision-blocking first) and whether a line repeats another, not
+  its length.
 
 ## Output
 
