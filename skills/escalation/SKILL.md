@@ -1,6 +1,6 @@
 ---
 name: "Escalation: Team-AI"
-description: 'Hands a stuck session to the consultant: Claude writes a handoff file, the person sends it via a pre-addressed email draft. Use when the person asks to escalate or to involve their consultant, or when a retry after prompt improvement still fails.'
+description: 'Hands a stuck session to the consultant: Claude writes a handoff file, the person sends it via a pre-addressed email draft. Use when the person asks to escalate or to involve their consultant, or when a retry after sharpening the prompt still fails.'
 ---
 
 # Escalation: Team-AI

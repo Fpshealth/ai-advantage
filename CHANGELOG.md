@@ -8,6 +8,11 @@ version control, if any.
 > non-git distribution), so there is no manual bump. The version headings below are human
 > release notes / milestones, not the installed version string.
 
+## [1.5.0] — Catalogue: Prompt Improvement out, Sharpen and In Your Own Words in
+- Removed `prompt-improvement` (and the SOP Starter Pack it wrote). Escalation now points to sharpen.
+- Added pstack's `sharpen` and `in-your-own-words`, copied unchanged (MIT, see `LICENSE-pstack` in each folder).
+- `handoff` stays as already adapted from Matt Pocock's skill (MIT).
+
 ## [1.4.0] — Clear Explanation skill
 - New skill `clear-explanation` ("Clear Explanation: Team-AI"), ported from the consultant's own
   explainer skill: inventory first, one red thread with a real case, pictures, then a format script
