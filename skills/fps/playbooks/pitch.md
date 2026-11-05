@@ -22,7 +22,10 @@ offer a new chat for the other.
    better one. Ask "Was würde fehlen, wenn diese Arbeit morgen wegfällt?". The idea is optional
    and stays a rough sketch. Every text value goes on the page word for word, so keep each one
    to one sentence: a file's `description` says what the file is and how many rows, never its
-   column list or sample rows. State each fact in one field only.
+   column list or sample rows. State each fact in one field only. A fact you read from a file
+   or the SOP goes in `inferred` ("abgeleitet, bitte bestätigen"), not in an open question. Make
+   an open question only of a fact that blocks the decision or the submission; every open
+   question stands on the page twice, so each one you add costs length.
 5. **Check the core.** `python3 <skill-folder>/scripts/check.py brief.json`. Ask what it lists,
    one question at a time, and run it again until exit 0.
 6. **Write the page.** Copy `template/brief.html` to `brief.html` and write it per
@@ -41,5 +44,6 @@ offer a new chat for the other.
    input and output file, a real screenshot, no open questions). Then set `status` to
    `eingereicht`, rerun the check and update the row. The Geschäftsführung sets `genehmigt` or
    `abgelehnt` with a reason (`rejection_reason`).
-10. **Close.** Give the link, the status, the open questions with who answers them, and what must
-    happen before the brief can be submitted.
+10. **Close.** Give the link and the Beitragsliste row as its own line: ID (or "offen"), title,
+    Typ `Projekt-Pitch`, Status `Entwurf` or `Eingereicht`. Then the open questions with who
+    answers them, and what must happen before the brief can be submitted.
