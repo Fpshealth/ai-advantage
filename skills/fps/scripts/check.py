@@ -788,17 +788,18 @@ def check_core(root, doc_path):
 
 
 def count_open(doc):
-    """Open questions the reader still has to see: every {"open": …} plus every open point."""
-    def walk(v):
-        if isinstance(v, dict):
-            return (1 if "open" in v else 0) + sum(walk(x) for k, x in v.items() if k != "open_points")
-        if isinstance(v, list):
-            return sum(walk(x) for x in v)
-        return 0
+    """Distinct open questions the reader still has to answer: each {"open": …} text and each open
+    point's question, counted once even when several fields carry the same question."""
     if not isinstance(doc, dict):
         return 0
-    points = doc.get("open_points")
-    return walk(doc) + (len(points) if isinstance(points, list) else 0)
+    rest = {k: v for k, v in doc.items() if k != "open_points"}
+    texts = {norm(q) for q in open_questions(rest)}
+    for p in doc.get("open_points") or []:
+        if isinstance(p, dict) and isinstance(p.get("question"), str):
+            texts.add(norm(p["question"]))
+        else:
+            texts.add(repr(p))
+    return len(texts)
 
 
 def open_text(n):

@@ -308,5 +308,8 @@ expect "page: inline open question listed in Noch offen passes" 0 "GEPRÜFT: Ent
 "$PY" -c 'import sys; s=open(sys.argv[1],encoding="utf-8").read(); open(sys.argv[2],"w",encoding="utf-8").write(s.replace("<p>Warum prüfst du zuerst die Dubletten?</p></section>","</section>"))' "$SOP/inline.html" "$SOP/nooffen.html"
 expect "page: an open question missing from Noch offen fails" 1 "steht nicht im Abschnitt „Noch offen“" "$SOP/inline.json" "$SOP/nooffen.html"
 
+"$PY" -c 'import json,sys; d=json.load(open(sys.argv[1])); q={"open":"Wie viele Minuten dauert dieser Schritt?","ask":"Einkauf"}; [s.__setitem__("minutes",dict(q)) for s in d["steps"][:3]]; d["open_points"]=[]; json.dump(d,open(sys.argv[2],"w"),ensure_ascii=False)' "$SOP/document.json" "$SOP/samequestion.json"
+expect "count: the same open question in three steps counts once" 0 "GEPRÜFT: Entwurf · 1 Frage offen" "$SOP/samequestion.json"
+
 echo "$pass passed, $fail failed"
 [ "$fail" = 0 ]
