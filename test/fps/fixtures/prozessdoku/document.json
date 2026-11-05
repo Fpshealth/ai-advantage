@@ -1,0 +1,357 @@
+{
+ "schema": "ablauf-dokumentieren/capture/v2",
+ "depth": "prozessdokumentation",
+ "title": "Retouren bearbeiten",
+ "summary": "Eine Retoure läuft vom Kundenservice über das Lager zur Buchhaltung, bis die Kundin ihr Geld oder Ersatz hat.",
+ "basis": [
+  {
+   "source": "Gespräch mit Kundenservice, Lager und Buchhaltung",
+   "date": "2026-10-12",
+   "covers": "Alle Schritte"
+  }
+ ],
+ "owner": {
+  "role": "Kundenservice"
+ },
+ "date": "2026-10-12",
+ "sharepoint_folder": "Kundenservice/Retouren/Prozess",
+ "trigger": "Eine Kundin meldet per E-Mail, dass sie Ware zurückschicken will.",
+ "result": "Die Kundin hat ihr Geld oder Ersatz, und die Erstattung steht in der Monatsliste.",
+ "not_for": "Reklamationen bei Herstellergarantie, die laufen über den Hersteller.",
+ "done_check": "Die Retoure hat im Shop-Backend den Status abgeschlossen.",
+ "purpose": {
+  "for_whom": "Die Kundinnen und Kunden, die Ware zurückgeben.",
+  "if_stopped": "Erstattungen blieben liegen, und Beschwerden würden zunehmen."
+ },
+ "process_owner": {
+  "role": "Kundenservice"
+ },
+ "roles": [
+  {
+   "name": "Kundenservice",
+   "does": "Nimmt Retouren an und entscheidet über Erstattung oder Ersatz."
+  },
+  {
+   "name": "Lager",
+   "does": "Nimmt Pakete an und prüft den Zustand der Ware."
+  },
+  {
+   "name": "Buchhaltung",
+   "does": "Löst Erstattungen aus und führt die Monatsliste."
+  }
+ ],
+ "handoffs": [
+  {
+   "from_step": 2,
+   "to_step": 3,
+   "to_role": "Lager",
+   "what": "Die angelegte Retoure mit Retourenschein",
+   "form": "Die Retoure im Shop-Backend",
+   "returns": "Der Zustand der Ware als Status in der Retoure."
+  },
+  {
+   "from_step": 4,
+   "to_step": 5,
+   "to_role": "Kundenservice",
+   "what": "Die geprüfte Retoure",
+   "form": "Status geprüft im Shop-Backend",
+   "returns": "Eine kurze Rückfrage, wenn der Zustand unklar ist."
+  },
+  {
+   "from_step": 5,
+   "to_step": 6,
+   "to_role": "Buchhaltung",
+   "what": "Die freigegebene Retoure mit Betrag",
+   "form": "Status freigegeben im Shop-Backend",
+   "returns": "Die Bestätigung der ausgeführten Erstattung."
+  }
+ ],
+ "steps": [
+  {
+   "nr": 1,
+   "action": "Nimm die Retourenanfrage per E-Mail an und suche die Bestellung im Shop-Backend.",
+   "key_point": "Ohne Bestellnummer fragst du bei der Kundin nach.",
+   "why": "Nur mit Bestellnummer lässt sich die Retoure zuordnen.",
+   "tool": "E-Mail",
+   "role": "Kundenservice",
+   "done_signal": "Die Bestellung ist im Shop-Backend geöffnet.",
+   "minutes": {
+    "value": "4",
+    "source": "Einkauf",
+    "estimate": true
+   }
+  },
+  {
+   "nr": 2,
+   "action": "Lege die Retoure im Shop-Backend an und schicke den Retourenschein per E-Mail.",
+   "key_point": "Wähle den Grund der Retoure aus der Liste.",
+   "why": "Der Grund steuert später, ob Ersatz oder Geld zurückgeht.",
+   "tool": "Shop-Backend",
+   "role": "Kundenservice",
+   "done_signal": "Die Kundin hat den Retourenschein bekommen.",
+   "minutes": {
+    "value": "5",
+    "source": "Einkauf",
+    "estimate": true
+   }
+  },
+  {
+   "nr": 3,
+   "action": "Nimm das Paket an und vergleiche den Inhalt mit dem Retourenschein.",
+   "key_point": "Fehlt ein Artikel, fotografierst du den Inhalt.",
+   "why": "Ein Foto belegt später den Zustand bei Rückfragen.",
+   "tool": "Retourenschein",
+   "role": "Lager",
+   "done_signal": "Der Inhalt passt zum Retourenschein oder das Foto ist abgelegt.",
+   "minutes": {
+    "value": "6",
+    "source": "Einkauf",
+    "estimate": true
+   }
+  },
+  {
+   "nr": 4,
+   "action": "Erfasse den Zustand der Ware in der Retoure im Shop-Backend.",
+   "key_point": "Unterscheide neuwertig, beschädigt und unvollständig.",
+   "why": "Nur neuwertige Ware geht zurück in den Bestand.",
+   "tool": "Shop-Backend",
+   "role": "Lager",
+   "done_signal": "Die Retoure hat den Status geprüft.",
+   "minutes": {
+    "value": "3",
+    "source": "Einkauf",
+    "estimate": true
+   }
+  },
+  {
+   "nr": 5,
+   "action": "Entscheide anhand des Zustands über Erstattung oder Ersatz und gib die Retoure frei.",
+   "key_point": "Bei beschädigter Ware gilt die Regel unter Entscheidungen.",
+   "why": "Die Kundin bekommt so eine klare Antwort.",
+   "tool": "Shop-Backend",
+   "role": "Kundenservice",
+   "done_signal": "Die Retoure hat den Status freigegeben.",
+   "minutes": {
+    "value": "4",
+    "source": "Einkauf",
+    "estimate": true
+   }
+  },
+  {
+   "nr": 6,
+   "action": "Löse die Erstattung über den Zahlungsweg der Bestellung aus.",
+   "key_point": "Erstatte nie mehr als den Bestellwert.",
+   "why": "Eine falsche Erstattung lässt sich kaum zurückholen.",
+   "tool": "Shop-Backend",
+   "role": "Buchhaltung",
+   "done_signal": "Die Erstattung steht im Shop-Backend als ausgeführt.",
+   "minutes": {
+    "value": "3",
+    "source": "Einkauf",
+    "estimate": true
+   }
+  },
+  {
+   "nr": 7,
+   "action": "Trage die Erstattung in die Monatsliste der Retouren in Excel ein.",
+   "key_point": "Eine Zeile je Retoure mit Betrag und Datum.",
+   "why": "Die Monatsliste ist die Grundlage für den Abschluss.",
+   "tool": "Excel",
+   "role": "Buchhaltung",
+   "done_signal": "Die Zeile steht in der Monatsliste.",
+   "minutes": {
+    "value": "2",
+    "source": "Einkauf",
+    "estimate": true
+   }
+  }
+ ],
+ "screenshots": [
+  {
+   "file": "img/01-anfrage.png",
+   "caption": "Die Retourenanfrage im Postfach des Kundenservice.",
+   "step": 1,
+   "kind": "platzhalter"
+  },
+  {
+   "file": "img/02-retoure.png",
+   "caption": "Die Retoure mit dem Status geprüft im Shop-Backend.",
+   "step": 4,
+   "kind": "echt"
+  }
+ ],
+ "files": {
+  "inputs": [
+   {
+    "path": "Retouren/Beispiel-Retourenschein.pdf",
+    "description": "Ein Retourenschein aus einem echten Fall, ohne Kundendaten.",
+    "status": "platzhalter",
+    "layout": "Eine Seite mit Bestellnummer, Artikeln und Grund."
+   }
+  ],
+  "outputs": [
+   {
+    "path": "Retouren/Monatsliste-Retouren.xlsx",
+    "description": "Die Monatsliste der Erstattungen.",
+    "status": "abgelegt",
+    "layout": "Eine Zeile je Retoure mit Datum, Betrag und Grund."
+   }
+  ]
+ },
+ "metrics": {
+  "success_measure": {
+   "value": "Erstattung innerhalb von fünf Werktagen nach Paketeingang",
+   "source": "Kundenservice",
+   "estimate": true
+  },
+  "time_per_run": {
+   "value": "rund 27 Minuten über alle Rollen",
+   "source": "Kundenservice",
+   "estimate": true
+  },
+  "lead_time": {
+   "value": "drei bis acht Werktage",
+   "source": "Kundenservice",
+   "estimate": true
+  },
+  "runs_per_period": {
+   "value": "rund 120 Retouren im Monat",
+   "source": "Buchhaltung",
+   "estimate": false
+  },
+  "mode": {
+   "mode": "einzeln",
+   "source": "Lager",
+   "estimate": false
+  },
+  "error_rate": {
+   "value": "etwa jede zwanzigste Retoure braucht eine Rückfrage",
+   "source": "Kundenservice",
+   "estimate": true
+  },
+  "hours_per_year": {
+   "value": "rund 650 Stunden",
+   "source": "Rechnung aus Zeit je Retoure und Menge",
+   "estimate": true
+  }
+ },
+ "checks": [
+  {
+   "what": "Zustand der Ware",
+   "against": "Der Retourenschein",
+   "right": "Alle Artikel sind da und neuwertig.",
+   "wrong": "Ein Artikel fehlt oder ist beschädigt.",
+   "who": "Lager",
+   "step": 3
+  }
+ ],
+ "decisions": [
+  {
+   "if": "Die Ware ist beschädigt",
+   "then": "Der Kundenservice bietet Ersatz statt Erstattung an."
+  }
+ ],
+ "exceptions": [
+  {
+   "problem": "Das Paket kommt ohne Retourenschein.",
+   "fix": "Das Lager sucht die Bestellung über den Absender."
+  }
+ ],
+ "help": [
+  {
+   "topic": "Erstattungen",
+   "role": "Buchhaltung"
+  }
+ ],
+ "picture": {
+  "kind": "swimlane",
+  "drawio": {
+   "path": "Retouren/retouren-swimlane.drawio",
+   "description": "Das Bild mit drei Bahnen für die drei Rollen.",
+   "status": "abgelegt",
+   "layout": "Drei Bahnen, eine je Rolle, sieben Kästen."
+  }
+ },
+ "open_points": [
+  {
+   "question": "Wer entscheidet bei Retouren über 500 Euro?",
+   "about": "Schritt 5",
+   "ask": "Kundenservice"
+  }
+ ],
+ "pain_points": [
+  {
+   "text": "Pakete warten im Lager, bis jemand Zeit für die Prüfung hat.",
+   "number": {
+    "value": "im Schnitt zwei Tage",
+    "source": "Lager",
+    "estimate": true
+   }
+  }
+ ],
+ "automated_or_tried": [
+  {
+   "what": "Ein Formular für Retourenanfragen auf der Website.",
+   "result": "Nach drei Monaten abgeschaltet, weil Bestellnummern fehlten."
+  }
+ ],
+ "systems": [
+  {
+   "name": "Shop-Backend",
+   "steps": [
+    1,
+    2,
+    4,
+    5,
+    6
+   ],
+   "access": "Im Browser über die Admin-Adresse des Shops.",
+   "rights": "Die Teamleitung vergibt die Rechte je Rolle."
+  },
+  {
+   "name": "E-Mail",
+   "steps": [
+    1,
+    2
+   ],
+   "access": "Das gemeinsame Postfach des Kundenservice.",
+   "rights": "Die IT richtet das Postfach ein."
+  },
+  {
+   "name": "Excel",
+   "steps": [
+    7
+   ],
+   "access": "Die Monatsliste im Ordner der Buchhaltung.",
+   "rights": "Nur die Buchhaltung hat Schreibrecht."
+  }
+ ],
+ "external": [
+  {
+   "party": "Paketdienst",
+   "step": 3,
+   "receives": "Das Paket der Kundin",
+   "returns": "Die Zustellung ans Lager mit Sendungsnummer."
+  }
+ ],
+ "variation": {
+  "per_run": [
+   "Artikel und Grund der Retoure"
+  ],
+  "fixed": [
+   "Reihenfolge der Rollen"
+  ]
+ },
+ "last_incident": {
+  "what": "Eine Erstattung ging doppelt raus.",
+  "when": "Im August 2026.",
+  "fix": "Die Buchhaltung hat den Betrag zurückgefordert und die Monatsliste geprüft."
+ },
+ "security": {
+  "open": "Dürfen Fotos der Ware Kundendaten auf dem Etikett zeigen?",
+  "ask": "Datenschutz"
+ },
+ "inferred": [
+  "steps.3.tool"
+ ]
+}

@@ -1,0 +1,359 @@
+{
+ "schema": "ablauf-dokumentieren/capture/v2",
+ "depth": "sop",
+ "title": "Lieferantenpreise in den Shop-Export übernehmen",
+ "summary": "Zweimal im Jahr übernimmt der Einkauf die neuen Einkaufspreise des Hauptlieferanten in den Shop-Export und importiert ihn ins Shop-Backend.",
+ "highlight": {
+  "title": "UVP unter Einkaufspreis",
+  "text": "Jede Zeile mit UVP unter dem Einkaufspreis geht vor dem Import an die Einkaufsleitung."
+ },
+ "basis": "Interview mit dem Einkauf und die SOP vom 20. Mai 2026.",
+ "owner": {
+  "role": "Einkauf"
+ },
+ "date": "2026-05-20",
+ "sharepoint_folder": "Einkauf/Preispflege/2026-Fruehjahr",
+ "trigger": "Der Hauptlieferant schickt im Frühjahr oder Herbst eine neue Preisliste als CSV.",
+ "result": "Der Shop zeigt die neuen Einkaufspreise, und kein Artikel steht unter Einkaufspreis.",
+ "not_for": "Aktionspreise und Bundles, die pflegt das Marketing getrennt.",
+ "done_check": "Das Import-Protokoll hat keine Fehlerzeile, und fünf Stichproben im Shop zeigen die neuen Preise.",
+ "prepare": [
+  "Excel ist geöffnet.",
+  "Die Preisliste liegt als CSV im Eingangsordner.",
+  "Du hast Zugang zum Shop-Backend mit Importrecht."
+ ],
+ "steps": [
+  {
+   "nr": 1,
+   "action": "Öffne die neue Preisliste des Hauptlieferanten aus dem Eingangsordner in Excel.",
+   "key_point": "Nimm immer die Datei mit dem neuesten Datum im Namen.",
+   "why": "Der Lieferant schickt manchmal zwei Fassungen, nur die letzte gilt.",
+   "tool": "Excel",
+   "role": "Einkauf",
+   "done_signal": "Die Tabelle zeigt die Spalten SKU, EAN, Wholesale_USD und MSRP_USD.",
+   "minutes": {
+    "value": "2",
+    "source": "Einkauf",
+    "estimate": true
+   }
+  },
+  {
+   "nr": 2,
+   "action": "Setze in der Spalte SKU einen Filter auf doppelte Werte.",
+   "key_point": "Doppelte Artikelnummern markierst du gelb.",
+   "why": "Eine doppelte SKU überschreibt beim Import den richtigen Preis.",
+   "tool": "Excel",
+   "role": "Einkauf",
+   "done_signal": "Der Filter zeigt keine Zeile mehr oder nur gelb markierte Zeilen.",
+   "minutes": {
+    "value": "5",
+    "source": "Einkauf",
+    "estimate": true
+   }
+  },
+  {
+   "nr": 3,
+   "action": "Filtere die Spalte EAN auf leere Zellen.",
+   "key_point": "Jede Zeile ohne EAN schreibst du in eine kurze Liste.",
+   "why": "Ohne Barcode findet das Lager den Artikel beim Wareneingang nicht.",
+   "tool": "Excel",
+   "role": "Einkauf",
+   "done_signal": "Du hast eine Liste aller Artikel ohne Barcode.",
+   "minutes": {
+    "value": "5",
+    "source": "Einkauf",
+    "estimate": true
+   }
+  },
+  {
+   "nr": 4,
+   "action": "Schicke die Liste der Auffälligkeiten per E-Mail an den Lieferanten.",
+   "key_point": "Nenne im Betreff die Saison und das Datum der Preisliste.",
+   "why": "Der Lieferant korrigiert die Stammdaten nur auf schriftliche Meldung.",
+   "tool": "E-Mail",
+   "role": "Einkauf",
+   "done_signal": "Die Nachricht steht im Ordner „Gesendet“.",
+   "minutes": {
+    "value": "5",
+    "source": "Einkauf",
+    "estimate": true
+   }
+  },
+  {
+   "nr": 5,
+   "action": "Lade den aktuellen Shop-Export als CSV aus dem Shop-Backend herunter.",
+   "key_point": "Wähle das Exportprofil „Preise komplett“.",
+   "why": "Nur ein frischer Export enthält neue Artikel der letzten Wochen.",
+   "tool": "Shop-Backend",
+   "role": "Einkauf",
+   "done_signal": "Die Datei liegt im Download-Ordner mit dem Datum von heute.",
+   "minutes": {
+    "value": "3",
+    "source": "Einkauf",
+    "estimate": true
+   }
+  },
+  {
+   "nr": 6,
+   "action": "Ziehe per SVERWEIS die neuen Einkaufspreise über die SKU in den Shop-Export.",
+   "key_point": "Prüfe, dass die Formel bis zur letzten Zeile reicht.",
+   "why": "Händisches Abtippen von Hunderten Preisen erzeugt Tippfehler.",
+   "tool": "Excel",
+   "role": "Einkauf",
+   "done_signal": "Jede Zeile hat in der neuen Spalte einen Preis oder den Wert #NV.",
+   "minutes": {
+    "value": "15",
+    "source": "Einkauf",
+    "estimate": true
+   }
+  },
+  {
+   "nr": 7,
+   "action": "Vergleiche je Zeile die UVP mit dem neuen Einkaufspreis.",
+   "key_point": "Jede Zeile mit UVP unter dem Einkaufspreis färbst du rot.",
+   "why": "Ein Verkauf unter Einkaufspreis bringt bei jeder Bestellung Verlust.",
+   "tool": "Excel",
+   "role": "Einkauf",
+   "done_signal": "Alle roten Zeilen stehen oben, wenn du nach Farbe sortierst.",
+   "minutes": {
+    "value": "10",
+    "source": "Einkauf",
+    "estimate": true
+   }
+  },
+  {
+   "nr": 8,
+   "action": "Melde die roten Zeilen per E-Mail an die Einkaufsleitung.",
+   "key_point": "Hänge nur die roten Zeilen an, nicht die ganze Tabelle.",
+   "why": "Über einen Preis unter Einkauf entscheidet nur die Einkaufsleitung.",
+   "tool": "E-Mail",
+   "role": "Einkauf",
+   "done_signal": "Die Einkaufsleitung bestätigt den Eingang der Liste.",
+   "minutes": {
+    "value": "5",
+    "source": "Einkauf",
+    "estimate": true
+   }
+  },
+  {
+   "nr": 9,
+   "action": "Speichere den Shop-Export als CSV mit Semikolon und importiere ihn im Shop-Backend.",
+   "key_point": "Wähle beim Speichern die Codierung UTF-8.",
+   "why": "Mit anderer Codierung kommen Umlaute im Shop falsch an.",
+   "tool": "Shop-Backend",
+   "role": "Einkauf",
+   "done_signal": "Das Shop-Backend meldet den Import als abgeschlossen.",
+   "minutes": {
+    "value": "10",
+    "source": "Einkauf",
+    "estimate": true
+   }
+  },
+  {
+   "nr": 10,
+   "action": "Öffne das Import-Protokoll und prüfe fünf Artikel als Stichprobe im Shop.",
+   "key_point": "Eine Fehlerzeile im Protokoll bedeutet: Import wiederholen.",
+   "why": "Erst die Stichprobe zeigt, ob der Kunde den neuen Preis sieht.",
+   "tool": "Shop-Backend",
+   "role": "Einkauf",
+   "done_signal": "Das Protokoll hat null Fehlerzeilen, und alle fünf Artikel zeigen den neuen Preis.",
+   "minutes": {
+    "value": "10",
+    "source": "Einkauf",
+    "estimate": true
+   }
+  }
+ ],
+ "screenshots": [
+  {
+   "file": "img/01-preisliste.png",
+   "caption": "Die Preisliste in Excel mit Filter auf der Spalte SKU.",
+   "step": 2,
+   "kind": "platzhalter"
+  },
+  {
+   "file": "img/02-sverweis.png",
+   "caption": "Die SVERWEIS-Formel in der neuen Spalte EK neu.",
+   "step": 6,
+   "kind": "platzhalter"
+  },
+  {
+   "file": "img/03-preise.png",
+   "caption": "Rot markierte Zeilen mit UVP unter dem Einkaufspreis.",
+   "step": 7,
+   "kind": "echt"
+  }
+ ],
+ "files": {
+  "inputs": [
+   {
+    "path": "Eingang/supplier-price-list-spring-2026.csv",
+    "description": "Die Preisliste des Hauptlieferanten für das Frühjahr 2026.",
+    "status": "lokal",
+    "layout": "Eine Zeile je Artikel mit SKU, EAN, Einkaufspreis und UVP.",
+    "preview": "img/preisliste-vorschau.png",
+    "preview_caption": "Die ersten Zeilen der Preisliste."
+   }
+  ],
+  "outputs": [
+   {
+    "path": "Ausgang/current-shop-export.csv",
+    "description": "Der Shop-Export mit den übernommenen Einkaufspreisen.",
+    "status": "lokal",
+    "layout": "Eine Zeile je Variante mit Handle, SKU, Preis und Bestand."
+   }
+  ]
+ },
+ "metrics": {
+  "success_measure": {
+   "value": "Null Fehlerzeilen im Import-Protokoll",
+   "source": "Einkauf",
+   "estimate": false
+  },
+  "time_per_run": {
+   "value": "rund 70 Minuten",
+   "source": "Einkauf",
+   "estimate": true
+  },
+  "lead_time": {
+   "value": "zwei Arbeitstage mit Warten auf die Einkaufsleitung",
+   "source": "Einkauf",
+   "estimate": true
+  },
+  "runs_per_period": {
+   "value": "zweimal im Jahr",
+   "source": "Einkauf",
+   "estimate": false
+  },
+  "mode": {
+   "mode": "stapel",
+   "batch_size": "rund 400 Artikel je Preisliste",
+   "source": "Einkauf",
+   "estimate": true
+  },
+  "error_rate": {
+   "value": "etwa jede zehnte Preisliste braucht einen zweiten Import",
+   "source": "Einkauf",
+   "estimate": true
+  }
+ },
+ "checks": [
+  {
+   "what": "Doppelte Artikelnummern",
+   "against": "Die Spalte SKU der Preisliste",
+   "right": "Jede SKU kommt genau einmal vor.",
+   "wrong": "Eine SKU steht zweimal mit verschiedenen Preisen.",
+   "who": "Einkauf",
+   "step": 2
+  },
+  {
+   "what": "UVP gegen Einkaufspreis",
+   "against": "Die neue Spalte EK neu",
+   "right": "Die UVP liegt über dem Einkaufspreis.",
+   "wrong": "Die UVP liegt unter dem Einkaufspreis.",
+   "who": "Einkauf",
+   "step": 7
+  }
+ ],
+ "decisions": [
+  {
+   "if": "Eine Zeile hat eine UVP unter dem Einkaufspreis",
+   "then": "Der Artikel geht erst nach Freigabe der Einkaufsleitung in den Import."
+  }
+ ],
+ "exceptions": [
+  {
+   "problem": "Das Import-Protokoll zeigt Fehlerzeilen.",
+   "cause": "Die Datei wurde nicht als UTF-8 gespeichert.",
+   "fix": "Speichere die Datei erneut als UTF-8 und importiere sie noch einmal."
+  }
+ ],
+ "help": [
+  {
+   "topic": "Preise unter Einkaufspreis",
+   "role": "Einkaufsleitung"
+  },
+  {
+   "topic": "Zugang zum Shop-Backend",
+   "role": "IT-Support"
+  }
+ ],
+ "picture": {
+  "kind": "liste"
+ },
+ "open_points": [
+  {
+   "question": "Gilt die Regel für Aktionspreise auch im Herbst?",
+   "about": "Nicht für",
+   "ask": "Einkaufsleitung"
+  },
+  {
+   "question": "Soll die Stichprobe künftig zehn Artikel umfassen?",
+   "about": "Schritt 10",
+   "ask": "Einkaufsleitung"
+  }
+ ],
+ "systems": [
+  {
+   "name": "Excel",
+   "steps": [
+    1,
+    2,
+    3,
+    6,
+    7
+   ],
+   "access": "Auf dem Arbeitsrechner über das Startmenü.",
+   "rights": "Standard auf jedem Arbeitsrechner."
+  },
+  {
+   "name": "Shop-Backend",
+   "steps": [
+    5,
+    9,
+    10
+   ],
+   "access": "Im Browser über die Admin-Adresse des Shops.",
+   "rights": "Die Einkaufsleitung vergibt das Importrecht."
+  },
+  {
+   "name": "E-Mail",
+   "steps": [
+    4,
+    8
+   ],
+   "access": "Im Mailprogramm auf dem Arbeitsrechner.",
+   "rights": "Standard für jedes Konto."
+  }
+ ],
+ "variation": {
+  "per_run": [
+   "Saison und Datum der Preisliste",
+   "Anzahl der roten Zeilen"
+  ],
+  "fixed": [
+   "Exportprofil und Importweg",
+   "Spalten der Preisliste"
+  ]
+ },
+ "last_incident": {
+  "what": "Nach dem Import zeigten 40 Artikel kaputte Umlaute.",
+  "when": "Im Herbst 2025.",
+  "cause": "Die Datei war in der Codierung ANSI gespeichert.",
+  "fix": "Die Datei wurde als UTF-8 gespeichert und erneut importiert."
+ },
+ "security": "Keine Kundendaten im Ablauf, nur Artikel und Preise. Die Preisliste bleibt intern.",
+ "terms": [
+  {
+   "term": "UVP",
+   "meaning": "Unverbindliche Preisempfehlung des Herstellers."
+  },
+  {
+   "term": "EK",
+   "meaning": "Einkaufspreis, den der Shop an den Lieferanten zahlt."
+  }
+ ],
+ "inferred": [
+  "steps.1.tool"
+ ]
+}
