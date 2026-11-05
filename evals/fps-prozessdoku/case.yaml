@@ -1,0 +1,26 @@
+schema_version: "1.1"
+name: fps-prozessdoku
+description: >
+  German user wants the returns process documented across three roles, from rough team notes.
+  Tests depth prozessdokumentation: roles and handoffs, an editable draw.io swimlane that check.py
+  verifies, process owner, and check.py pass.
+tags: [fps, ablauf, prozessdoku, de]
+
+context:
+  scaffold_script: scaffold.sh
+
+execution:
+  prompt: |
+    /fps Ich möchte unseren Retourenprozess dokumentieren, vom Formular bis zur Erstattung. Da sind
+    Kundenservice, Lager und Buchhaltung beteiligt. Unsere Notizen liegen in 01_Input. Rückfragen
+    bitte nicht jetzt: Lücken als offene Fragen markieren, mit wer antworten kann. Ich will auch
+    ein Übersichtsbild, das wir selbst ändern können.
+  max_turns: 90
+  timeout_seconds: 1500
+  allowed_tools: [Read, Glob, Grep, Skill, Agent, Bash, Write, Edit]
+
+runs: 1
+
+expected_outcome: >
+  document.json with depth prozessdokumentation, a .drawio swimlane, a capture page; check.py prints
+  "GEPRÜFT: vollständig" with the page and confirms the diagram. German reply with open questions.

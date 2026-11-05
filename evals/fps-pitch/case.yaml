@@ -1,0 +1,26 @@
+schema_version: "1.1"
+name: fps-pitch
+description: >
+  German user pitches automating the supplier price update; the SOP sits in 03_Output. Tests the
+  pitch playbook: sharpen first, problem before idea, brief check with the three gates, reviewer,
+  Beitragsliste status.
+tags: [fps, pitch, de]
+
+context:
+  scaffold_script: scaffold.sh
+
+execution:
+  prompt: |
+    /fps Pitch: Claude soll die halbjährliche Übernahme der Lieferantenpreise machen, ich prüfe nur
+    noch das Protokoll. Die SOP liegt im Ordner, die echten CSV-Dateien in 01_Input. Nimm als
+    bestätigt an: heute 2 Tage pro Halbjahr, Ziel 2 Stunden; letztes Mal standen 3 falsche Preise
+    online. Keine Rückfragen jetzt, Lücken als offene Fragen markieren.
+  max_turns: 90
+  timeout_seconds: 1500
+  allowed_tools: [Read, Glob, Grep, Skill, Agent, Bash, Write, Edit]
+
+runs: 1
+
+expected_outcome: >
+  sharpen ran first; a brief.json and brief page; check.py passed with the brief; problem before
+  any solution idea; numbers carry their source; a Beitragsliste row with status Entwurf.
