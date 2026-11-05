@@ -1,11 +1,15 @@
 #!/usr/bin/env python3
-"""Check a capture document.json against schema v2 plus the rules a schema cannot express.
-With a page, also check that every core fact stands word for word inside its data-core marker,
-and write the result into the page's stamp slot.
+"""Check a capture (document.json) or a pitch brief (brief.json) against its schema plus the rules a
+schema cannot express. The document's "schema" field picks the schema file. With a page, also check
+that every core fact stands word for word inside its data-core marker, and write the result into the
+page's stamp slot.
 
-Usage: python3 check.py <document.json> [capture.html]
-Exit 0 = vollständig, 1 = etwas fehlt, 2 = falscher Aufruf. Prints a German list the interview can
-ask from; with a page and exit 0 also the Artifact `files` map as JSON.
+Usage: python3 check.py [--final] <document.json> [page.html]
+Exit 0 = all parts there (a draft while questions are open), 1 = something is missing, 2 = wrong call.
+--final also fails on open questions, a missing real screenshot, missing real files and (brief)
+missing evidence: the gates before a document counts as build-ready or a brief is submitted.
+Prints a German list the interview can ask from; with a page and exit 0 also the Artifact `files`
+map as JSON.
 Python standard library only (3.9+).
 """
 import datetime
@@ -14,11 +18,14 @@ import json
 import os
 import re
 import sys
+import xml.etree.ElementTree as ET
 from html.parser import HTMLParser
 from urllib.parse import unquote
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-SCHEMA_PATH = os.path.join(HERE, "..", "schema", "capture.schema.json")
+SCHEMA_DIR = os.path.join(HERE, "..", "schema")
+SCHEMAS = {"ablauf-dokumentieren/capture/v2": "capture.schema.json", "fps/brief/v1": "brief.schema.json"}
+DEFAULT_SCHEMA = "ablauf-dokumentieren/capture/v2"
 
 FILLERS = {"-", "–", "—", "n/a", "na", "k.a.", "k. a.", "keine angabe", "nicht genannt",
            "tbd", "?", "...", "…", "offen"}
@@ -221,7 +228,7 @@ def rules(root, doc, base_dir):
                         % (len(steps), MAX_STEPS))
 
     def need_step(path, nr):
-        if isinstance(nr, int) and nr not in step_role:
+        if "steps" in doc and isinstance(nr, int) and nr not in step_role:
             errors.append((path, "verweist auf Schritt %d, den es nicht gibt" % nr,
                            "Zu welchem Schritt gehört das?"))
 
@@ -298,6 +305,11 @@ def rules(root, doc, base_dir):
         if limit and len(text) > limit:
             warnings.append("%s: %d Zeichen (Richtwert %d). Lässt es sich kürzer sagen?"
                             % (where(root, path, doc), len(text), limit))
+
+    roles_doing = sorted({s.get("role") for s in steps if isinstance(s, dict) and isinstance(s.get("role"), str)})
+    if doc.get("depth") == "sop" and len(roles_doing) > 1:
+        warnings.append("Tiefe: in dieser SOP machen %d Rollen Schritte (%s). Ist es eine Prozessdokumentation?"
+                        % (len(roles_doing), ", ".join(roles_doing)))
 
     folder = doc.get("sharepoint_folder")
     if isinstance(folder, str) and re.search(r"[<\[]", folder):
@@ -414,11 +426,25 @@ def doc_paths(v, prefix=""):
     return out
 
 
-def hides_content(attrs):
-    """A fact in hidden markup is not on the page for the reader, so it must not count."""
+HIDING = re.compile(r"display:none|visibility:hidden|font-size:0(?![.\d]*[1-9])")
+
+
+def hides_content(tag, attrs, hidden_classes):
+    """A fact in hidden markup is not on the page for the reader, so it must not count. That covers
+    inline styles, a class a <style> rule hides, and a collapsed <details>."""
     style = re.sub(r"\s", "", (attrs.get("style") or "").lower())
-    return ("hidden" in attrs or attrs.get("aria-hidden") == "true"
-            or "display:none" in style or "visibility:hidden" in style)
+    classes = set((attrs.get("class") or "").split())
+    return ("hidden" in attrs or attrs.get("aria-hidden") == "true" or bool(HIDING.search(style))
+            or bool(classes & hidden_classes) or (tag == "details" and "open" not in attrs))
+
+
+def hidden_classes_in(css):
+    css = re.sub(r"\s", "", css.lower())
+    out = set()
+    for selectors, body in re.findall(r"([^{}]+)\{([^{}]*)\}", css):
+        if HIDING.search(body):
+            out |= set(re.findall(r"^\.([\w-]+)$", s)[0] for s in selectors.split(",") if re.match(r"^\.[\w-]+$", s))
+    return out
 
 
 class Page(HTMLParser):
@@ -427,7 +453,7 @@ class Page(HTMLParser):
     def __init__(self):
         HTMLParser.__init__(self, convert_charrefs=True)
         self.stack, self.marks, self.srcs, self.text, self.hidden = [], [], [], [], 0
-        self.sections = []
+        self.sections, self.hidden_classes = [], set()
 
     def handle_starttag(self, tag, attrs):
         a = dict(attrs)
@@ -438,7 +464,7 @@ class Page(HTMLParser):
             mark = {"paths": a["data-core"].split(), "start": len(self.text), "end": None,
                     "imgs": [], "line": self.getpos()[0]}
             self.marks.append(mark)
-        hides = tag in ("script", "style", "template") or hides_content(a)
+        hides = tag in ("script", "style", "template") or hides_content(tag, a, self.hidden_classes)
         if tag == "img" and a.get("src") and not (self.hidden or hides):
             self.srcs.append(a["src"])
             for m in self.marks:
@@ -470,6 +496,8 @@ class Page(HTMLParser):
                 return
 
     def handle_data(self, data):
+        if self.stack and self.stack[-1][0] == "style":
+            self.hidden_classes |= hidden_classes_in(data)
         if not self.hidden:
             self.text.append(data)
 
@@ -488,17 +516,18 @@ def is_local(src):
     return not re.match(r"^([a-zA-Z][a-zA-Z0-9+.-]*:|/)", src)
 
 
-def check_sections(doc, page):
+def check_sections(root, doc, page):
     """The fixed sections: each id once, in order; rollen only in a Prozessdokumentation."""
     errors = []
-    is_pd = doc.get("depth") == "prozessdokumentation"
-    wanted = [sid for sid, _ in SECTIONS if is_pd or sid != "rollen"]
-    heading = dict(SECTIONS)
+    sections = [tuple(s) for s in root.get("x-sections", SECTIONS)]
+    is_pd = doc.get("depth") == "prozessdokumentation" or "x-sections" in root
+    wanted = [sid for sid, _ in sections if is_pd or sid != "rollen"]
+    heading = dict(sections)
     found = [sid for sid, _ in page.sections]
     for sid, line in page.sections:
         if sid not in heading:
             errors.append(("Seite, Zeile %d: den Abschnitt data-section=\"%s\" gibt es nicht. Erlaubt sind: %s."
-                           % (line, sid, ", ".join(s for s, _ in SECTIONS)), None))
+                           % (line, sid, ", ".join(s for s, _ in sections)), None))
     for sid in wanted:
         n = found.count(sid)
         if n == 0:
@@ -507,7 +536,7 @@ def check_sections(doc, page):
         elif n > 1:
             errors.append(("Seite: der Abschnitt „%s“ (data-section=\"%s\") steht %d-mal. Er darf nur einmal vorkommen."
                            % (heading[sid], sid, n), None))
-    if not is_pd and "rollen" in found:
+    if not is_pd and "rollen" in found and "x-sections" not in root:
         errors.append(("Seite: der Abschnitt „Rollen und Übergaben“ (data-section=\"rollen\") gehört nur in eine "
                        "Prozessdokumentation. Entferne ihn aus der SOP.", None))
     present = [sid for sid in wanted if sid in found]
@@ -551,7 +580,7 @@ def check_page(root, doc, page_path):
     page.close()
     if not isinstance(doc, dict):
         return errors, []
-    errors += check_sections(doc, page)
+    errors += check_sections(root, doc, page)
 
     step_lines, other = {}, []
     for path, path_str, kind, value in core_leaves(root, doc):
@@ -599,8 +628,11 @@ def check_page(root, doc, page_path):
 
 
 def stamp_html(result):
+    if result["ok"] and not result["open"]:
+        return '<div class="stamp ok"><b>Geprüft: vollständig</b> baufertig · Schema v%s · %s</div>' % (
+            result["version"], result["date"])
     if result["ok"]:
-        return '<div class="stamp ok"><b>Geprüft: vollständig</b> %s · Schema v%s · %s</div>' % (
+        return '<div class="stamp draft"><b>Geprüft: Entwurf</b> %s · Schema v%s · %s</div>' % (
             open_text(result["open"]), result["version"], result["date"])
     items = []
     for text, frage in result["errors"]:
@@ -619,6 +651,79 @@ def write_stamp(page_path, result):
 
 
 # ---------- entry points ----------
+
+def diagram_file(doc):
+    """The draw.io file of a capture (picture.drawio) or a brief (today.diagram), or None."""
+    pic = doc.get("picture") if isinstance(doc.get("picture"), dict) else {}
+    today = doc.get("today") if isinstance(doc.get("today"), dict) else {}
+    f = pic.get("drawio") or today.get("diagram")
+    if isinstance(f, dict) and isinstance(f.get("path"), str) and f.get("status") != "platzhalter":
+        return f["path"]
+    return None
+
+
+def check_diagram(doc, base_dir):
+    """Return (errors [(text, frage)], note or None). The diagram must open in draw.io, have a box for
+    every step (its label starts with the step number) and, in a Prozessdokumentation, a lane per role."""
+    rel = diagram_file(doc)
+    if not rel:
+        return [], None
+    path = os.path.join(base_dir, rel)
+    if not os.path.isfile(path):
+        return [("Bild: die draw.io-Datei „%s“ gibt es nicht neben document.json." % rel,
+                 "Liegt die draw.io-Datei im selben Ordner, und stimmt der Name?")], None
+    try:
+        tree = ET.parse(path)
+    except ET.ParseError as exc:
+        return [("Bild: „%s“ ist keine gültige draw.io-Datei (%s)." % (rel, exc), None)], None
+    cells = [c for c in tree.iter("mxCell") if c.get("vertex") == "1"]
+    if tree.getroot().tag not in ("mxfile", "mxGraphModel") or not cells:
+        return [("Bild: „%s“ ist keine gültige draw.io-Datei (keine Kästen gefunden)." % rel, None)], None
+    labels = [norm(re.sub(r"<[^>]+>", " ", html.unescape(c.get("value") or ""))) for c in cells]
+    errors = []
+    for s in doc.get("steps") or []:
+        nr = s.get("nr") if isinstance(s, dict) else None
+        if isinstance(nr, int) and not any(re.match(r"^%d\b" % nr, l) for l in labels):
+            errors.append(("Bild: Schritt %d hat keinen Kasten in „%s“ (die Beschriftung beginnt mit der Nummer)." % (nr, rel), None))
+    lanes = 0
+    if doc.get("depth") == "prozessdokumentation":
+        for r in doc.get("roles") or []:
+            name = r.get("name") if isinstance(r, dict) else None
+            if isinstance(name, str) and name.strip():
+                if norm(name) in labels:
+                    lanes += 1
+                else:
+                    errors.append(("Bild: die Rolle „%s“ hat keine Bahn in „%s“." % (name, rel), None))
+    if errors:
+        return errors, None
+    return [], "Diagramm geprüft: %s (%d Kästen, %d Bahnen)" % (rel, len(cells) - lanes, lanes)
+
+
+def final_gates(root, doc):
+    """The gates before a document counts as build-ready (capture) or may be submitted (brief)."""
+    errors = []
+    if not isinstance(doc, dict):
+        return errors
+    n = count_open(doc)
+    if n:
+        errors.append(("Final: %s. Beantworte sie oder kläre sie mit der genannten Rolle." % open_text(n), None))
+    shots = [s for s in doc.get("screenshots") or [] if isinstance(s, dict)]
+    if not any(s.get("kind") == "echt" for s in shots) and not doc.get("no_screen_reason"):
+        errors.append(("Final: kein echter Screenshot. Mindestens einer aus dem System, in dem die Arbeit passiert.",
+                       "Kannst du einen Screenshot vom wichtigsten Schritt machen?"))
+    files = doc.get("files") if isinstance(doc.get("files"), dict) else {}
+    for key, label in (("inputs", "Eingabedatei"), ("outputs", "Ergebnisdatei")):
+        if not any(isinstance(f, dict) and f.get("status") in ("abgelegt", "lokal") for f in files.get(key) or []):
+            errors.append(("Final: keine echte %s, nur Platzhalter." % label,
+                           "Kannst du eine echte %s hochladen?" % label))
+    ev = doc.get("evidence")
+    if isinstance(ev, dict):
+        real = [k for k in ("frequency", "time", "errors", "cost") if isinstance(ev.get(k), dict) and "value" in ev[k]]
+        if not real:
+            errors.append(("Final: keine Evidenz. Mindestens eins von Häufigkeit, Zeit, Fehlern oder Kosten als Zahl.",
+                           "Wie oft passiert es, und wie viel Zeit kostet es ungefähr?"))
+    return errors
+
 
 def check_core(root, doc_path):
     """Return (doc or None, errors [(text, frage)], warnings [text])."""
@@ -672,12 +777,40 @@ def open_text(n):
     return "1 Frage offen" if n == 1 else "%d Fragen offen" % n
 
 
-def run(doc_path, page_path=None):
-    """Return {"ok", "errors": [(text, frage)], "warnings": [text], "date", "version", "files"}.
+def load_schema(doc_path):
+    """Return (schema, error or None), picked by the document's "schema" field."""
+    try:
+        with open(doc_path, encoding="utf-8") as fh:
+            sid = json.load(fh).get("schema", DEFAULT_SCHEMA)
+    except (ValueError, AttributeError):
+        sid = DEFAULT_SCHEMA
+    name = SCHEMAS.get(sid) if isinstance(sid, str) else None
+    error = None
+    if not name:
+        error = ("Schema-Kennung: unbekanntes Schema „%s“. Bekannt sind: %s." % (sid, ", ".join(SCHEMAS)), None)
+        name = SCHEMAS[DEFAULT_SCHEMA]
+    with open(os.path.join(SCHEMA_DIR, name), encoding="utf-8") as fh:
+        return json.load(fh), error
+
+
+def run(doc_path, page_path=None, final=False):
+    """Return {"ok", "errors": [(text, frage)], "warnings": [text], "notes", "date", "version", "files"}.
     With a page, also check the page, write the stamp into it, and fill "files" on success."""
-    with open(SCHEMA_PATH, encoding="utf-8") as fh:
-        root = json.load(fh)
+    root, schema_error = load_schema(doc_path)
+    if schema_error:
+        result = {"ok": False, "errors": [schema_error], "warnings": [], "notes": [], "open": 0, "final": final,
+                  "date": datetime.date.today().isoformat(), "version": "?", "files": {}}
+        if page_path:
+            write_stamp(page_path, result)
+        return result
     doc, errors, warnings = check_core(root, doc_path)
+    notes = []
+    if isinstance(doc, dict):
+        diagram_errors, note = check_diagram(doc, os.path.dirname(os.path.abspath(doc_path)))
+        errors = errors + diagram_errors
+        notes += [note] if note else []
+        if final:
+            errors = errors + final_gates(root, doc)
     files = {}
     if page_path:
         page_errors, srcs = check_page(root, doc, page_path)
@@ -685,7 +818,11 @@ def run(doc_path, page_path=None):
         files = {"document.json": doc_path}
         for src in srcs:
             files[src] = os.path.join(os.path.dirname(page_path), unquote(re.split(r"[?#]", src)[0]))
-    result = {"ok": not errors, "errors": errors, "warnings": warnings, "open": count_open(doc),
+        rel = diagram_file(doc) if isinstance(doc, dict) else None
+        if rel and notes:
+            files[rel] = os.path.join(os.path.dirname(os.path.abspath(doc_path)), rel)
+    result = {"ok": not errors, "errors": errors, "warnings": warnings, "notes": notes, "final": final,
+              "open": count_open(doc),
               "date": datetime.date.today().isoformat(), "version": root["x-version"], "files": files}
     if page_path:
         write_stamp(page_path, result)
@@ -694,8 +831,10 @@ def run(doc_path, page_path=None):
 
 def report(result):
     lines = []
-    if result["ok"]:
-        lines.append("GEPRÜFT: vollständig · %s · Schema v%s · %s"
+    if result["ok"] and not result["open"]:
+        lines.append("GEPRÜFT: vollständig · baufertig · Schema v%s · %s" % (result["version"], result["date"]))
+    elif result["ok"]:
+        lines.append("GEPRÜFT: Entwurf · %s · Schema v%s · %s · noch nicht baufertig (check.py --final)"
                      % (open_text(result["open"]), result["version"], result["date"]))
     else:
         n = len(result["errors"])
@@ -706,6 +845,7 @@ def report(result):
             lines.append("%d. %s" % (i, text))
             if frage:
                 lines.append("   Frage: „%s“" % frage)
+    lines.extend(result.get("notes") or [])
     if result["warnings"]:
         lines.append("Hinweise (blockieren nicht):")
         lines.extend("- " + w for w in result["warnings"])
@@ -716,10 +856,12 @@ def report(result):
 
 
 def main(argv):
+    final = "--final" in argv
+    argv = [a for a in argv if a != "--final"]
     if len(argv) not in (2, 3) or (len(argv) == 3 and not os.path.isfile(argv[2])):
-        print("Aufruf: python3 check.py <document.json> [capture.html]", file=sys.stderr)
+        print("Aufruf: python3 check.py [--final] <document.json> [seite.html]", file=sys.stderr)
         return 2
-    result = run(argv[1], argv[2] if len(argv) == 3 else None)
+    result = run(argv[1], argv[2] if len(argv) == 3 else None, final)
     print(report(result))
     return 0 if result["ok"] else 1
 

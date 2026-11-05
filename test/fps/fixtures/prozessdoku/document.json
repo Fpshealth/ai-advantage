@@ -266,9 +266,9 @@
  "picture": {
   "kind": "swimlane",
   "drawio": {
-   "path": "Retouren/retouren-swimlane.drawio",
+   "path": "ablauf.drawio",
    "description": "Das Bild mit drei Bahnen für die drei Rollen.",
-   "status": "abgelegt",
+   "status": "lokal",
    "layout": "Drei Bahnen, eine je Rolle, sieben Kästen."
   }
  },

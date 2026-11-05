@@ -348,8 +348,8 @@
     },
     "security": {
       "$ref": "#/$defs/text_or_open",
-      "title": "Datenschutz und Sicherheit",
-      "x-frage": "Gibt es Regeln zu Datenschutz, Kundendaten oder Sicherheit? Wenn keine: warum nicht?"
+      "title": "Regeln, die immer gelten",
+      "x-frage": "Welche Regeln muss eine Lösung immer einhalten (Recht, Datenschutz, Kundendaten, Marke)? Wenn keine: warum nicht?"
     },
     "terms": {
       "title": "Begriffe",
@@ -733,6 +733,11 @@
           ],
           "x-fehler": "muss „person“, „claude“ oder „skript“ sein",
           "x-frage": "Macht diesen Schritt eine Person, Claude oder ein Skript?"
+        },
+        "waits_for": {
+          "$ref": "#/$defs/text",
+          "title": "Wartet auf",
+          "x-frage": "Wartet dieser Schritt auf etwas (ein Ticket, eine Mail, eine Uhrzeit, eine andere Rolle)? Worauf?"
         }
       },
       "allOf": [

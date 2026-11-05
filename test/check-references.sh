@@ -46,6 +46,15 @@ for skill_md in skills/*/SKILL.md; do
       fail=1
     fi
   done < <(grep -o 'assets/[A-Za-z0-9._-]*\.[a-z]*' "$skill_md" | sort -u)
+  for md in "$skill_md" "$sk_dir"/playbooks/*.md; do
+    [ -f "$md" ] || continue
+    while IFS= read -r ref; do
+      if [ ! -f "$sk_dir/$ref" ]; then
+        echo "FAIL missing file: $sk_dir/$ref (mentioned in $md)"
+        fail=1
+      fi
+    done < <(grep -oE '(playbooks|reference|scripts|schema|template)/[A-Za-z0-9._-]+\.[a-z]+' "$md" | sort -u)
+  done
 done
 
 # 3. Per-skill copies of canonical shared files match the repo-root originals

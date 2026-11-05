@@ -1,0 +1,147 @@
+{
+ "schema": "fps/brief/v1",
+ "title": "Lieferantenpreise ohne Handarbeit übernehmen",
+ "owner": {
+  "role": "Einkauf"
+ },
+ "date": "2026-11-05",
+ "status": "entwurf",
+ "beitragsliste": {
+  "id": {
+   "open": "Welche ID hat die Zeile in der Beitragsliste?",
+   "ask": "Einkauf"
+  },
+  "typ": "Projekt-Pitch"
+ },
+ "capture": "Ablauf-Doku: Lieferantenpreise in den Shop-Export übernehmen (Artifact-Link folgt)",
+ "problem": {
+  "text": "Zweimal im Jahr übernimmt der Einkauf die neuen Lieferantenpreise von Hand in den Shop-Export. Das dauert jedes Mal zwei Arbeitstage, und Fehler fallen oft erst im Shop auf.",
+  "example": "Im Frühjahr 2026 standen drei Artikel mit falschem Preis online, weil eine SKU doppelt in der Preisliste stand."
+ },
+ "affected": {
+  "roles": [
+   "Einkauf",
+   "Einkaufsleitung"
+  ],
+  "people": {
+   "value": "2",
+   "source": "Team-Angabe",
+   "estimate": false
+  },
+  "customers": "Ja: sie sehen falsche Preise im Shop."
+ },
+ "evidence": {
+  "frequency": {
+   "value": "2 Mal pro Jahr",
+   "source": "Ablauf-Doku",
+   "estimate": false
+  },
+  "time": {
+   "value": "2 Arbeitstage pro Durchlauf",
+   "source": "Team-Angabe",
+   "estimate": false
+  },
+  "errors": {
+   "value": "3 falsche Preise im letzten Durchlauf",
+   "source": "Team-Angabe",
+   "estimate": false
+  },
+  "cost": {
+   "open": "Was kostet ein Arbeitstag im Einkauf?",
+   "ask": "Einkaufsleitung"
+  },
+  "if_stopped": "Die Einkaufspreise im Shop würden veralten, und die Marge stimmt nicht mehr."
+ },
+ "goal": {
+  "solved_when": "Die neuen Preise stehen nach einer Prüfung des Protokolls fehlerfrei im Shop.",
+  "measure": {
+   "value": "höchstens 2 Stunden pro Durchlauf, 0 falsche Preise",
+   "source": "Team-Angabe",
+   "estimate": true
+  }
+ },
+ "today": {
+  "trigger": "Der Lieferant schickt eine neue Preisliste als CSV.",
+  "who": "Einkauf",
+  "where": "Excel und Shop-Backend",
+  "cause": "Die Prüfung auf Dubletten und fehlende EAN passiert von Hand mit Filtern.",
+  "diagram": {
+   "path": "ablauf.drawio",
+   "description": "Der heutige Ablauf in zehn Schritten.",
+   "status": "platzhalter",
+   "layout": "Ein Fluss von links nach rechts."
+  }
+ },
+ "files": {
+  "inputs": [
+   {
+    "path": "Eingang/supplier-price-list-spring-2026.csv",
+    "description": "Die Preisliste des Lieferanten, Frühjahr 2026.",
+    "status": "lokal",
+    "layout": "Eine Zeile je Artikel mit SKU, EAN, Einkaufspreis und UVP."
+   }
+  ],
+  "outputs": [
+   {
+    "path": "Ausgang/current-shop-export.csv",
+    "description": "Der Shop-Export nach der Übernahme.",
+    "status": "lokal",
+    "layout": "Eine Zeile je Variante mit Handle, SKU, Preis und Bestand."
+   }
+  ]
+ },
+ "screenshots": [
+  {
+   "file": "img/03-preise.png",
+   "caption": "Die Spalte EK neu im Shop-Export, rot markiert.",
+   "kind": "echt"
+  }
+ ],
+ "checks": [
+  {
+   "what": "UVP gegen Einkaufspreis",
+   "against": "Die neue Spalte EK neu",
+   "right": "Die UVP liegt über dem Einkaufspreis.",
+   "wrong": "Die UVP liegt unter dem Einkaufspreis.",
+   "who": "Einkauf"
+  }
+ ],
+ "systems": [
+  {
+   "name": "Shop-Backend",
+   "link": {
+    "open": "Wie lautet der offizielle Link zur Doku des Shop-Backends?",
+    "ask": "IT"
+   },
+   "access": "Import einer CSV-Datei",
+   "sensitive_data": "nein"
+  },
+  {
+   "name": "Excel",
+   "link": "https://support.microsoft.com/excel",
+   "access": "Lesen und Schreiben der CSV-Dateien",
+   "sensitive_data": "nein"
+  }
+ ],
+ "rules": "Keine Preise unter dem Einkaufspreis online stellen.",
+ "budget": {
+  "value": "2 Tage",
+  "source": "Team-Angabe",
+  "estimate": true,
+  "note": "Die Geschäftsführung bestätigt."
+ },
+ "idea": "Claude prüft die Preisliste, zieht die Preise in den Export und schreibt ein Protokoll.",
+ "out_of_scope": [
+  "Aktionspreise und Bundles"
+ ],
+ "special_cases": [
+  "Ein Artikel ohne EAN"
+ ],
+ "open_points": [
+  {
+   "question": "Wer gibt den Import im Shop-Backend frei?",
+   "about": "Systeme",
+   "ask": "Einkaufsleitung"
+  }
+ ]
+}

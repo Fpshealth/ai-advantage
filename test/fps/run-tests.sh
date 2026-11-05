@@ -56,7 +56,13 @@ cat >"$T/gen.py" <<'EOF'
 import html, json, re, sys
 doc = json.load(open(sys.argv[1], encoding="utf-8"))
 SECTION = {}
-for sid, keys in {
+BRIEF = {
+    "problem": "title owner date status rejection_reason beitragsliste capture problem",
+    "betroffen": "affected", "evidenz": "evidence", "ziel": "goal", "heute": "today",
+    "beispiele": "files screenshots no_screen_reason checks", "systeme": "systems rules",
+    "budget": "budget", "idee": "idea", "nicht": "out_of_scope", "offen": "special_cases open_points",
+}
+for sid, keys in (BRIEF if str(doc.get("schema", "")).startswith("fps/brief") else {
     "kurz": "title summary highlight basis owner date purpose process_owner not_for",
     "rahmen": "trigger result done_check sharepoint_folder",
     "systeme": "systems security",
@@ -68,7 +74,7 @@ for sid, keys in {
     "dateien": "files screenshots",
     "zahlen": "metrics variation automated_or_tried candidates",
     "offen": "open_points terms",
-}.items():
+}).items():
     for k in keys.split():
         SECTION[k] = sid
 bodies = {}
@@ -99,7 +105,7 @@ for key, v in doc.items():
             out.append("<em>abgeleitet</em>")
         out.append("</div>")
 page = open(sys.argv[2], encoding="utf-8").read()
-if doc["depth"] == "sop":
+if doc.get("depth") == "sop":
     page = re.sub(r'<!--[^>]*-->\s*<section data-section="rollen">.*?</section>\s*', "", page, flags=re.S)
 page = re.sub(r'(<section data-section="(\w+)">.*?)(</section>)',
               lambda m: m.group(1) + "\n".join(bodies.get(m.group(2), [])) + m.group(3), page, flags=re.S)
@@ -114,8 +120,8 @@ SOP="$T/sop"
 PD="$T/prozessdoku"
 page() { [ "$1" = full ] || cp "$SOP/full.html" "$SOP/$1.html"; [ $# -lt 2 ] || perl -CSD -i -ne "$2" "$SOP/$1.html"; echo "$SOP/$1.html"; }
 
-expect "core: SOP passes" 0 "GEPRÜFT: vollständig" "$SOP/document.json"
-expect "core: Prozessdoku passes" 0 "GEPRÜFT: vollständig" "$PD/document.json"
+expect "core: SOP passes" 0 "GEPRÜFT:" "$SOP/document.json"
+expect "core: Prozessdoku passes" 0 "GEPRÜFT:" "$PD/document.json"
 expect "core: known-bad capture fails" 1 "NICHT VOLLSTÄNDIG" "$FIX/known-bad.json"
 expect "core: known-bad capture names the dash cell" 1 "Auslöser: ist leer oder nur „–“." "$FIX/known-bad.json"
 "$PY" -c 'import json,sys; d=json.load(open(sys.argv[1])); d["trigger"]=""; json.dump(d,open(sys.argv[2],"w"))' "$SOP/document.json" "$SOP/empty.json"
@@ -125,11 +131,11 @@ expect "core: zero screenshots fails" 1 "Screenshots: es gibt keinen Screenshot"
 expect "usage: no arguments" 2 "Aufruf"
 expect "usage: page file missing" 2 "Aufruf" "$SOP/document.json" "$SOP/nope.html"
 
-expect "page: full SOP passes" 0 "GEPRÜFT: vollständig" "$SOP/document.json" "$(page full)"
+expect "page: full SOP passes" 0 "GEPRÜFT:" "$SOP/document.json" "$(page full)"
 has "page: files map has document.json" "$T/out" "\"document.json\": \"$SOP/document.json\""
 has "page: files map has the real screenshot" "$T/out" "\"img/03-preise.png\": \"$SOP/img/03-preise.png\""
-has "page: green stamp written once" "$SOP/full.html" 'class="stamp ok"><b>Geprüft: vollständig</b> ' 1
-has "page: green stamp counts open questions" "$SOP/full.html" 'Fragen offen · Schema v2 · ' 1
+has "page: draft stamp written once" "$SOP/full.html" 'class="stamp draft"><b>Geprüft: Entwurf</b> ' 1
+has "page: draft stamp counts open questions" "$SOP/full.html" 'Fragen offen · Schema v2 · ' 1
 expect "page: full Prozessdoku passes" 0 "\"img/02-retoure.png\"" "$PD/document.json" "$PD/full.html"
 
 expect "page: missing why of one step fails" 1 "Seite › Schritt 3 › Warum: fehlt auf der Seite oder steht nicht wörtlich im Marker data-core=\"steps.3.why\"." \
@@ -154,9 +160,9 @@ expect "page: a fact in a hidden element does not count" 1 "Seite › Auslöser:
   "$SOP/document.json" "$(page hid 's/<div data-core="trigger">/<div hidden><div data-core="trigger">/; s/(data-core="trigger">.*?<\/div>)/$1<\/div>/; print')"
 expect "page: a fact under display:none does not count" 1 "Seite › Auslöser: fehlt" \
   "$SOP/document.json" "$(page dnone 's/<div data-core="trigger">/<div data-core="trigger" style="display: none">/; print')"
-expect "page: entities, nbsp, plain quotes and case pass" 0 "GEPRÜFT: vollständig" \
+expect "page: entities, nbsp, plain quotes and case pass" 0 "GEPRÜFT:" \
   "$SOP/document.json" "$(page typo2 'if (/^<p /) { s/(?<=>)([^<]*)/my $t = uc $1; $t =~ s{ }{&nbsp;}g; $t =~ s{[\x{201E}\x{201C}]}{&quot;}g; $t =~ s{\x{2013}}{&ndash;}g; $t/e } print')"
-expect "page: a marker on the img itself counts" 0 "GEPRÜFT: vollständig" \
+expect "page: a marker on the img itself counts" 0 "GEPRÜFT:" \
   "$SOP/document.json" "$(page selfimg 's/data-core="screenshots\.3"/data-core="screenshots.3.caption"/; s/data-leaf="screenshots\.3\.file"/data-core="screenshots.3.file"/; print')"
 expect "page: text after an img marker does not count" 1 "Seite › Auslöser: fehlt" \
   "$SOP/document.json" "$(page afterimg 's/<div data-core="trigger">/<div><img data-core="trigger" src="img\/03-preise.png" alt="">/; print')"
@@ -189,33 +195,102 @@ expect "page: rollen missing in a Prozessdokumentation fails" 1 "Seite: der Absc
 "$PY" -c 'import json,sys; d=json.load(open(sys.argv[1])); d["inferred"]=["steps.99.tool"]; json.dump(d,open(sys.argv[2],"w"))' "$SOP/document.json" "$SOP/badinf.json"
 expect "core: inferred path that does not exist fails" 1 "„steps.99.tool“ gibt es in document.json nicht" "$SOP/badinf.json"
 "$PY" -c 'import json,sys; d=json.load(open(sys.argv[1])); d["inferred"]=["steps.2"]; json.dump(d,open(sys.argv[2],"w"))' "$SOP/document.json" "$SOP/groupinf.json"
-expect "core: inferred path may point to a group" 0 "GEPRÜFT: vollständig" "$SOP/groupinf.json"
+expect "core: inferred path may point to a group" 0 "GEPRÜFT:" "$SOP/groupinf.json"
 "$PY" -c 'import json,sys; d=json.load(open(sys.argv[1])); d["systems"][0]["steps"]=[1,99]; json.dump(d,open(sys.argv[2],"w"))' "$SOP/document.json" "$SOP/badsys.json"
 expect "core: systems.steps pointing to step 99 fails" 1 "System 1 › In Schritten: verweist auf Schritt 99, den es nicht gibt" "$SOP/badsys.json"
 "$PY" -c 'import json,sys; d=json.load(open(sys.argv[1])); s=d["steps"][0]; s["executor"]="claude"; s.pop("minutes"); json.dump(d,open(sys.argv[2],"w"))' "$SOP/document.json" "$SOP/claude.json"
-expect "core: a step run by Claude needs no minutes" 0 "GEPRÜFT: vollständig" "$SOP/claude.json"
+expect "core: a step run by Claude needs no minutes" 0 "GEPRÜFT:" "$SOP/claude.json"
 "$PY" -c 'import json,sys; d=json.load(open(sys.argv[1])); s=d["steps"][0]; s["executor"]="person"; s.pop("minutes"); json.dump(d,open(sys.argv[2],"w"))' "$SOP/document.json" "$SOP/person.json"
 expect "core: a step run by a person needs minutes" 1 "Schritt 1 › Minuten: fehlt" "$SOP/person.json"
 "$PY" -c 'import json,sys; d=json.load(open(sys.argv[1])); d["steps"][0].pop("minutes"); json.dump(d,open(sys.argv[2],"w"))' "$SOP/document.json" "$SOP/nominutes.json"
 expect "core: a step without executor needs minutes" 1 "Schritt 1 › Minuten: fehlt" "$SOP/nominutes.json"
 "$PY" -c 'import json,sys; d=json.load(open(sys.argv[1])); d["steps"][0]["why"]={"open":"Warum so?","ask":"Grafik"}; d["not_for"]={"open":"Wofür nicht?"}; json.dump(d,open(sys.argv[2],"w"))' "$SOP/document.json" "$SOP/openwhy.json"
-expect "core: why and not_for may be open questions" 0 "GEPRÜFT: vollständig" "$SOP/openwhy.json"
+expect "core: why and not_for may be open questions" 0 "GEPRÜFT:" "$SOP/openwhy.json"
 "$PY" -c 'import json,sys; d=json.load(open(sys.argv[1])); d["reference"]=[{"title":"Umbenennung","rows":[["alt","neu"],[""]]}]; json.dump(d,open(sys.argv[2],"w"))' "$SOP/document.json" "$SOP/badref.json"
 expect "core: an empty reference cell fails" 1 "ist leer" "$SOP/badref.json"
 "$PY" -c 'import json,sys; d=json.load(open(sys.argv[1])); d["external"]=[{"party":"Lieferant","step":99,"receives":"Anfrage","returns":{"open":"Was kommt zurück?"}}]; json.dump(d,open(sys.argv[2],"w"))' "$SOP/document.json" "$SOP/badext.json"
 expect "core: an external party at step 99 fails" 1 "verweist auf Schritt 99, den es nicht gibt" "$SOP/badext.json"
 "$PY" -c 'import json,sys; d=json.load(open(sys.argv[1])); d["external"]=[{"party":"Lieferant","step":1,"receives":"Anfrage","returns":{"open":"Was kommt zurück?"}}]; d["metrics"]["input_defect_rate"]={"value":"ca. 50 %","source":"Team","estimate":True}; d["basis"]=[{"source":"Interview","date":"2026-11-05","covers":"alles"}]; json.dump(d,open(sys.argv[2],"w"))' "$SOP/document.json" "$SOP/newfields.json"
-expect "core: external party, input defect rate and a source list pass" 0 "GEPRÜFT: vollständig" "$SOP/newfields.json"
+expect "core: external party, input defect rate and a source list pass" 0 "GEPRÜFT:" "$SOP/newfields.json"
 "$PY" -c 'import json,sys; d=json.load(open(sys.argv[1])); d["basis"]=[{"source":""}]; json.dump(d,open(sys.argv[2],"w"))' "$SOP/document.json" "$SOP/badbasis.json"
 expect "core: a source with no name fails" 1 "Grundlage" "$SOP/badbasis.json"
 
-expect "page: inferred fact with abgeleitet in its marker passes" 0 "GEPRÜFT: vollständig" "$SOP/document.json" "$(page infok)"
+expect "page: inferred fact with abgeleitet in its marker passes" 0 "GEPRÜFT:" "$SOP/document.json" "$(page infok)"
 expect "page: inferred fact without abgeleitet fails" 1 "„steps.1.tool“ ist abgeleitet, aber kein Marker dafür enthält das Wort „abgeleitet“" \
   "$SOP/document.json" "$(page noinf 'print unless /<em>abgeleitet<\/em>/')"
 expect "page: abgeleitet in an unrelated marker does not count" 1 "„steps.1.tool“ ist abgeleitet" \
   "$SOP/document.json" "$(page otherinf 's/<em>abgeleitet<\/em>//; s/(<div data-core="trigger">)/$1<em>Abgeleitet<\/em>/; print')"
-expect "page: abgeleitet in a covering ancestor marker counts" 0 "GEPRÜFT: vollständig" \
+expect "page: abgeleitet in a covering ancestor marker counts" 0 "GEPRÜFT:" \
   "$SOP/document.json" "$(page ancinf 's/<em>abgeleitet<\/em>//; s/(<div data-core="steps.1">)/$1<em>Abgeleitet<\/em>/; print')"
+
+# ---------- /fps additions: honest stamp, --final gates, draw.io, brief schema, hidden markup ----------
+expect "stamp: open questions make a draft, not complete" 0 "GEPRÜFT: Entwurf · " "$SOP/document.json"
+"$PY" - "$SOP/document.json" "$SOP/noopen.json" <<'PYEOF'
+import json, sys
+d = json.load(open(sys.argv[1], encoding="utf-8"))
+def close(v):
+    if isinstance(v, dict):
+        if "open" in v and set(v) <= {"open", "reason", "ask"}:
+            return "Bestätigt von der Fachabteilung."
+        return {k: close(x) for k, x in v.items()}
+    if isinstance(v, list):
+        return [close(x) for x in v]
+    return v
+d = close(d)
+d["open_points"] = []
+for k in ("metrics",):
+    for key, val in list(d[k].items()):
+        if isinstance(val, str):
+            d[k][key] = {"value": val, "source": "Team-Angabe", "estimate": True}
+json.dump(d, open(sys.argv[2], "w", encoding="utf-8"), ensure_ascii=False)
+PYEOF
+expect "stamp: no open question is complete" 0 "GEPRÜFT: vollständig · baufertig" "$SOP/noopen.json"
+expect "final: open questions block" 1 "Fragen offen" --final "$SOP/document.json"
+"$PY" -c 'import json,sys; d=json.load(open(sys.argv[1])); [s.update(kind="platzhalter") for s in d["screenshots"]]; json.dump(d,open(sys.argv[2],"w"))' "$SOP/noopen.json" "$SOP/noreal.json"
+expect "final: no real screenshot blocks" 1 "kein echter Screenshot" --final "$SOP/noreal.json"
+"$PY" -c 'import json,sys; d=json.load(open(sys.argv[1])); [f.update(status="platzhalter") for f in d["files"]["inputs"]]; json.dump(d,open(sys.argv[2],"w"))' "$SOP/noopen.json" "$SOP/nofile.json"
+expect "final: no real input file blocks" 1 "keine echte Eingabedatei" --final "$SOP/nofile.json"
+expect "final: complete capture passes" 0 "GEPRÜFT: vollständig · baufertig" --final "$SOP/noopen.json"
+
+expect "drawio: valid swimlane passes and is named" 0 "Diagramm geprüft: ablauf.drawio" "$PD/document.json"
+expect "drawio: file goes into the files map" 0 '"ablauf.drawio": ' "$PD/document.json" "$PD/full.html"
+mv "$PD/ablauf.drawio" "$PD/weg.drawio"
+expect "drawio: missing file fails" 1 "die draw.io-Datei „ablauf.drawio“ gibt es nicht" "$PD/document.json"
+echo '<mxfile><diagram' > "$PD/ablauf.drawio"
+expect "drawio: broken XML fails" 1 "ist keine gültige draw.io-Datei" "$PD/document.json"
+perl -pe 's/value="Lager"/value="Lagerhalle X"/; s/<mxCell id="s7".*?<\/mxCell>//' "$PD/weg.drawio" > "$PD/ablauf.drawio"
+expect "drawio: missing role lane fails" 1 "die Rolle „Lager“ hat keine Bahn" "$PD/document.json"
+expect "drawio: missing step box fails" 1 "Schritt 7 hat keinen Kasten" "$PD/document.json"
+mv "$PD/weg.drawio" "$PD/ablauf.drawio"
+
+"$PY" -c 'import json,sys; d=json.load(open(sys.argv[1])); d["steps"][1]["role"]="Einkaufsleitung"; json.dump(d,open(sys.argv[2],"w"))' "$SOP/document.json" "$SOP/tworoles.json"
+expect "sop: steps by two roles warn" 0 "Ist es eine Prozessdokumentation?" "$SOP/tworoles.json"
+"$PY" -c 'import json,sys; d=json.load(open(sys.argv[1])); d["steps"][0]["waits_for"]="Die Mail des Lieferanten mit der Preisliste."; json.dump(d,open(sys.argv[2],"w"))' "$SOP/document.json" "$SOP/waits.json"
+expect "core: a step may say what it waits for" 0 "GEPRÜFT:" "$SOP/waits.json"
+
+expect "page: a fact in collapsed details does not count" 1 "Seite › Auslöser: fehlt" \
+  "$SOP/document.json" "$(page det 's/<div data-core="trigger">/<details><summary>mehr<\/summary><div data-core="trigger">/; s/(data-core="trigger">.*?<\/div>)/$1<\/details>/; print')"
+expect "page: a fact hidden by a CSS class does not count" 1 "Seite › Auslöser: fehlt" \
+  "$SOP/document.json" "$(page cls 's/<main>/<style>.weg{display:none}<\/style><main>/; s/<div data-core="trigger">/<div class="weg" data-core="trigger">/; print')"
+expect "page: a fact in font-size 0 does not count" 1 "Seite › Auslöser: fehlt" \
+  "$SOP/document.json" "$(page fs0 's/<div data-core="trigger">/<div data-core="trigger" style="font-size:0">/; print')"
+
+BR="$T/brief"
+cp -R "$FIX/brief" "$BR"
+"$PY" "$T/gen.py" "$BR/brief.json" "$SKILL/template/brief.html" "$BR/full.html"
+expect "brief: core passes as draft" 0 "GEPRÜFT: Entwurf · " "$BR/brief.json"
+expect "brief: page passes" 0 "GEPRÜFT: Entwurf · " "$BR/brief.json" "$BR/full.html"
+"$PY" -c 'import json,sys; d=json.load(open(sys.argv[1])); d.pop("problem"); json.dump(d,open(sys.argv[2],"w"))' "$BR/brief.json" "$BR/noproblem.json"
+expect "brief: missing problem fails" 1 "Problem: fehlt" "$BR/noproblem.json"
+"$PY" -c 'import json,sys; d=json.load(open(sys.argv[1])); d["status"]="abgelehnt"; json.dump(d,open(sys.argv[2],"w"))' "$BR/brief.json" "$BR/rejected.json"
+expect "brief: rejected needs a reason" 1 "Grund der Ablehnung: fehlt" "$BR/rejected.json"
+"$PY" -c 'import json,sys; d=json.load(open(sys.argv[1])); e=d["evidence"]; [e.__setitem__(k,{"open":"?"}) for k in ("frequency","time","errors","cost")]; json.dump(d,open(sys.argv[2],"w"))' "$BR/brief.json" "$BR/noevidence.json"
+expect "brief final: no evidence blocks" 1 "keine Evidenz" --final "$BR/noevidence.json"
+"$PY" -c 'import json,sys; d=json.load(open(sys.argv[1])); d["screenshots"]=[]; json.dump(d,open(sys.argv[2],"w"))' "$BR/brief.json" "$BR/noshot.json"
+expect "brief final: no screenshot and no reason blocks" 1 "kein echter Screenshot" --final "$BR/noshot.json"
+expect "brief: page sections out of order fail" 1 "die Abschnitte stehen nicht in der festen Reihenfolge" \
+  "$BR/brief.json" "$(cp "$BR/full.html" "$BR/order.html"; perl -CSD -i -pe 's/data-section="idee"/data-section="X"/; s/data-section="problem"/data-section="idee"/; s/data-section="X"/data-section="problem"/' "$BR/order.html"; echo "$BR/order.html")"
+expect "brief: unknown schema fails clearly" 1 "unbekanntes Schema" "$FIX/unknown-schema.json"
 
 echo "$pass passed, $fail failed"
 [ "$fail" = 0 ]
