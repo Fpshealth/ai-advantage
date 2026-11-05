@@ -844,7 +844,7 @@ def run(doc_path, page_path=None, final=False):
     if page_path:
         page_errors, srcs = check_page(root, doc, page_path)
         errors = errors + page_errors
-        files = {"document.json": doc_path}
+        files = {os.path.basename(doc_path): doc_path}
         for src in srcs:
             files[src] = os.path.join(os.path.dirname(page_path), unquote(re.split(r"[?#]", src)[0]))
         rel = diagram_file(doc) if isinstance(doc, dict) else None
