@@ -66,7 +66,7 @@ here; to change them, use the mechanical rename checklist in the Consultant Guid
 The specific name comes **first** and `{brand_suffix}` comes last, so the team sees the useful
 part first.
 
-- **Skill display names:** `Sandbox Setup: Team-AI`, `Prompt Improvement: Team-AI`, `Escalation:
+- **Skill display names:** `Sandbox Setup: Team-AI`, `Escalation:
   Team-AI`, `SOP Creation: Team-AI`, `Process Documentation: Team-AI`, `Process Exploration:
   Team-AI`, `Visualizer: Team-AI`.
 - **Email subject tag:** `escalation_tag` (§0) — one tag, used identically everywhere.
@@ -80,7 +80,7 @@ Never use one word for another:
   Creation: Team-AI`.
 - **Process Documentation** = the **end-to-end process across roles**, bird's-eye. The
   *manager's map*. Produced by `Process Documentation: Team-AI`.
-- **SOP Starter Pack** = a small captured seed that flows from a prompt-improvement chat into SOP
+- **SOP Starter Pack** = a small captured seed that flows from an earlier chat into SOP
   creation. It is *not* a Process Documentation.
 
 ## 6 — Open marker: `[OPEN]`

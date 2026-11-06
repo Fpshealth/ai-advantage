@@ -1,0 +1,62 @@
+{
+ "schema": "ablauf-dokumentieren/capture/v2",
+ "depth": "sop",
+ "title": "Lieferantenpreise in den Shop-Export übernehmen",
+ "summary": "Neue Lieferantenpreise werden zweimal im Jahr in den Shop-Export übernommen.",
+ "owner": {
+  "role": "Einkauf"
+ },
+ "date": "2026-05-20",
+ "sharepoint_folder": "–",
+ "trigger": "–",
+ "result": "Verkaufspreise und Einkaufspreise im Shop stimmen.",
+ "not_for": "Aktionspreise und Bundles.",
+ "done_check": "Import-Protokoll ohne Fehlerzeilen; Stichprobe von fünf Artikeln zeigt die neuen Preise.",
+ "steps": [
+  {
+   "nr": 1,
+   "action": "Preisliste öffnen und auf Dubletten und fehlende EAN prüfen.",
+   "key_point": "–",
+   "why": "–",
+   "tool": "Excel",
+   "role": "Einkauf"
+  },
+  {
+   "nr": 2,
+   "action": "Per SVERWEIS die neuen Einkaufspreise in den Shop-Export ziehen.",
+   "key_point": "–",
+   "why": "–",
+   "tool": "Excel",
+   "role": "Einkauf"
+  },
+  {
+   "nr": 3,
+   "action": "UVP gegen Einkaufspreis prüfen und der Einkaufsleitung melden.",
+   "key_point": "–",
+   "why": "–",
+   "tool": "Excel",
+   "role": "Einkauf"
+  },
+  {
+   "nr": 4,
+   "action": "Export als CSV speichern und im Shop-Backend importieren.",
+   "key_point": "–",
+   "why": "–",
+   "tool": "Shop-Backend",
+   "role": "Einkauf"
+  }
+ ],
+ "screenshots": [],
+ "files": {
+  "inputs": [],
+  "outputs": []
+ },
+ "checks": [],
+ "decisions": [],
+ "exceptions": [],
+ "help": [],
+ "picture": {
+  "kind": "liste"
+ },
+ "open_points": []
+}

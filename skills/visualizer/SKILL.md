@@ -1,6 +1,6 @@
 ---
 name: "Visualizer: Team-AI"
-description: 'Turns a finished SOP or Process Documentation into a real, editable process map — a draw.io file a non-technical person opens, checks, and corrects by dragging and typing ("yes, this is how I picture my work"). Use this skill when someone wants a process visualized, mapped, diagrammed, or shown as an overview, or names/attaches an SOP or Process Documentation.'
+description: 'Turns a finished SOP, Process Documentation or capture (document.json) into a real, editable process map — a draw.io file a non-technical person opens, checks, and corrects by dragging and typing ("yes, this is how I picture my work"). Use this skill when someone wants a process visualized, mapped, diagrammed, or shown as an overview, or names/attaches an SOP or Process Documentation.'
 ---
 
 # Visualizer: Team-AI
@@ -14,6 +14,14 @@ and fold the corrections back into the source `.md`.
 Documentation vocabulary (§5). Detect the type from frontmatter/headings (`sop_id:` → SOP;
 end-to-end multi-role flow → Process Documentation). If the type is unclear, ask one short
 question.
+
+**Capture source (`document.json` from the `fps` skill).** If the source is a `document.json`
+(it has `"schema": "ablauf-dokumentieren/capture/v2"`), read steps, roles and handoffs from it.
+Write `ablauf.drawio` next to it. Start every box label with its step number ("3. Ware prüfen"),
+give each role one lane named exactly like `roles[].name`, and label each handoff arrow with what
+is passed on. Set `picture.drawio` in `document.json` to the file. Corrections from the map go
+back into `document.json` (it replaces the source `.md` below), then the `fps` playbook reruns
+`check.py`, which checks the boxes and lanes.
 
 **Source file:** the one named or attached. If nothing is named or attached, use the most recent `sop-*.md` /
 `process-doc-*.md` in the working folder: one candidate → confirm in a line; several → ask;

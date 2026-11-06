@@ -1,0 +1,28 @@
+schema_version: "1.1"
+name: fps-ablauf-sop
+description: >
+  German user wants a complete, checked SOP for the supplier price update. An old SOP and the two
+  real CSV files sit in 01_Input. No time for questions now. Tests the capture loop: core data,
+  check.py pass, page with stamp, reader test, open questions listed with who answers.
+tags: [fps, ablauf, de]
+
+context:
+  scaffold_script: scaffold.sh
+
+execution:
+  prompt: |
+    Ich soll unsere SOP für die Übernahme der Lieferantenpreise neu und vollständig machen, damit
+    man später daraus eine Automatisierung bauen kann. Die alte SOP und die beiden echten CSV-Dateien
+    liegen in 01_Input. Ich habe gerade keine Zeit für Rückfragen: mach alles, was aus den Dateien
+    geht, markier jede Lücke als offene Frage mit wer sie beantworten kann, und sag mir am Ende,
+    was noch offen ist. Ich beantworte das morgen.
+  max_turns: 80
+  timeout_seconds: 1200
+  allowed_tools: [Read, Glob, Grep, Skill, Agent, Bash, Write, Edit]
+
+runs: 1
+
+expected_outcome: >
+  A document.json and a capture page in the work folder. check.py was run and printed
+  "GEPRÜFT: vollständig" for the page. A fresh reader-test agent ran. The reply in German lists the
+  open questions with who answers them, and does not claim that anything was published.

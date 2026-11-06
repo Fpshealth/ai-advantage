@@ -2,7 +2,7 @@
   "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
   "name": "cowork-team-ai",
   "displayName": "Cowork: Team-AI",
-  "description": "The Team-AI Cowork set: coordinated skills for sandbox setup, prompt improvement, escalation, session handoff, SOP creation, process documentation, process exploration, visualization, and project pitches, clear explanations — plus the eli5 picture explainer. One skill = one chat = one finished Markdown file.",
+  "description": "The Team-AI Cowork set: coordinated skills for sandbox setup, sharpen, in-your-own-words, escalation, session handoff, the /fps router (SOP, process documentation and pitch playbooks with a built-in completeness check), process exploration, visualization, clear explanations — plus the eli5 picture explainer.",
   "author": {
     "name": "Federico Pacheco",
     "email": "federico.pacheco@fpshealth.com"

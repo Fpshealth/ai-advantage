@@ -1,8 +1,8 @@
-# Example Chat: a weak prompt (test input for "improve my prompt")
+# Example Chat: a weak prompt (test input for "/sharpen")
 
 > Copy this transcript into a new Cowork chat (or type it out), to test the skill
-> **Prompt Improvement: Team-AI**. It should recognize *why* the prompt didn't
-> work — without asking you what you didn't like.
+> **Sharpen**. It should make the task deeper and rewrite the prompt
+> without asking you what you didn't like.
 
 ---
 

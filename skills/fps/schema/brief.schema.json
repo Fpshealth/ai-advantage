@@ -1,0 +1,717 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "fps/brief/v1",
+  "title": "Projekt-Pitch (Brief)",
+  "x-version": "1",
+  "x-sections": [
+    [
+      "problem",
+      "Problem"
+    ],
+    [
+      "betroffen",
+      "Wer ist betroffen"
+    ],
+    [
+      "evidenz",
+      "Evidenz und Kosten"
+    ],
+    [
+      "ziel",
+      "Ziel und Messgröße"
+    ],
+    [
+      "heute",
+      "Heute"
+    ],
+    [
+      "beispiele",
+      "Echte Beispiele und Prüfschritte"
+    ],
+    [
+      "systeme",
+      "Systeme und Tools"
+    ],
+    [
+      "budget",
+      "Budgetrahmen"
+    ],
+    [
+      "idee",
+      "Lösungsidee"
+    ],
+    [
+      "nicht",
+      "Nicht enthalten"
+    ],
+    [
+      "offen",
+      "Sonderfälle und offene Fragen"
+    ]
+  ],
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "title",
+    "owner",
+    "date",
+    "status",
+    "beitragsliste",
+    "capture",
+    "problem",
+    "affected",
+    "evidence",
+    "goal",
+    "today",
+    "files",
+    "screenshots",
+    "checks",
+    "systems",
+    "rules",
+    "budget",
+    "out_of_scope",
+    "open_points"
+  ],
+  "properties": {
+    "schema": {
+      "title": "Schema-Kennung",
+      "const": "fps/brief/v1"
+    },
+    "title": {
+      "$ref": "#/$defs/text",
+      "title": "Titel",
+      "x-frage": "Wie heißt das Vorhaben in wenigen Worten?",
+      "x-max": 90
+    },
+    "owner": {
+      "title": "Verantwortlich",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "role"
+      ],
+      "properties": {
+        "role": {
+          "$ref": "#/$defs/text",
+          "title": "Rolle",
+          "x-frage": "Welche Rolle pflegt dieses Dokument?"
+        },
+        "name": {
+          "$ref": "#/$defs/text",
+          "title": "Name"
+        }
+      }
+    },
+    "date": {
+      "title": "Erfasst am",
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+      "x-fehler": "muss ein Datum im Format JJJJ-MM-TT sein",
+      "x-frage": "An welchem Tag wurde diese Doku erfasst?"
+    },
+    "status": {
+      "title": "Status",
+      "enum": [
+        "entwurf",
+        "eingereicht",
+        "genehmigt",
+        "abgelehnt"
+      ],
+      "x-fehler": "muss „entwurf“, „eingereicht“, „genehmigt“ oder „abgelehnt“ sein",
+      "x-frage": "Ist der Pitch noch ein Entwurf, eingereicht, genehmigt oder abgelehnt?"
+    },
+    "rejection_reason": {
+      "$ref": "#/$defs/text",
+      "title": "Grund der Ablehnung",
+      "x-frage": "Mit welchem Grund hat die Geschäftsführung abgelehnt?"
+    },
+    "beitragsliste": {
+      "title": "Beitragsliste",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "typ"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/text_or_open",
+          "title": "Beitragsliste-ID",
+          "x-frage": "Welche ID hat die Zeile in der Beitragsliste? Leg die Zeile zuerst an (Typ Projekt-Pitch, Status Entwurf)."
+        },
+        "typ": {
+          "title": "Typ",
+          "const": "Projekt-Pitch"
+        }
+      }
+    },
+    "capture": {
+      "$ref": "#/$defs/text_or_open",
+      "title": "Ablauf-Doku",
+      "x-frage": "Wo liegt die Doku des heutigen Ablaufs (Link zum Artifact)? Wenn es keine gibt: zuerst Ablauf dokumentieren."
+    },
+    "problem": {
+      "title": "Problem",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "text",
+        "example"
+      ],
+      "properties": {
+        "text": {
+          "$ref": "#/$defs/text",
+          "title": "Problem",
+          "x-frage": "Was ist heute das Problem, in zwei bis drei Sätzen, ohne Lösung?",
+          "x-max": 600
+        },
+        "example": {
+          "$ref": "#/$defs/text_or_open",
+          "title": "Echtes Beispiel",
+          "x-frage": "Wann ist das Problem zuletzt konkret aufgetreten? Ein echtes Beispiel.",
+          "x-max": 500
+        }
+      }
+    },
+    "affected": {
+      "title": "Wer ist betroffen",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "roles",
+        "people",
+        "customers"
+      ],
+      "properties": {
+        "roles": {
+          "title": "Rollen",
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/text"
+          },
+          "x-fehler": "braucht mindestens eine Rolle",
+          "x-frage": "Welche Rollen sind betroffen?"
+        },
+        "people": {
+          "$ref": "#/$defs/value",
+          "title": "Anzahl Personen",
+          "x-frage": "Wie viele Personen sind betroffen?"
+        },
+        "customers": {
+          "$ref": "#/$defs/text_or_open",
+          "title": "Spüren es Kundinnen und Kunden?",
+          "x-frage": "Merken Kundinnen und Kunden das Problem? Wie?"
+        }
+      }
+    },
+    "evidence": {
+      "title": "Evidenz und Kosten",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "frequency",
+        "time",
+        "errors",
+        "cost",
+        "if_stopped"
+      ],
+      "properties": {
+        "frequency": {
+          "$ref": "#/$defs/value",
+          "title": "Wie oft",
+          "x-frage": "Wie oft tritt das auf (pro Woche, Monat, Jahr)?"
+        },
+        "time": {
+          "$ref": "#/$defs/value",
+          "title": "Zeit",
+          "x-frage": "Wie viel Zeit kostet es pro Mal oder pro Jahr?"
+        },
+        "errors": {
+          "$ref": "#/$defs/value",
+          "title": "Fehler",
+          "x-frage": "Wie oft geht etwas schief, und was dann?"
+        },
+        "cost": {
+          "$ref": "#/$defs/value",
+          "title": "Kosten",
+          "x-frage": "Was kostet es in Euro (Zeit × Stundensatz, Fehlerkosten)?"
+        },
+        "if_stopped": {
+          "$ref": "#/$defs/text_or_open",
+          "title": "Was fehlt, wenn es wegfällt",
+          "x-frage": "Was würde fehlen, wenn diese Arbeit morgen wegfällt?",
+          "x-max": 400
+        }
+      }
+    },
+    "goal": {
+      "title": "Ziel und Messgröße",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "solved_when",
+        "measure"
+      ],
+      "properties": {
+        "solved_when": {
+          "$ref": "#/$defs/text",
+          "title": "Gelöst, wenn",
+          "x-frage": "Woran erkennen wir, dass das Problem gelöst ist?",
+          "x-max": 400
+        },
+        "measure": {
+          "$ref": "#/$defs/value",
+          "title": "Messgröße",
+          "x-frage": "Welche Zahl zeigt den Erfolg, und welcher Zielwert?"
+        }
+      }
+    },
+    "today": {
+      "title": "Heute",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "trigger",
+        "who",
+        "where",
+        "cause",
+        "diagram"
+      ],
+      "properties": {
+        "trigger": {
+          "$ref": "#/$defs/text_or_open",
+          "title": "Auslöser",
+          "x-frage": "Was löst die Arbeit heute aus?"
+        },
+        "who": {
+          "$ref": "#/$defs/text_or_open",
+          "title": "Wer",
+          "x-frage": "Wer macht die Arbeit heute (Rollen)?"
+        },
+        "where": {
+          "$ref": "#/$defs/text_or_open",
+          "title": "Wo",
+          "x-frage": "In welchen Systemen passiert sie?"
+        },
+        "cause": {
+          "$ref": "#/$defs/text_or_open",
+          "title": "Vermutete Ursache",
+          "x-frage": "Was ist deine beste Vermutung für die Ursache?",
+          "x-max": 400
+        },
+        "diagram": {
+          "$ref": "#/$defs/file",
+          "title": "Bild des heutigen Ablaufs"
+        }
+      }
+    },
+    "files": {
+      "title": "Echte Dateien",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "inputs",
+        "outputs"
+      ],
+      "properties": {
+        "inputs": {
+          "title": "Eingaben",
+          "x-item": "Eingabe",
+          "type": "array",
+          "minItems": 1,
+          "x-fehler": "es gibt keine echte Eingabedatei. Mindestens eine ist Pflicht",
+          "x-frage": "Welche echte Datei bekommst du am Anfang? Bitte leg sie in den SharePoint-Ordner.",
+          "items": {
+            "$ref": "#/$defs/file"
+          }
+        },
+        "outputs": {
+          "title": "Ergebnisse",
+          "x-item": "Ergebnis",
+          "type": "array",
+          "minItems": 1,
+          "x-fehler": "es gibt keine echte Ergebnisdatei. Mindestens eine ist Pflicht",
+          "x-frage": "Welche echte Datei entsteht am Ende? Bitte leg ein Beispiel in den SharePoint-Ordner.",
+          "items": {
+            "$ref": "#/$defs/file"
+          }
+        }
+      }
+    },
+    "screenshots": {
+      "title": "Screenshots",
+      "x-item": "Screenshot",
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/screenshot"
+      },
+      "x-frage": "Bitte mach einen Screenshot der Arbeit in dem System, in dem sie heute passiert."
+    },
+    "no_screen_reason": {
+      "$ref": "#/$defs/text",
+      "title": "Kein Bildschirmschritt",
+      "x-frage": "Warum gibt es keinen Screenshot (die Arbeit hat keinen Bildschirmschritt)?"
+    },
+    "checks": {
+      "title": "Prüfschritte",
+      "x-item": "Prüfschritt",
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/check"
+      },
+      "x-fehler": "es gibt keinen Prüfschritt. Mindestens einer ist Pflicht",
+      "x-frage": "Woran erkennst du heute, dass das Ergebnis richtig ist?"
+    },
+    "systems": {
+      "title": "Systeme und Tools",
+      "x-item": "System",
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/system"
+      },
+      "x-fehler": "braucht mindestens ein System",
+      "x-frage": "Welche Programme oder Systeme sind beteiligt?"
+    },
+    "rules": {
+      "$ref": "#/$defs/text_or_open",
+      "title": "Regeln, die immer gelten",
+      "x-frage": "Welche Regeln muss eine Lösung immer einhalten (Recht, Datenschutz, Marke)? Wenn keine: warum nicht?",
+      "x-max": 500
+    },
+    "budget": {
+      "$ref": "#/$defs/value",
+      "title": "Budgetrahmen",
+      "x-frage": "Wie viel Zeit oder Geld darf eine Lösung höchstens kosten (z. B. 2 Tage)? Die Geschäftsführung bestätigt."
+    },
+    "idea": {
+      "$ref": "#/$defs/text",
+      "title": "Lösungsidee (optional)",
+      "x-frage": "Hast du schon eine grobe Idee für die Lösung? Optional.",
+      "x-max": 500
+    },
+    "out_of_scope": {
+      "title": "Nicht enthalten",
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/text"
+      },
+      "x-fehler": "braucht mindestens einen Punkt",
+      "x-frage": "Was könnte man erwarten, das dieses Vorhaben NICHT macht?"
+    },
+    "special_cases": {
+      "title": "Sonderfälle",
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/text_or_open"
+      },
+      "x-frage": "Welche Ausnahmen oder Sonderfälle gibt es?"
+    },
+    "open_points": {
+      "title": "Offene Fragen",
+      "x-item": "Offene Frage",
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/open_point"
+      }
+    },
+    "inferred": {
+      "title": "Abgeleitet, nicht gesagt",
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/text"
+      },
+      "x-item": "Pfad",
+      "x-frage": "Welche Angaben hat Claude abgeleitet statt gehört? (Pfade wie steps.3.tool)"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "abgelehnt"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "rejection_reason"
+        ]
+      }
+    }
+  ],
+  "$defs": {
+    "text": {
+      "type": "string",
+      "minLength": 1
+    },
+    "open": {
+      "title": "Offene Frage",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "open"
+      ],
+      "properties": {
+        "open": {
+          "$ref": "#/$defs/text",
+          "title": "Frage"
+        },
+        "reason": {
+          "$ref": "#/$defs/text",
+          "title": "Grund"
+        },
+        "ask": {
+          "$ref": "#/$defs/text",
+          "title": "Wer antwortet"
+        }
+      }
+    },
+    "text_or_open": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/text"
+        },
+        {
+          "$ref": "#/$defs/open"
+        }
+      ],
+      "x-fehler": "braucht einen Text oder eine offene Frage {\"open\": \"…\"}"
+    },
+    "value": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "value",
+            "source",
+            "estimate"
+          ],
+          "properties": {
+            "value": {
+              "$ref": "#/$defs/text",
+              "title": "Wert"
+            },
+            "note": {
+              "$ref": "#/$defs/text",
+              "title": "Erläuterung"
+            },
+            "source": {
+              "$ref": "#/$defs/text",
+              "title": "Quelle",
+              "x-frage": "Woher stammt die Zahl (Messung, Bericht, Team-Angabe)?"
+            },
+            "estimate": {
+              "type": "boolean",
+              "title": "Schätzung",
+              "x-frage": "Ist die Zahl gemessen oder geschätzt?"
+            }
+          }
+        },
+        {
+          "$ref": "#/$defs/open"
+        }
+      ],
+      "x-fehler": "braucht einen Wert mit Quelle und Schätzung ja/nein, oder eine offene Frage"
+    },
+    "file": {
+      "title": "Datei",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "description",
+        "status",
+        "layout"
+      ],
+      "properties": {
+        "path": {
+          "$ref": "#/$defs/text_or_open",
+          "title": "Pfad im SharePoint-Ordner",
+          "x-frage": "Wo liegt die Datei im SharePoint-Ordner?"
+        },
+        "description": {
+          "$ref": "#/$defs/text",
+          "title": "Beschreibung",
+          "x-frage": "Was ist in der Datei, und von welchem Fall stammt sie?"
+        },
+        "status": {
+          "title": "Status",
+          "enum": [
+            "abgelegt",
+            "platzhalter",
+            "lokal"
+          ],
+          "x-fehler": "muss „abgelegt“, „platzhalter“ oder „lokal“ sein"
+        },
+        "preview": {
+          "$ref": "#/$defs/text",
+          "title": "Vorschaubild"
+        },
+        "preview_caption": {
+          "$ref": "#/$defs/text",
+          "title": "Text zum Vorschaubild"
+        },
+        "layout": {
+          "$ref": "#/$defs/text_or_open",
+          "title": "Aufbau",
+          "x-frage": "Wie ist die Datei aufgebaut: welche Spalten oder Felder, mit einer Beispielzeile? Claude liest es aus der echten Datei, du bestätigst es."
+        }
+      }
+    },
+    "screenshot": {
+      "title": "Screenshot",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "file",
+        "caption",
+        "kind"
+      ],
+      "properties": {
+        "file": {
+          "$ref": "#/$defs/text",
+          "title": "Datei",
+          "x-frage": "Wie heißt die Bilddatei?"
+        },
+        "caption": {
+          "$ref": "#/$defs/text",
+          "title": "Bildunterschrift",
+          "x-frage": "Was zeigt der Screenshot, und was ist rot markiert?"
+        },
+        "step": {
+          "type": "integer",
+          "title": "Gehört zu Schritt",
+          "x-frage": "Zu welchem Schritt gehört der Screenshot?"
+        },
+        "kind": {
+          "title": "Art",
+          "enum": [
+            "echt",
+            "platzhalter"
+          ],
+          "x-fehler": "muss „echt“ oder „platzhalter“ sein"
+        }
+      }
+    },
+    "check": {
+      "title": "Prüfschritt",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "what",
+        "against",
+        "right",
+        "wrong",
+        "who"
+      ],
+      "properties": {
+        "what": {
+          "$ref": "#/$defs/text",
+          "title": "Was geprüft wird",
+          "x-frage": "Was genau prüfst du?"
+        },
+        "against": {
+          "$ref": "#/$defs/text_or_open",
+          "title": "Gegen was",
+          "x-frage": "Womit vergleichst du (Datei, Regel, Live-Shop)?"
+        },
+        "right": {
+          "$ref": "#/$defs/text_or_open",
+          "title": "Richtig",
+          "x-frage": "Wie sieht ein richtiges Ergebnis aus?"
+        },
+        "wrong": {
+          "$ref": "#/$defs/text_or_open",
+          "title": "Falsch",
+          "x-frage": "Wie sieht ein falsches Ergebnis aus? Nenn ein Beispiel."
+        },
+        "who": {
+          "$ref": "#/$defs/text",
+          "title": "Wer prüft",
+          "x-frage": "Wer macht diese Prüfung?"
+        },
+        "step": {
+          "type": "integer",
+          "title": "Bei Schritt"
+        },
+        "please_confirm": {
+          "$ref": "#/$defs/text",
+          "title": "Bitte bestätigen"
+        }
+      }
+    },
+    "open_point": {
+      "title": "Offener Punkt",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "question",
+        "about"
+      ],
+      "properties": {
+        "question": {
+          "$ref": "#/$defs/text",
+          "title": "Frage"
+        },
+        "about": {
+          "$ref": "#/$defs/text",
+          "title": "Betrifft"
+        },
+        "ask": {
+          "$ref": "#/$defs/text",
+          "title": "Wer antwortet"
+        }
+      }
+    },
+    "system": {
+      "title": "System",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "link",
+        "access",
+        "sensitive_data"
+      ],
+      "properties": {
+        "name": {
+          "$ref": "#/$defs/text",
+          "title": "Name",
+          "x-frage": "Wie heißt das Programm oder System?"
+        },
+        "link": {
+          "$ref": "#/$defs/text_or_open",
+          "title": "Offizieller Link",
+          "x-frage": "Wo findet man das System oder seine Doku (offizieller Link)?"
+        },
+        "version": {
+          "$ref": "#/$defs/text_or_open",
+          "title": "Version",
+          "x-frage": "Welche Version oder welcher Tarif ist im Einsatz?"
+        },
+        "access": {
+          "$ref": "#/$defs/text_or_open",
+          "title": "Zugang für eine Lösung",
+          "x-frage": "Welchen Zugang bräuchte eine Lösung (Lesen, Schreiben, Export, Schnittstelle)? Keine Passwörter."
+        },
+        "sensitive_data": {
+          "title": "Sensible Daten",
+          "enum": [
+            "ja",
+            "nein",
+            "unklar"
+          ],
+          "x-fehler": "muss „ja“, „nein“ oder „unklar“ sein",
+          "x-frage": "Sind in diesem System Kunden-, Personal- oder andere sensible Daten im Spiel?"
+        }
+      }
+    }
+  }
+}

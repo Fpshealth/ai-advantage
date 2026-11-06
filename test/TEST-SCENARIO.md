@@ -29,8 +29,8 @@ This single thread naturally walks through:
 
 ```
 1. Sandbox Setup: Team-AI          → set up the safe work area
-2. Prompt Improvement: Team-AI     → fix the vague "update the prices in the table" prompt → SOP Starter Pack
-3. SOP Creation: Team-AI           → step-by-step SOP for "Update Prices" (uses the Starter Pack)
+2. Sharpen (pstack)                → deepen the vague "update the prices in the table" task and rewrite the prompt
+3. SOP Creation: Team-AI           → step-by-step SOP for "Update Prices"
 4. Process Documentation: Team-AI  → the end-to-end "Assortment Update" across roles
 5. Visualizer: Team-AI             → HTML view of the SOP and the Process Documentation for the team lead
 6. Escalation: Team-AI             → the price list has errors → send to the consultant
@@ -95,22 +95,17 @@ Synthetic is preferable for tests (no licensing, no real PII). Good sources:
 
 ---
 
-## Step 2 — Prompt Improvement: Team-AI
+## Step 2 — Sharpen
 
-Copy `fixtures/weak-prompt-chat-example.md` into a **new chat**, then **type:**
-`The answer doesn't help me — can you improve my prompt?`
+Copy `fixtures/weak-prompt-chat-example.md` into a **new chat**, then **type:** `/sharpen`
 
-**Expected:** writes `prompt-improvement-update-prices-<date>.md` into `02_Work/` (diagnosis +
-10-point framework with confidence labels + an XML-tagged improved prompt).
+**Expected:** Claude answers the four sharpen questions for the price-update task (what a top
+professional would do, the rawest material, methods and tools, an outside check) and rewrites the
+prompt.
 
 ✅ **Check**
-- [ ] It **builds the improved prompt immediately** — it does **not** ask "what didn't you like?"
-      first.
-- [ ] Optional framework points it can't fill are marked **"not relevant"** (✅), not ❌.
-- [ ] It does **not** ask the SOP/escalation gate questions yet.
-- [ ] Now role-play coming back: **type** `Yes, that worked — and yes, I do this often.`
-      → it should now offer the SOP path and write `sop-starter-update-prices-<date>.md` to
-      `02_Work/`, with unknown fields marked open (nothing invented).
+- [ ] It answers all four questions before it rewrites the prompt.
+- [ ] The rewritten prompt is deeper, not just longer.
 
 ---
 
@@ -119,11 +114,9 @@ Copy `fixtures/weak-prompt-chat-example.md` into a **new chat**, then **type:**
 Copy `fixtures/supplier-price-list-spring-2026.csv` and `current-shop-export.csv` into
 `01_Input/`. Open a **new chat in the same folder** and **type:** `Create an SOP`
 
-**Expected:** it **auto-finds** the `sop-starter-*.md` from Step 2, opens *with* it (no generic
-greeting), asks only for the gaps, then writes `sop-update-prices-<date>.md` to `03_Output/`.
+**Expected:** it opens with the standard greeting, interviews the person, then writes `sop-update-prices-<date>.md` to `03_Output/`.
 
 ✅ **Check**
-- [ ] Opens by referencing the found Starter Pack by name. *(Handoff works.)*
 - [ ] Interview captures Signal/Action/Confirmation/Tool per step; one task only.
 - [ ] **Phase 6 Fresh-Eyes Review** delegates to the `fresh-eyes-review` agent, passing the full
       `03_Output/…` path + type `SOP`; the agent reads **only** that draft (not the interview) and
@@ -207,13 +200,13 @@ Full case list: `test/ESCALATION-TEST.md`.
 
 ```
 01_Input/   supplier-price-list-spring-2026.csv, current-shop-export.csv          (read-only)
-02_Work/    prompt-improvement-*.md, sop-starter-*.md                            (drafts/handoffs)
+02_Work/    sop-starter-*.md                                                      (drafts/handoffs)
 03_Output/  sop-update-prices-*.md, process-doc-assortment-update-*.md,
             *-visualization.html                                                 (finished)
 CLAUDE.md   (routes the above; from Step 1)
 ```
 
-Handoffs: Step 2 → `sop-starter-*.md` → Step 3. Step 4 → SOP Candidates → (future Step 3 runs).
+Handoffs: Step 4 → SOP Candidates → (future Step 3 runs).
 Steps 3 & 4 → Step 5 (visualize). Steps 2/3 → Step 6 (drag-attach to email).
 
 ---
